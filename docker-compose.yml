@@ -24,20 +24,22 @@ services:
     restart: unless-stopped
   postgresql:
     image: 'bitnami/postgresql:11'
+    container_name: postgresql
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - '/opt/cybererp/data/postgresql:/bitnami/postgresql'
+      - '/opt/cybererp/data/postgresql_data:/bitnami/postgresql'
   odoo:
     image: 'bitnami/odoo:12'
+    container_name: odoo
     ports:
       - '80:8069'
       - '443:8071'
     volumes:
-      - '/opt/cybererp/data/odoo:/bitnami'
+      - '/opt/cybererp/data/odoo_data:/bitnami'
     depends_on:
       - postgresql
-      - 
+      - letsencrypt
 volumes:
   postgresql_data:
     driver: local
