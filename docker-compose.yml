@@ -45,3 +45,9 @@ volumes:
     driver: local
   odoo_data:
     driver: local
+networks:
+  cybererp-network:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
