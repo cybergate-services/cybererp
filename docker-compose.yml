@@ -35,6 +35,13 @@ services:
     ports:
       - '80:8069'
       - '443:8071'
+    environment:
+     - ODOO_PASSWORD=cgadmin
+     - ODOO_MAIL=cgadmin@cybergateservices.net
+     - POSTGRESQL_USER=odoo
+     - POSTGRESQL_PASSWORD=cgadmin
+     - POSTGRESQL_HOST=postgresql
+     - POSTGRESQL_PORT_NUMBER=5432
     volumes:
       - '/opt/cybererp/data/odoo_data:/bitnami'
     depends_on:
