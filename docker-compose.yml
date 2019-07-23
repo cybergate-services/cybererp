@@ -1,20 +1,43 @@
 version: '2'
 services:
+  letsencrypt:
+    image: linuxserver/letsencrypt
+    container_name: letsencrypt
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1002
+      - PGID=1002
+      - TZ=Asia/Colombo
+      - URL=cybodo.cybergateservices.net
+      - SUBDOMAINS=cybodo,
+      - VALIDATION=http
+      - EMAIL=cybererp@cybergate.lk #optional
+      - DHLEVEL=2048 #optional
+      - ONLY_SUBDOMAINS=true #optional
+      - STAGING=false #optional
+    volumes:
+      - /opt/cybererp/config/letsencrypt:/config
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
   postgresql:
     image: 'bitnami/postgresql:11'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - 'postgresql_data:/bitnami/postgresql'
+      - '/opt/cybererp/data/postgresql:/bitnami/postgresql'
   odoo:
     image: 'bitnami/odoo:12'
     ports:
       - '80:8069'
       - '443:8071'
     volumes:
-      - 'odoo_data:/bitnami'
+      - '/opt/cybererp/data/odoo:/bitnami'
     depends_on:
       - postgresql
+      - 
 volumes:
   postgresql_data:
     driver: local
