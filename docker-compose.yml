@@ -9,10 +9,10 @@ services:
       - PUID=1002
       - PGID=1002
       - TZ=Asia/Colombo
-      - URL=cybodo.cybergateservices.net
+      - URL=cybergateservices.net
       - SUBDOMAINS=cybodo,
       - VALIDATION=http
-      - EMAIL=cybererp@cybergate.lk #optional
+      - EMAIL=cybererp@cybergateservices.net #optional
       - DHLEVEL=2048 #optional
       - ONLY_SUBDOMAINS=true #optional
       - STAGING=false #optional
