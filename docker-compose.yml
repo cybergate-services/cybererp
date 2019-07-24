@@ -41,8 +41,8 @@ services:
     image: 'bitnami/odoo:12'
     container_name: odoo
     ports:
-      - '8069:8069'
-      - '8071:8071'
+      - 8069:8069
+      - 8071:8071
     environment:
      - ODOO_PASSWORD=cgadminpostgresql
      - ODOO_MAIL=cgadmin@cybergateservices.net
