@@ -21,7 +21,7 @@ services:
         aliases:
           - letsencrypt
     volumes:
-      - /opt/cybererp/config/letsencrypt:/config
+      - ./config/letsencrypt:/config
     ports:
       - 443:443
       - 80:80 #optional
@@ -30,13 +30,13 @@ services:
     image: 'bitnami/postgresql:11'
     container_name: postgresql
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      - ALLOW_EMPTY_PASSWORD=no
     networks:
       cybererp-network:
         aliases:
           - postgresql
     volumes:
-      - '/opt/cybererp/data/postgresql_data:/bitnami/postgresql'
+      - ./data/postgresql_data:/bitnami/postgresql
   odoo:
     image: 'bitnami/odoo:12'
     container_name: odoo
@@ -44,7 +44,7 @@ services:
       - 8069:8069
       - 8071:8071
     environment:
-     - ODOO_PASSWORD=cgadminpostgresql
+     - ODOO_PASSWORD=cgadmin
      - ODOO_MAIL=cgadmin@cybergateservices.net
      - POSTGRESQL_USER=odoo
      - POSTGRESQL_PASSWORD=cgadmin
@@ -55,7 +55,7 @@ services:
         aliases:
           - odoo
     volumes:
-      - '/opt/cybererp/data/odoo_data:/bitnami'
+      - ./data/odoo_data:/bitnami
     depends_on:
       - postgresql
       - letsencrypt
