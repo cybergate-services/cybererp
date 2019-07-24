@@ -29,8 +29,6 @@ services:
   postgresql:
     image: 'bitnami/postgresql:11'
     container_name: postgresql
-    user: root
-    command: chown -R 1001:1001 /bitnami
     environment:
       - POSTGRESQL_PASSWORD=cgdbadmin
     networks:
