@@ -61,9 +61,7 @@ services:
       - letsencrypt
 volumes:
   postgresql_data:
-    driver: local
   odoo_data:
-    driver: local
 networks:
   cybererp-network:
     driver: bridge
