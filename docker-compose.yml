@@ -30,7 +30,7 @@ services:
     image: 'bitnami/postgresql:11'
     container_name: postgresql
     environment:
-      - ALLOW_EMPTY_PASSWORD=no
+      - POSTGRESQL_PASSWORD=cgdbadmin
     networks:
       cybererp-network:
         aliases:
@@ -44,10 +44,10 @@ services:
       - 8069:8069
       - 8071:8071
     environment:
-     - ODOO_PASSWORD=cgadmin
+     - ODOO_PASSWORD=cgerpadmin
      - ODOO_MAIL=cgadmin@cybergateservices.net
      - POSTGRESQL_USER=odoo
-     - POSTGRESQL_PASSWORD=cgadmin
+     - POSTGRESQL_PASSWORD=cgdbadmin
      - POSTGRESQL_HOST=postgresql
      - POSTGRESQL_PORT_NUMBER=5432
     networks:
