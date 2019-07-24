@@ -30,6 +30,7 @@ services:
     image: 'bitnami/postgresql:11'
     container_name: postgresql
     environment:
+      - POSTGRESQL_USERNAME=cybererp
       - POSTGRESQL_DATABASE=cybererp
       - POSTGRESQL_PASSWORD=cgdbadmin
     networks:
@@ -46,7 +47,7 @@ services:
       - 8071:8071
     environment:
      - ODOO_PASSWORD=cgerpadmin
-     - ODOO_MAIL=cgadmin@cybergateservices.net
+     - ODOO_EMAIL=cgadmin@cybergateservices.net
      - POSTGRESQL_USER=postgres
      - POSTGRESQL_DATABASE=cybererp
      - POSTGRESQL_PASSWORD=cgdbadmin
