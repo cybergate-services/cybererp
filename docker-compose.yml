@@ -48,7 +48,7 @@ services:
     environment:
      - ODOO_PASSWORD=cgerpadmin
      - ODOO_EMAIL=cgadmin@cybergateservices.net
-     - POSTGRESQL_USER=postgres
+     - POSTGRESQL_USER=cybererp
      - POSTGRESQL_DATABASE=cybererp
      - POSTGRESQL_PASSWORD=cgdbadmin
      - POSTGRESQL_HOST=postgresql
