@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+    <t t-name="DashboardMain_generic_request" t-extend="DashboardMain">
+        <t t-jquery=".o_web_settings_dashboard_translations" t-operation="after">
+            <div class="text-center o_web_settings_dashboard_bureaucrat"></div>
+        </t>
+    </t>
+
+    <t t-name="DashboardBureaucrat">
+        <div calss="clearfix"/>
+        <div class="text-center o_web_settings_dashboard_bureaucrat mt8">
+            <div calss="text-center">
+                <a href="https://crnd.pro/" target="_blank"><image src="/generic_request/static/description/bureaucrat.png"/></a>
+            </div>
+            <div class="mt32">
+                <a class="btn btn-primary btn-block" href="https://crnd.pro/" target="_blank" role="button"><strong>Contact support</strong></a>
+            </div>
+            <div class="clearfix"/>
+        </div>
+    </t>
+</templates>

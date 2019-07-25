@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+
+           <record id="ticket1" model="helpdesk_lite.ticket">
+             <field name="name">Ticket 1</field>
+           </record>
+
+           <record id="ticket2" model="helpdesk_lite.ticket">
+             <field name="name">Ticket 2</field>
+           </record>
+           <record id="ticket3" model="helpdesk_lite.ticket">
+             <field name="name">Ticket 3</field>
+           </record>
+        <!--   <record id="object1" model="helpdesk_lite.helpdesk"> -->
+        <!--     <field name="name">Object 1</field> -->
+        <!--     <field name="value">10</field> -->
+        <!--   </record> -->
+        <!--  -->
+        <!--   <record id="object2" model="helpdesk_lite.helpdesk"> -->
+        <!--     <field name="name">Object 2</field> -->
+        <!--     <field name="value">20</field> -->
+        <!--   </record> -->
+        <!--  -->
+        <!--   <record id="object3" model="helpdesk_lite.helpdesk"> -->
+        <!--     <field name="name">Object 3</field> -->
+        <!--     <field name="value">30</field> -->
+        <!--   </record> -->
+        <!--  -->
+        <!--   <record id="object4" model="helpdesk_lite.helpdesk"> -->
+        <!--     <field name="name">Object 4</field> -->
+        <!--     <field name="value">40</field> -->
+        <!--   </record> -->
+        <!--  -->
+    </data>
+</odoo>

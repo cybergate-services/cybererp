@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="helpdesk_stage_search" model="ir.ui.view">
+        <field name="name">Stage - Search</field>
+        <field name="model">helpdesk_lite.stage</field>
+        <field name="arch" type="xml">
+            <search string="Stage Search">
+                <field name="name"/>
+                <field name="sequence"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="helpdesk_stage_tree" model="ir.ui.view">
+        <field name="name">helpdesk_lite.stage.tree</field>
+        <field name="model">helpdesk_lite.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Stages">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="helpdesk_stage_form" model="ir.ui.view">
+        <field name="name">helpdesk_lite.stage.form</field>
+        <field name="model">helpdesk_lite.stage</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <form string="Stage">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Stage name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="last"/>
+                            <field name="fold"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <separator string="Requirements"/>
+                    <field name="requirements" nolabel="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="helpdesk_stage_action" model="ir.actions.act_window">
+        <field name="name">Stages</field>
+        <field name="res_model">helpdesk_lite.stage</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="helpdesk_lite.helpdesk_stage_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to set a new stage in your support pipeline.
+            </p><p>
+            Stages allow support to easily track how a specific ticket
+            is positioned in the support cycle.
+        </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_helpdesk_stage_act"
+            name="Stages"
+            sequence="20"
+            action="helpdesk_stage_action"
+            parent="menu_config"
+            groups="base.group_no_one"/>
+
+</odoo>

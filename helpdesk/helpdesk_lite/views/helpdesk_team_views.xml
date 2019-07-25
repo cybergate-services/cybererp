@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Cateamions Search view -->
+        <record id="support_team_search" model="ir.ui.view">
+            <field name="name">Case Teams - Search</field>
+            <field name="model">helpdesk_lite.team</field>
+            <field name="arch" type="xml">
+                <search string="Supportteams Search">
+                    <filter name="personal" string="My Teams" domain="['|', ('member_ids', '=', uid), ('user_id', '=', uid)]"/>
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Team Leader" name="leader" context="{'group_by':'user_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Case Teams Action -->
+        <record id="support_team_dashboard_action" model="ir.actions.act_window">
+            <field name="name">Dashboard</field>
+            <field name="res_model">helpdesk_lite.team</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="context">{}</field>
+            <field name="view_id" ref="support_team_search"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to define a new support team.
+                </p><p>
+                    Use support team to organize your different engineers or
+                    departments into separate teams. Each team will work in
+                    its own list of tickets.
+                </p>
+            </field>
+        </record>
+
+        <!-- Case Teams Form View -->
+
+         <record id="support_team_view_form" model="ir.ui.view">
+            <field name="name">helpdesk_lite.team.form</field>
+            <field name="model">helpdesk_lite.team</field>
+            <field name="arch" type="xml">
+                <form string="Support Team">
+                    <sheet>
+                      <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Support team"/>
+                            <h1>
+                                <field name="name" placeholder="Support team name..."/>
+                            </h1>
+                            <div name="options_active"/>
+                        </div>
+                        <group>
+                            <group name="left">
+                                <field name="user_id" domain="[('share', '=', False)]"/>
+                                <label for="alias_name" string="Email Alias" />
+                                <div name="alias_def">
+                                    <field name="alias_id" class="oe_read_only oe_inline"
+                                        string="Email Alias" required="0"/>
+                                    <div class="oe_edit_only oe_inline" name="edit_alias" style="display: inline;" >
+                                        <field name="alias_name" class="oe_inline"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
+                                    </div>
+                                </div>
+                                <field name="alias_contact" class="oe_inline"
+                                    groups="base.group_no_one"
+                                    string="Accept Emails From"/>
+
+                            </group>
+                            <group name="right">
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="members" string="Team Members">
+                                <field name="member_ids" widget="many2many" options="{'not_delete': True}">
+                                    <kanban quick_create="false" create="true" delete="true">
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click" style="max-width: 200px">
+                                                    <div class="o_kanban_record_top">
+                                                        <img t-att-src="kanban_image('res.users', 'image_small', record.id.raw_value)" height="40" width="40" class="oe_avatar oe_kanban_avatar_smallbox mb0"/>
+                                                        <div class="o_kanban_record_headings ml8">
+                                                            <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                                        </div>
+                                                        <a t-if="! read_only_mode" type="delete" class="text-danger">
+                                                            <i class="fa fa-times"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="More Info" name="more_info" groups="base.group_no_one">
+                                <group>
+                                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" help="Follow this support team to automatically track the events associated to users of this team."/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Case Teams Tree View -->
+        <record id="support_team_view_tree" model="ir.ui.view">
+            <field name="name">helpdesk_lite.team.tree</field>
+            <field name="model">helpdesk_lite.team</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree string="Support Team">
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--<record id="support_team_act" model="ir.actions.act_window">-->
+            <!--<field name="name">Support Teams</field>-->
+            <!--<field name="res_model">helpdesk_lite.team</field>-->
+            <!--<field name="view_type">form</field>-->
+            <!--<field name="view_id" ref="support_team_view_tree"/>-->
+            <!--<field name="help" type="html">-->
+                <!--<p class="oe_view_nocontent_create">-->
+                    <!--Click here to define a new sales team.-->
+                <!--</p><p>-->
+                    <!--Use sales team to organize your different salespersons or-->
+                    <!--departments into separate teams. Each team will work in-->
+                    <!--its own list of opportunities.-->
+                <!--</p>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <!-- add css / js -->
+        <!--<template id="assets_backend" name="support_team assets" inherit_id="web.assets_backend">-->
+            <!--<xpath expr="." position="inside">-->
+                <!--<link rel="stylesheet" href="/helpdesk/static/src/css/support_team.css"/>-->
+                <!--<link rel="stylesheet" href="/helpdesk/static/src/less/support_team_dashboard.less"/>-->
+                <!--<script type="text/javascript" src="/helpdesk/static/src/js/support_team.js"></script>-->
+                <!--<script type="text/javascript" src="/helpdesk/static/src/js/support_team_dashboard.js"></script>-->
+            <!--</xpath>-->
+        <!--</template>-->
+
+        <record id="support_team_config_action" model="ir.actions.act_window">
+            <field name="name">Support Teams</field>
+            <field name="res_model">helpdesk_lite.team</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="view_id" ref="support_team_search"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to define a new support team.
+                </p><p>
+                    Use support team to organize your different engineers or
+                    departments into separate teams. Each team will work in
+                    its own list of tickets.
+                </p>
+            </field>
+        </record>
+
+        <!--<act_window id="support_team_config_action"-->
+            <!--name="Support teams"-->
+            <!--res_model="helpdesk_lite.team"-->
+            <!--view_mode="tree,form"-->
+            <!--context="{}"-->
+        <!--/>-->
+
+        <menuitem
+                id="support_team_config"
+                name="Support teams"
+                action="support_team_config_action"
+                parent="menu_config"
+                groups="base.group_system"
+        />
+            <!--help="&gt;p class=&quot;oe_view_nocontent_create&quot;&lt;-->
+                    <!--Click here to define a new support team.-->
+                  <!--&gt;/p&lt;-->
+                  <!--&gt;p&lt;-->
+                    <!--Use support team to organize your different engineers or-->
+                    <!--departments into separate teams. Each team will work in-->
+                    <!--its own list of opportunities.-->
+                  <!--&gt;/p&lt;"-->
+            <!--help="Use support team to organize your different engineers or"-->
+
+    </data>
+</odoo>

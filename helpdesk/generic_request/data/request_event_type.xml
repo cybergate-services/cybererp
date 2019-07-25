@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="request_event_type_created" model="request.event.type">
+        <field name="name">Created</field>
+        <field name="code">created</field>
+    </record>
+    <record id="request_event_type_stage_changed" model="request.event.type">
+        <field name="name">Stage changed</field>
+        <field name="code">stage-changed</field>
+    </record>
+    <record id="request_event_type_assigned" model="request.event.type">
+        <field name="name">Assigned</field>
+        <field name="code">assigned</field>
+    </record>
+    <record id="request_event_type_reassigned" model="request.event.type">
+        <field name="name">Reassigned</field>
+        <field name="code">reassigned</field>
+    </record>
+    <record id="request_event_type_unassigned" model="request.event.type">
+        <field name="name">Unassigned</field>
+        <field name="code">unassigned</field>
+    </record>
+    <record id="request_event_type_closed" model="request.event.type">
+        <field name="name">Closed</field>
+        <field name="code">closed</field>
+    </record>
+    <record id="request_event_type_reopened" model="request.event.type">
+        <field name="name">Reopened</field>
+        <field name="code">reopened</field>
+    </record>
+    <record id="request_event_type_changed" model="request.event.type">
+        <field name="name">Changed</field>
+        <field name="code">changed</field>
+    </record>
+</odoo>
+
