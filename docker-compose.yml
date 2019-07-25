@@ -55,9 +55,7 @@ services:
         aliases:
           - odoo
     volumes:
-      - odoo_data:/bitnami
-      - ./addons:/opt/bitnami/odoo/data/addons/12.0
-      
+      - odoo_data:/bitnami        
     depends_on:
       - postgresql
       - letsencrypt
