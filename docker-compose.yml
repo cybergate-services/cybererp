@@ -55,14 +55,13 @@ services:
         aliases:
           - odoo
     volumes:
-      - odoo_data:/bitnami
+      - ./odoo_data:/bitnami
       - ./addons:/bitnami/odoo/addons
     depends_on:
       - postgresql
       - letsencrypt
 volumes:
   postgresql_data:
-  odoo_data:
 networks:
   cybererp-network:
     driver: bridge
