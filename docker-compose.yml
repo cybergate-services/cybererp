@@ -43,7 +43,7 @@ services:
     image: 'bitnami/odoo:12'
     container_name: odoo
     hostname: odoo
-    command: chown -R odoo:odoo /bitnami/odoo/addons
+    command: chown -R odoo:odoo /opt/bitnami/odoo/data/addons/12.0
     environment:
      - ODOO_PASSWORD=cgerpadmin
      - ODOO_EMAIL=cybererp@cybergateservices.net
@@ -56,12 +56,15 @@ services:
         aliases:
           - odoo
     volumes:
-      - ./odoo_data:/bitnami
+      - odoo_data:/bitnami
+      - ./addons:/opt/bitnami/odoo/data/addons/12.0
+      
     depends_on:
       - postgresql
       - letsencrypt
 volumes:
   postgresql_data:
+  odoo_data: 
 networks:
   cybererp-network:
     driver: bridge
