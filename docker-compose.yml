@@ -43,6 +43,7 @@ services:
     image: 'bitnami/odoo:12'
     container_name: odoo
     hostname: odoo
+    command: chown -R odoo:odoo /bitnami/odoo/addons
     environment:
      - ODOO_PASSWORD=cgerpadmin
      - ODOO_EMAIL=cybererp@cybergateservices.net
