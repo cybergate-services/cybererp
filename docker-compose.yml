@@ -3,6 +3,7 @@ services:
   letsencrypt:
     image: linuxserver/letsencrypt
     container_name: letsencrypt
+    hostname: letsencrypt
     cap_add:
       - NET_ADMIN
     environment:
@@ -29,6 +30,7 @@ services:
   postgresql:
     image: 'bitnami/postgresql:11'
     container_name: postgresql
+    hostname: postgresql
     environment:
      - POSTGRESQL_PASSWORD=cgdbadmin
     networks:
@@ -40,9 +42,7 @@ services:
   odoo:
     image: 'bitnami/odoo:12'
     container_name: odoo
-    ports:
-      - 8069
-      - 8071
+    hostname: odoo
     environment:
      - ODOO_PASSWORD=cgerpadmin
      - ODOO_EMAIL=cybererp@cybergateservices.net
