@@ -57,7 +57,7 @@ services:
           - odoo
     volumes:
       - odoo_data:/var/lib/odoo
-      - ./config/odoo:/etc/odoo
+      - ./conf/odoo:/etc/odoo
       - ./addons:/mnt/extra-addons
     depends_on:
       - postgresql
