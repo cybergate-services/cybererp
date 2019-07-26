@@ -26,39 +26,43 @@ services:
     ports:
       - 443:443
       - 80:80 #optional
-    restart: unless-stopped
+    restart: always
   postgresql:
-    image: 'bitnami/postgresql:11'
+    image: postgres:11
     container_name: postgresql
     hostname: postgresql
     environment:
-     - POSTGRESQL_PASSWORD=cgdbadmin
+       - POSTGRES_DB=cybererp
+       - POSTGRES_PASSWORD=Cybergate
+       - POSTGRES_USER=odoo
+       - PGDATA=/var/lib/postgresql/data/pgdata
     networks:
       cybererp-network:
         aliases:
           - postgresql
     volumes:
-      - postgresql_data:/bitnami/postgresql
+      - postgresql_data:/var/lib/postgresql/data/pgdata
+    restart: always
   odoo:
-    image: 'bitnami/odoo:12'
+    image: odoo:12.0
     container_name: odoo
     hostname: odoo
     environment:
-     - ODOO_PASSWORD=cgerpadmin
-     - ODOO_EMAIL=cybererp@cybergateservices.net
-     - POSTGRESQL_USER=postgres
-     - POSTGRESQL_PASSWORD=cgdbadmin
-     - POSTGRESQL_HOST=postgresql
-     - POSTGRESQL_PORT_NUMBER=5432
+      - HOST=postgresql
+      - USER=odoo
+      - PASSWORD=Cybergate
     networks:
       cybererp-network:
         aliases:
           - odoo
     volumes:
-      - odoo_data:/bitnami        
+      - odoo_data:/var/lib/odoo
+      - ./config/odoo:/etc/odoo
+      - ./addons:/mnt/extra-addons
     depends_on:
       - postgresql
       - letsencrypt
+    restart: always
 volumes:
   postgresql_data:
   odoo_data: 
