@@ -28,7 +28,7 @@ services:
       - 80:80 #optional
     restart: always
   postgresql:
-    image: postgres:11
+    image: postgres:10
     container_name: postgresql
     hostname: postgresql
     environment:
