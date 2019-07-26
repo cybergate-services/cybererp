@@ -32,7 +32,7 @@ services:
     container_name: postgresql
     hostname: postgresql
     environment:
-       - POSTGRES_DB=cybererp
+       - POSTGRES_DB=odoo
        - POSTGRES_PASSWORD=Cybergate
        - POSTGRES_USER=odoo
        - PGDATA=/var/lib/postgresql/data/pgdata
