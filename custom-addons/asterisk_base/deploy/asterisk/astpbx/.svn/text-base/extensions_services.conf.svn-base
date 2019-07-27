@@ -1,0 +1,274 @@
+; Services. See http://en.wikipedia.org/wiki/Vertical_service_code
+
+; Common macro for activating/deactivating settings. ARG1 - command, ARG2 - family, ARG3 - key
+[macro-manage-activation]
+exten => s,1,Goto(${ARG1})
+exten => s,n(activate),Set(DB(${ARG2}/${ARG3})=1)
+exten => s,n,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Playback(rezhim)
+exten => s,n,ExecIf($[ "${ARG2}" = "meetme_active" ]|Playback|konferencii)
+exten => s,n,Playback(aktivirovan)
+exten => s,n,Playback(do-svidaniya) 
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+exten => s,n(deactivate),Set(DB(${ARG2}/${ARG3})=0)
+exten => s,n,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Playback(rezhim)
+exten => s,n,ExecIf($[ "${ARG2}" = "meetme_active" ]|Playback|konferencii)
+exten => s,n,Playback(deaktivirovan)
+exten => s,n,Playback(do-svidaniya) 
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+; Macro to change all types of call forward number. ARG1 - user, ARG2 - CF type
+[macro-cf-set-number]
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Set(CHANNEL(language)=ru)
+exten => s,n,Set(cf_number="${DB(cf_${ARG2}_num/${ARG1})}")
+exten => s,n,GotoIf($[ "${cf_number}" = ""} ]?not-set:set)
+exten => s,n(not-set),Playback(v-dannyj-moment)
+exten => s,n,Playback(nomer-pereadresacii)
+exten => s,n,ExecIf($[ "${ARG2}" = "onbusy"]|Playback|po-zanjato)
+exten => s,n,ExecIf($[ "${ARG2}" = "onunavail"]|Playback|po-nedostupen)
+exten => s,n,Playback(ne-ustanovlen)
+exten => s,n,Goto(set-new)
+exten => s,n(set),Playback(nomer-pereadresacii)
+exten => s,n,ExecIf($[ "${ARG2}" = "onbusy"]|Playback|po-zanjato)
+exten => s,n,ExecIf($[ "${ARG2}" = "onunavail"]|Playback|po-nedostupen)
+exten => s,n,Playback(ustanovlen)
+exten => s,n,Playback(na-nomer)
+exten => s,n,SayDigits(${cf_number})
+exten => s,n,Goto(set-new)
+exten => s,n(set-new),Playback(vvedite)
+exten => s,n,Playback(novyj)
+exten => s,n,Playback(nomer)
+exten => s,n,Read(new_num)
+exten => s,n,GotoIf($[ "${new_num}" = ""]?set-new)
+exten => s,n,Set(DB(cf_${ARG2}_num/${ARG1})=${new_num})
+exten => s,n,Playback(novyj)
+exten => s,n,Playback(nomer-pereadresacii)
+exten => s,n,ExecIf($[ "${ARG2}" = "onbusy"]|Playback|po-zanjato)
+exten => s,n,ExecIf($[ "${ARG2}" = "onunavail"]|Playback|po-nedostupen)
+exten => s,n,Playback(ustanovlen)
+exten => s,n,Playback(na-nomer)
+exten => s,n,SayDigits(${new_num})
+exten => s,n,Playback(do-svidaniya)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+[macro-cf-playback-type]
+exten => s,1,GotoIf($[ "${ARG1}" = "uncond"]?uncond)
+exten => s,n,GotoIf($[ "${ARG1}" = "onbusy"]?onbusy)
+exten => s,n,GotoIf($[ "${ARG1}" = "onunavail"]?onunavail)
+exten => s,n,MacroExit
+exten => s,n(onbusy),Playback(pereadresacija-zvonka-po-zanjato)
+exten => s,n,MacroExit
+exten => s,n(onunavail),Playback(pereadresacija-zvonka-po-nedostupen)
+exten => s,n,MacroExit
+exten => s,n(uncond),Playback(pereadresacija-zvonka-bezusluvnaja)
+exten => s,n,MacroExit
+
+; Enabled/disable CF. ARG1 - user, ARG2 - CF type, ARG3 - what to do
+[macro-cf-status]
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Set(CHANNEL(language)=ru)
+exten => s,n,GotoIf($[ "${ARG3}" = "activate"]?activate:deactivate)
+exten => s,n(activate),Set(DB(cf_${ARG2}_active/${ARG1})=1)
+exten => s,n,Macro(cf-playback-type,${ARG2})
+exten => s,n,Playback(aktivirovana)
+exten => s,n,Playback(do-svidanija)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+exten => s,n(deactivate),Set(DB(cf_${ARG2}_active/${ARG1})=0)
+exten => s,n,Macro(cf-playback-type,${ARG2})
+exten => s,n,Playback(deaktivirovana)
+exten => s,n,Playback(do-svidanija)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+; Announce Call Forward settings. ARG1 - user, ARG2 - what to do
+[macro-cf-announce]
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Set(CHANNEL(language)=ru)
+exten => s,n,GotoIf($[ "${ARG2}" = "activate"]?activate:deactivate)
+exten => s,n(activate),Set(DB(cf_announce/${ARG1})=1)
+exten => s,n,Playback(rezhim)
+exten => s,n,Playback(objavlenie-o-pereadresacii)
+exten => s,n,Playback(aktivirovan); TODO: no "vkljucheno" file!
+exten => s,n,Playback(do-svidanija)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+exten => s,n(deactivate),Set(DB(cf_announce/${ARG1})=0)
+exten => s,n,Playback(objavlenie-o-pereadresacii)
+exten => s,n,Playback(vykljucheno); TODO: Change to "aktivirovano"
+exten => s,n,Playback(do-svidanija)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+[macro-playback-status-f]; female
+exten => s,1,GotoIf($[ "${DB(${ARG1}/${ARG2})}" = "1"]?enabled:disabled)
+exten => s,n(enabled),Playback(vkljuchena)
+exten => s,n,MacroExit
+exten => s,n(disabled),Playback(vykljuchena)
+
+[macro-playback-status-m]; man
+exten => s,1,GotoIf($[ "${DB(${ARG1}/${ARG2})}" = "1"]?enabled:disabled)
+exten => s,n(enabled),Playback(vkljuchen)
+exten => s,n,MacroExit
+exten => s,n(disabled),Playback(vykljuchen)
+
+; Playback all CF statuses, uses mini-macro from above
+[macro-cf-status-announce]
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Set(CHANNEL(language)=ru)
+exten => s,n,Playback(pereadresacija-zvonka-bezusluvnaja)
+exten => s,n,Macro(playback-status-f,cf_uncond_active,${ARG1})
+exten => s,n,Playback(pereadresacija-zvonka-po-zanjato)
+exten => s,n,Macro(playback-status-f,cf_onbusy_active,${ARG1})
+exten => s,n,Playback(pereadresacija-zvonka-po-nedostupen)
+exten => s,n,Macro(playback-status-f,cf_onunavail_active,${ARG1})
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+[macro-dnd-status-announce]
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Playback(rezhim)
+exten => s,n,Playback(ne-bespokoit)
+exten => s,n,Macro(playback-status-m,dnd_active,${ARG1})
+exten => s,n,Playback(do-svidanija)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+; Do not disturb mode
+[macro-dnd-status]
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Set(CHANNEL(language)=ru)
+exten => s,n,Playback(rezhim)
+exten => s,n,Playback(ne-bespokoit)
+exten => s,n,GotoIf($[ "${ARG2}" = "activate"]?activate:deactivate)
+exten => s,n(activate),Set(DB(dnd_active/${ARG1})=1)
+exten => s,n,Playback(aktivirovan)
+exten => s,n,Goto(end)
+exten => s,n(deactivate),Set(DB(dnd_active/${ARG1})=0)
+exten => s,n,Playback(deaktivirovan)
+exten => s,n(end),Playback(do-svidanija)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+; Set meetme password for my meetme room
+[meetme-password]
+exten => _s-X.,1,Answer
+exten => _s-X.,n,Set(room=${EXTEN:2})
+exten => _s-X.,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => _s-X.,n,Set(CHANNEL(language)=ru)
+exten => _s-X.,n(read),Read(pin,conf-getpin)
+exten => _s-X.,n,Read(pin2,vvedite-parol-eshhe-raz)
+exten => _s-X.,n,GotoIf($[ "${pin}" != "${pin2}"]?no-match)
+exten => _s-X.,n,Set(DB(meetme_pin/${room})=${pin})
+exten => _s-X.,n,Playback(parol)
+exten => _s-X.,n,Playback(ustanovlen)
+exten => _s-X.,n,Playback(v)
+exten => _s-X.,n,SayDigits(${pin})
+exten => _s-X.,n,Playback(do-svidanija)
+exten => _s-X.,n,Wait(1)
+exten => _s-X.,n,Hangup
+exten => _s-X.,n(no-match),Playback(paroli-ne-sovpadajut)
+exten => _s-X.,n,Goto(read)
+
+[set-voicemail-timeout]
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Set(CHANNEL(language)=ru)
+exten => s,n,Set(vm_seconds=${DB(dial_timeout/${CALLERID(num)})})
+exten => s,n(check),GotoIf($[ "${vm_seconds}" = "" ]?init)
+exten => s,n(say),Background(v-dannyj-moment)
+exten => s,n,Background(vremja)
+exten => s,n,Background(ustanovleno)
+exten => s,n,Background(v)
+exten => s,n,SayNumber(${vm_seconds})
+exten => s,n,Background(sekund)
+exten => s,n(set-new),Background(vvedite-novoe-znachenie)
+exten => s,n,Read(vm_seconds,,2)
+exten => s,n,ExecIf($[ "${vm_seconds}" = "" ]|Goto|set-new)
+exten => s,n,Set(DB(dial_timeout/${CALLERID(num)})=${vm_seconds})
+exten => s,n(done),Playback(novoe-znachenie)
+exten => s,n,Playback(ustanovleno)
+exten => s,n,Playback(v)
+exten => s,n,SayNumber(${vm_seconds})
+exten => s,n,Playback(sekund)
+exten => s,n,Playback(do-svidanija)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+exten => s,n(init),Set(DB(dial_timeout/${CALLERID(num)})=${INDIAL_TIMEOUT})
+exten => s,n,Set(vm_seconds=${INDIAL_TIMEOUT})
+exten => s,n,Goto(say)
+exten => _XX,1,Set(DB(dial_timeout/${CALLERID(num)})=${EXTEN})
+exten => _XX,n,Goto(s,done)
+exten => i,1,Goto(s,say)
+
+[macro-nway-start]
+exten => s,1,Set(CONFNO=700)
+exten => s,n,ChannelRedirect(${BRIDGEPEER},dynamic-nway,${CONFNO},1)
+exten => s,n(read),Read(DST,dial,,i)
+exten => s,n,ExecIf($["${DST}" = ""]|Goto|read)
+exten => s,n,Set(DYNAMIC_FEATURES=nway-inv#nway-noinv)
+exten => s,n,Dial(Local/${DST}@dynamic-nway-dest,,g)
+exten => s,n,Set(DYNAMIC_FEATURES=)
+exten => s,n,Goto(dynamic-nway,${CONFNO},1)
+
+; Here we duplicate dialplan :-(
+[dynamic-nway-dest]
+exten => _XXX,1,Dial(SIP/${EXTEN})
+
+[dynamic-nway]
+exten => _X.,1,Answer
+exten => _X.,n,Set(CONFNO=${EXTEN})
+exten => _X.,n,Set(MEETME_EXIT_CONTEXT=dynamic-nway-invite)
+exten => _X.,n,Set(DYNAMIC_FEATURES=)
+exten => _X.,n,MeetMe(${CONFNO},pdMX)
+exten => _X.,n,Hangup
+
+[nway-invite]
+exten => 0,1,Read(DST,dial,,i)
+exten => 0,n,Set(DYNAMIC_FEATURES=nway-inv#nway-noinv)
+exten => 0,n,Dial(Local/${DST}@users,,g)
+exten => 0,n,Set(DYNAMIC_FEATURES=)
+exten => 0,n,Goto(dynamic-nway,${CONFNO},1)
+exten => i,1,Goto(dynamic-nway,${CONFNO},1)
+
+[macro-nway-ok]
+exten => s,1,ChannelRedirect(${BRIDGEPEER},dynamic-nway,${CONFNO},1)
+
+[macro-nway-notok]
+exten => s,1,SoftHangup(${BRIDGEPEER}) 
+
+[mobile-number]
+exten => s,1,Set(user=${CALLERID(num)})
+exten => s,n,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Set(current_num=${DB(mobile_num/${user})})
+exten => s,n,GotoIf($["${current_num}" = ""]?enter-new)
+exten => s,n,Playback(v-dannyj-moment)
+exten => s,n,Playback(nomer)
+exten => s,n,Playback(ustanovlen-)
+exten => s,n,Playback(v)
+exten => s,n,SayDigits(${current_num})
+exten => s,n(enter-new),Playback(vvedite)
+exten => s,n,Playback(novyj)
+exten => s,n,Read(new_num,nomer)
+exten => s,n,Set(DB(mobile_num/${user})=${new_num})
+exten => s,n,Playback(novyj)
+exten => s,n,Playback(nomer)
+exten => s,n,SayDigits(${new_num})
+exten => s,n,Playback(ustanovlen)
+exten => s,n,Playback(auth-thankyou)
+exten => s,n,Hangup
+

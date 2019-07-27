@@ -1,0 +1,15 @@
+[channels]
+group=1
+callwaiting=no
+threewaycalling=no
+signalling = fxs_ks
+usedistinctiveringdetection=no
+callprogress=no
+usecallerid=no
+context = from-fxo
+language=ru
+pulsedial=yes
+busydetect=yes
+busypattern=350,350
+echocancel=yes
+channel => 4

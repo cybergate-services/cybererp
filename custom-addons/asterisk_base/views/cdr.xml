@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id='asterisk_cdr_action' model='ir.actions.act_window'>
+            <field name='name'>Call Details</field>
+            <field name='res_model'>asterisk.cdr</field>
+            <field name="view_mode">tree,form,graph,pivot</field>
+        </record>
+
+        <record id='asterisk_cdr_cel_action' model='ir.actions.act_window'>
+            <field name='name'>CDR Events</field>
+            <field name='res_model'>asterisk.cel</field>
+            <field name="domain">[('cdr','=', active_id)]</field>
+            <field name="view_mode">tree,form,graph</field>
+        </record>
+
+
+        <menuitem id="asterisk_calls_menu" parent='asterisk_base.asterisk_reports_menu'
+            name='Calls' sequence='100'/>
+
+        <menuitem id="asterisk_calls_cdr_menu" parent='asterisk_calls_menu'
+            name='CDR' action='asterisk_cdr_action' sequence='100'/>
+
+        <record id='asterisk_cdr_list' model='ir.ui.view'>
+            <field name='name'>asterisk.cdr.list</field>
+            <field name='model'>asterisk.cdr</field>
+            <field name='type'>tree</field>
+            <field name='arch' type='xml'>
+                <tree create='false' duplicate='false'>
+                    <field name='started'/>
+                    <field name='src'/>
+                    <field name='dst'/>
+                    <field name='clid'/>
+                    <field name='disposition'/>
+                    <field name='billsec' sum='Total Duration'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='asterisk_cdr_form' model='ir.ui.view'>
+            <field name='name'>asterisk.cdr.form</field>
+            <field name='model'>asterisk.cdr</field>
+            <field name='type'>form</field>
+            <field name='arch' type='xml'>
+                <form edit='false' create="false" string='cdr'>
+                  <sheet>
+                    <div class="oe_button_box oe_right" >
+                      <button name="%(asterisk_cdr_cel_action)d" type="action"
+                              context="{'search_default_uniqueid': uniqueid}"
+                              class="oe_stat_button"  icon="fa-bars">
+                          <field name="cel_count"
+                                 string="Call Events" widget="statinfo"/>
+                      </button>
+                    </div>
+                    <notebook>
+                        <page name="main" string="Main">
+                            <group>
+                                <group>
+                                    <field name='disposition'/>
+                                </group>
+                                <group>
+                                    <field name='src' widget="originate_call"/>
+                                    <field name='dst' widget="originate_call"/>
+                                    <field name='clid'/>                                    
+                                    <field name='started'/>
+                                    <field name='answered'/>
+                                    <field name='ended'/>
+                                </group>
+                            </group>
+                            <group string="Recording" attrs="{'invisible': [('recording_filename', '=', False)]}">
+                                <group>
+                                    <field name="recording_filename" invisible="1"/>
+                                    <field name="recording_widget" widget="html" nolabel="1"
+                                        attrs="{'invisible': [('recording_filename', '=', False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="recording_data" filename="recording_filename"
+                                        attrs="{'invisible': [('recording_filename', '=', False)]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="qos" string="Quality">
+                            <group>
+                                <group string="Our Receiver">
+                                    <field name="ssrc"/>
+                                    <field name="rxcount"/>
+                                    <field name="lp"/>
+                                    <field name="rxjitter"/>                                
+                                </group>
+                                <group string="Their Sender">
+                                    <field name="themssrc"/>
+                                    <field name="txcount"/>
+                                    <field name="rlp"/>
+                                    <field name="txjitter"/>
+                                    <field name="rtt"/>
+                                </group>
+                            </group>                            
+                        </page>
+                        <page name="tech" string="Technical">
+                            <group>
+                                <group>
+                                    <field name='accountcode'/>
+                                    <field name='uniqueid'/>
+                                    <field name='linkedid'/>
+                                    <field name='channel'/>
+                                    <field name='dstchannel'/>
+                                </group>
+                                <group>
+                                    <field name="sequence" readonly="1"/>                                    
+                                    <field name='dcontext'/>
+                                    <field name='peeraccount'/>
+                                    <field name='lastapp'/>
+                                    <field name='lastdata'/>
+                                    <field name='userfield'/>
+                                    <field name='amaflags'/>
+                                </group>                                    
+                            </group>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="asterisk_cdr_graph" model="ir.ui.view">
+            <field name="name">asterisk.cdr.graph</field>
+            <field name="model">asterisk.cdr</field>
+            <field name="arch" type="xml">
+                <graph type="bar" string="Call by day">
+                    <field name='started' type='row'  interval="day"/>
+                    <field name='disposition' type='row'/>
+                    <field name="billsec" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+
+        <record id="asterisk_cdr_pivot" model="ir.ui.view">
+            <field name="name">asterisk.cdr.pivot</field>
+            <field name="model">asterisk.cdr</field>
+            <field name="arch" type="xml">
+                <pivot display_quantity="true" string="Calls">
+                    <field name='started' type='row'/>
+                    <field name='disposition' type='row'/>
+                    <field name="billsec" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <record id='asterisk_cdr_search' model='ir.ui.view'>
+            <field name='name'>asterisk.cdr.search</field>
+            <field name='model'>asterisk.cdr</field>
+            <field name='type'>search</field>
+            <field name='arch' type='xml'>
+                <search string="CDR Request">
+                    <field name="src"/>
+                    <field name="dst"/>
+                    <field name="channel"/>
+                    <field name="started"/>
+                    <filter name="answered" string="Answered" domain="[('disposition','=','ANSWERED')]"/>
+                    <filter name="busy" string="Busy" domain="[('disposition','=','BUSY')]"/>
+                    <filter name="no_answer" string="No answer" domain="[('disposition','=','NO ANSWER')]"/>
+                    <filter name="failed" string="Failed" domain="[('disposition','=','FAILED')]"/>
+                    <filter name="congestion" string="Congestion" domain="[('disposition','=','CONGESTION')]"/>
+                    <filter name="today" string="Today" domain="[
+                        ('started', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
+                        ('started', '&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                    <filter name="by_src" string="Src" domain="[]" context="{'group_by':'src'}"/>
+                    <filter name="by_dst" string="Dst" domain="[]" context="{'group_by':'dst'}"/>
+                    <filter name="by_started" string="Started" domain="[]" context="{'group_by':'started'}"/>
+                    <filter name="by_disposition" string="Disposition" domain="[]" context="{'group_by':'disposition'}"/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

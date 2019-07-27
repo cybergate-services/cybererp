@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <function model="asterisk.settings" name="_set_new_param">
+            <value>device_registration_token</value>
+            <value>change-me</value>
+        </function>
+        <function model="asterisk.settings" name="_set_new_param">
+            <value>agents_hostname</value>
+            <value>127.0.0.1</value>
+        </function>
+        <function model="asterisk.settings" name="_set_new_param">
+            <value>agents_port</value>
+            <value>8072</value>
+        </function>
+        <function model="asterisk.settings" name="_set_new_param">
+            <value>agents_security</value>
+            <value>http</value>
+        </function>
+        <function model="asterisk.settings" name="_set_new_param">
+            <value>interconnection_protocol</value>
+            <value>iax</value>
+        </function>
+    </data>
+
+</odoo>

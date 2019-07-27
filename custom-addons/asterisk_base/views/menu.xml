@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='asterisk_menu_action' model='ir.actions.act_window'>
+        <field name='name'>Menus</field>
+        <field name='res_model'>asterisk.menu</field>
+         <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="asterisk_menu_menu" parent='asterisk_configuration_menu'
+        name='Menus' action='asterisk_menu_action' sequence='85'
+        groups="group_asterisk_base_admin"/>
+
+    <record id='asterisk_menu_list' model='ir.ui.view'>
+        <field name='name'>asterisk.menu.list</field>
+        <field name='model'>asterisk.menu</field>
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+            <tree>
+                <field name='extension'/>
+                <field name='name'/>
+                <field name="server"/>
+                <field name="timeframe"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id='asterisk_menu_form' model='ir.ui.view'>
+        <field name='name'>asterisk.menu.form</field>
+        <field name='model'>asterisk.menu</field>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+          <form>
+              <sheet>
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/> @ <field name="server" options="{'no_create': '1'}"/></h1>
+                </div>                
+                <group>
+                  <group>
+                    <field name='extension'/>
+                    <field name="timeout_extension"/>
+                    <field name="read_timeout"/>
+                    <field name="allow_directory"/>
+                  </group>                    
+                  <group>
+                    <field name="timeframe"/>
+                    <field name='note'/>
+                  </group>
+                </group>
+                <group string="Voice Prompt">
+                    <group>
+                        <field name="voice_prompt_filename" invisible="1"/>
+                        <field name="voice_prompt_data" filename="voice_prompt_filename"/>
+                    </group>                    
+                    <group>                        
+                        <field name="voice_prompt_widget" widget="html" nolabel="1"
+                            class="oe_read_only"
+                            attrs="{'invisible': [('voice_prompt_data', '=', False)]}"/>
+                    </group>
+                </group>
+                <group string="Choices" name="choices">
+                    <group>
+                        <field name="choice_0_extension"/>
+                        <field name="choice_1_extension"/>
+                        <field name="choice_2_extension"/>
+                        <field name="choice_3_extension"/>
+                        <field name="choice_4_extension"/>
+                        <field name="choice_5_extension"/>
+                    </group>
+                    <group>                        
+                        <field name="choice_6_extension"/>
+                        <field name="choice_7_extension"/>
+                        <field name="choice_8_extension"/>
+                        <field name="choice_9_extension"/>
+                        <field name="choice_star_extension"/>
+                        <field name="choice_hash_extension"/>
+                    </group>                    
+                </group>
+              </sheet>
+          </form>
+        </field>
+    </record>
+
+    <record id='asterisk_menu_search' model='ir.ui.view'>
+        <field name='name'>asterisk.menu.search</field>
+        <field name='model'>asterisk.menu</field>
+        <field name='type'>search</field>
+        <field name='arch' type='xml'>
+            <search>
+                <field name='name'/>
+                <field name='extension'/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

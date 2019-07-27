@@ -1,0 +1,61 @@
+<odoo>
+    <data>
+
+        <record id="asterisk_timeframe_period_mon" model="asterisk.timeframe_period">
+            <field name="start_hour">09</field>
+            <field name="start_minute">00</field>
+            <field name="end_hour">18</field>
+            <field name="end_minute">00</field>
+            <field name="day">0</field>
+            <field name="sequence" eval="1"/>
+        </record>
+
+        <record id="asterisk_timeframe_period_tue" model="asterisk.timeframe_period">
+            <field name="start_hour">09</field>
+            <field name="start_minute">00</field>
+            <field name="end_hour">18</field>
+            <field name="end_minute">00</field>
+            <field name="day">1</field>
+            <field name="sequence" eval="2"/>
+        </record>
+
+        <record id="asterisk_timeframe_period_wed" model="asterisk.timeframe_period">
+            <field name="start_hour">09</field>
+            <field name="start_minute">00</field>
+            <field name="end_hour">18</field>
+            <field name="end_minute">00</field>
+            <field name="day">2</field>
+            <field name="sequence" eval="3"/>
+        </record>
+
+        <record id="asterisk_timeframe_period_thu" model="asterisk.timeframe_period">
+            <field name="start_hour">09</field>
+            <field name="start_minute">00</field>
+            <field name="end_hour">18</field>
+            <field name="end_minute">00</field>
+            <field name="day">3</field>
+            <field name="sequence" eval="4"/>
+        </record>
+
+        <record id="asterisk_timeframe_period_fri" model="asterisk.timeframe_period">
+            <field name="start_hour">09</field>
+            <field name="start_minute">00</field>
+            <field name="end_hour">18</field>
+            <field name="end_minute">00</field>
+            <field name="day">4</field>
+            <field name="sequence" eval="5"/>
+        </record>
+
+        <record id="asterisk_timeframe" model="asterisk.timeframe">
+            <field name="name">Work Time</field>            
+            <field name="periods" eval="[(6, 0, [
+                ref('asterisk_timeframe_period_mon'),
+                ref('asterisk_timeframe_period_tue'),
+                ref('asterisk_timeframe_period_wed'),
+                ref('asterisk_timeframe_period_thu'),
+                ref('asterisk_timeframe_period_fri'),
+                ])]"/>
+        </record>
+
+    </data>
+</odoo>

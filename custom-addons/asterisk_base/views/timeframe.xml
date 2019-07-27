@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id='asterisk_timeframe_action' model='ir.actions.act_window'>
+            <field name='name'>Time Frame</field>
+            <field name='res_model'>asterisk.timeframe</field>
+             <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="asterisk_timeframe_menu" parent='asterisk_settings_menu'
+            name='Time Frames' action='asterisk_timeframe_action' sequence='200'
+            groups="group_asterisk_base_admin"/>
+
+        <record id='asterisk_timeframe_list' model='ir.ui.view'>
+            <field name='name'>asterisk.timeframe.list</field>
+            <field name='model'>asterisk.timeframe</field>
+            <field name='type'>tree</field>
+            <field name='arch' type='xml'>
+                <tree>
+                    <field name='name'/>
+                    <field name="is_active_now"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='asterisk_timeframe_form' model='ir.ui.view'>
+            <field name='name'>asterisk.timeframe.form</field>
+            <field name='model'>asterisk.timeframe</field>
+            <field name='type'>form</field>
+            <field name='arch' type='xml'>
+              <form>
+                  <sheet>
+                    <div name="title" class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group class="oe_read_only">
+                        <field name="is_active_now" class="oe_read_only"/>
+                    </group>
+                    <group>
+                      <group>
+                        <field name='active_from'/>
+                      </group>
+                      <group>
+                        <field name='active_till'/>
+                      </group>
+                    </group>
+                    <group>
+                        <field name="periods">
+                            <tree>
+                                <field name="sequence" widget="handle"/>
+                                <field name="day"/>
+                                <field name="start_time"/>
+                                <field name="end_time"/>
+                            </tree>
+                        </field>
+                    </group>
+                  </sheet>
+              </form>
+            </field>
+        </record>
+
+        <record id='asterisk_timeframe_search' model='ir.ui.view'>
+            <field name='name'>asterisk.timeframe.search</field>
+            <field name='model'>asterisk.timeframe</field>
+            <field name='type'>search</field>
+            <field name='arch' type='xml'>
+                <search>
+                    <field name='name'/>
+                </search>
+            </field>
+        </record>
+
+
+        <record id='asterisk_timeframe_period_list' model='ir.ui.view'>
+            <field name='name'>asterisk.timeframe.period.list</field>
+            <field name='model'>asterisk.timeframe_period</field>
+            <field name='type'>tree</field>
+            <field name='arch' type='xml'>
+                <tree>
+                    <field name='name'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='asterisk_timeframe_period_form' model='ir.ui.view'>
+            <field name='name'>asterisk.timeframe.period.form</field>
+            <field name='model'>asterisk.timeframe_period</field>
+            <field name='type'>form</field>
+            <field name='arch' type='xml'>
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="day"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="start_hour"/>
+                                <field name="end_hour"/>
+                            </group>
+                            <group>
+                                <field name="start_minute"/>
+                                <field name="end_minute"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id='asterisk_timeframe_period_search' model='ir.ui.view'>
+            <field name='name'>asterisk.timeframe.period.search</field>
+            <field name='model'>asterisk.timeframe_period</field>
+            <field name='type'>search</field>
+            <field name='arch' type='xml'>
+                <search>
+                    <field name='day'/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

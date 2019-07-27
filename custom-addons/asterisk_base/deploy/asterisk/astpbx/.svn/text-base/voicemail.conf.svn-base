@@ -1,0 +1,41 @@
+[general]
+format=wav49
+envelope=no
+serveremail=pbx@asteriskpbx.ru
+attach=yes
+maxmsg=100
+maxmessage=180
+minmessage=3
+maxsilence=3
+fromstring=PBX
+emailsubject=[PBX]: New message ${VM_MSGNUM} in mailbox ${VM_MAILBOX}
+emailbody=Dear ${VM_NAME}:\n\n\tjust wanted to let you know you were just left a ${VM_DUR} long message (number ${VM_MSGNUM})\nin mailbox ${VM_MAILBOX} from ${VM_CALLERID}, on ${VM_DATE}, so you might\nwant to check it when you get a chance.  Thanks!\n\n\t\t\t\t--Asterisk\n
+pagerfromstring=The Asterisk PBX
+pagersubject=New VM
+pagerbody=New ${VM_DUR} long msg in box ${VM_MAILBOX}\nfrom ${VM_CALLERID}, on ${VM_DATE}
+emaildateformat=%A, %d %B %Y at %H:%M:%S
+mailcmd=/usr/sbin/sendmail -t
+
+tz=central24
+attach=yes 
+saycid=no
+sayduration=no
+sendvoicemail=yes
+callback=yes
+review=no
+operator=no
+
+[zonemessages]
+moscow=Europe/Moscow|'vm-received' Q 'digits/at' IMp
+eastern=America/New_York|'vm-received' Q 'digits/at' IMp
+central=America/Chicago|'vm-received' Q 'digits/at' IMp
+central24=America/Chicago|'vm-received' q 'digits/at' H N 'hours'
+military=Zulu|'vm-received' q 'digits/at' H N 'hours' 'phonetic/z_p'
+european=Europe/Copenhagen|'vm-received' a d b 'digits/at' HM
+
+
+
+[default]
+000 => 12345000,default,fax@company.com
+500 => 7823,Queues,request@company.com
+

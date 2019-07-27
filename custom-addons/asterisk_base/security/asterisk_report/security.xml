@@ -1,0 +1,8 @@
+<odoo>
+
+    <record model="res.groups" id="group_asterisk_base_report">
+        <field name="name">Asterisk Reports</field>
+        <field name="category_id" ref="module_asterisk_base_category"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id='asterisk_outgoing_route_group_action' model='ir.actions.act_window'>
+            <field name='name'>Outgoing Route Group</field>
+            <field name='res_model'>asterisk.outgoing_route_group</field>
+             <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="asterisk_outgoing_route_group_menu" parent='asterisk_routes_menu'
+            name='Groups' action='asterisk_outgoing_route_group_action' sequence='1000'
+            groups="group_asterisk_base_admin"/>
+
+        <record id='asterisk_outgoing_route_group_list' model='ir.ui.view'>
+            <field name='name'>Route Groups</field>
+            <field name='model'>asterisk.outgoing_route_group</field>
+            <field name='type'>tree</field>
+            <field name='arch' type='xml'>
+                <tree>
+                    <field name='name'/>
+                    <field name="server"/>
+                    <field name="routes_count"/>
+                    <field name="peers"/>
+                    <field name="include_extensions"/>                    
+                </tree>
+            </field>
+        </record>
+
+        <record id='asterisk_outgoing_route_group_form' model='ir.ui.view'>
+            <field name='name'>asterisk.outgoing_route_group.form</field>
+            <field name='model'>asterisk.outgoing_route_group</field>
+            <field name='type'>form</field>
+            <field name='arch' type='xml'>
+              <form>
+                  <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/> @ <field name="server" 
+                            attrs="{'readonly': [('id', '!=', False)]}"
+                            options="{'no_create': '1'}"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="id" invisible="1"/>                        
+                            <field name="include_extensions"/>
+                        </group>
+                        <group>
+                            <field name='note'/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible': [('id','=',False)]}">
+                        <group>                            
+                            <field name="routes" widget="many2many_tags"
+                                domain="[('server', '=', server)]"
+                                context="{'hide_groups': True, 'default_server': server}"/>
+                        </group>
+                        <group>
+                            <field name="peers" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                  </sheet>
+              </form>
+            </field>
+        </record>
+
+        <record id='asterisk_outgoing_route_group_search' model='ir.ui.view'>
+            <field name='name'>asterisk.outgoing_route_group.search</field>
+            <field name='model'>asterisk.outgoing_route_group</field>
+            <field name='type'>search</field>
+            <field name='arch' type='xml'>
+                <search>
+                    <field name='name'/>
+                    <field name='server'/>
+                    <filter name="by_server" string="By Server" context="{'group_by': 'server'}"/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

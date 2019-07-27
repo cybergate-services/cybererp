@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='asterisk_extension_action' model='ir.actions.act_window'>
+        <field name='name'>Extensions</field>
+        <field name='res_model'>asterisk.extension</field>
+         <field name="view_mode">tree,form</field>
+         <field name="domain">[]</field>
+    </record>
+
+    <menuitem id="asterisk_extension_menu" parent='asterisk_configuration_menu'
+        name='Extensions' action='asterisk_extension_action' sequence='75'/>
+
+    <record id='asterisk_extension_list' model='ir.ui.view'>
+        <field name='name'>asterisk.extension.list</field>
+        <field name='model'>asterisk.extension</field>
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+            <tree create="false" delete="false" duplicate="false">
+                <button name="open_extension" type="object"
+                    aria-label="Open" title="Open" icon="fa-arrow-right"/>
+                <field name="number"/>
+                <field name='extension_type'/>
+                <field name="server"/>                
+                <field name='name'/>
+                <field name="record_calls"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id='asterisk_extension_form' model='ir.ui.view'>
+        <field name='name'>asterisk.extension.form</field>
+        <field name='model'>asterisk.extension</field>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+          <form delete="false" create="false">
+              <sheet>
+                <div name="title" class="oe_title">
+                    <label for="number" class="oe_edit_only"/>
+                    <h1><field name="number" required="1"/> @ <field name="server" options="{'no_create': '1'}"/></h1>
+                </div>
+                <group>
+                  <group>
+                    <field name='extension_type' readonly="1"/>
+                    <field name="record_calls"/>
+                  </group>
+                  <group>
+                    <field name='user' readonly="1"
+                        attrs="{'invisible': [('extension_type','!=','user')],
+                                'required': [('extension_type','=','user')]}"/>
+                    <field name='queue' readonly="1"
+                        attrs="{'invisible': [('extension_type','!=','queue')],
+                                'required': [('extension_type','=','queue')]}"/>
+                    <field name='menu' readonly="1"
+                        attrs="{'invisible': [('extension_type','!=','menu')],
+                                'required': [('extension_type','=','menu')]}"/>
+                    <field name='dialplan' readonly="1"
+                        attrs="{'invisible': [('extension_type','!=','dialplan')],
+                                'required': [('extension_type','=','dialplan')]}"/>
+                    <field name='sip_peer' readonly="1"
+                        context="{'form_view_ref': 'asterisk_base.asterisk_sip_peer_user_form'}"
+                        attrs="{'invisible': [('extension_type','!=','sip_peer')],
+                                'required': [('extension_type','=','sip_peer')]}"/>
+                    <field name='sip_peer_dial_timeout'
+                        attrs="{'invisible': [('extension_type','!=','sip_peer')]}"/>
+                    <field name='sip_peer_dial_options'
+                        attrs="{'invisible': [('extension_type','!=','sip_peer')]}"/>
+                  </group>
+                </group>
+              </sheet>
+          </form>
+        </field>
+    </record>
+
+    <record id='asterisk_extension_search' model='ir.ui.view'>
+        <field name='name'>asterisk.extension.search</field>
+        <field name='model'>asterisk.extension</field>
+        <field name='type'>search</field>
+        <field name='arch' type='xml'>
+            <search>
+                <field name="number"/>
+                <field name="server"/>
+                <field name="sip_peer"/>                
+                <field name='user'/>
+                <field name='queue'/>
+                <field name="menu"/>
+                <field name="dialplan"/>
+                <filter name="users" string="Users" domain="[('extension_type', '=', 'user')]"/>
+                <filter name="menus" string="Menus" domain="[('extension_type', '=', 'menu')]"/>
+                <filter name="queues" string="Queues" domain="[('extension_type', '=', 'queue')]"/>
+                <filter name="dialplans" string="Dialplan" domain="[('extension_type', '=', 'dialplan')]"/>
+                <filter name="by_server" string="By Server" context="{'group_by': 'server'}"/>
+                <filter name="by_type" string="By Type" context="{'group_by': 'extension_type'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>

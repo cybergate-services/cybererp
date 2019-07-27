@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id='asterisk_model_name_action' model='ir.actions.act_window'>
+            <field name='name'>Model_Name</field>
+            <field name='res_model'>asterisk.model_name</field>
+             <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="asterisk_model_name_menu" parent='asterisk_configuration_menu'
+            name='Model_Names' action='asterisk_model_name_action' sequence='200'
+            groups="group_asterisk_base_admin"/>
+
+        <record id='asterisk_model_name_list' model='ir.ui.view'>
+            <field name='name'>asterisk.model_name.list</field>
+            <field name='model'>asterisk.model_name</field>
+            <field name='type'>tree</field>
+            <field name='arch' type='xml'>
+                <tree>
+                    <field name='name'/>
+                    <field name='extension'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='asterisk_model_name_form' model='ir.ui.view'>
+            <field name='name'>asterisk.model_name.form</field>
+            <field name='model'>asterisk.model_name</field>
+            <field name='type'>form</field>
+            <field name='arch' type='xml'>
+              <form>
+                  <sheet>
+                    <div name="title" class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/> @ <field name="server" options="{'no_create': '1'}"/></h1>
+                    </div>                    
+                    <group>
+                      <group>
+                        <field name='eventtype'/>
+                      </group>
+                      <group>
+                        <field name='cid_num'/>
+                      </group>
+                    </group>
+                  </sheet>
+              </form>
+            </field>
+        </record>
+
+        <record id='asterisk_model_name_search' model='ir.ui.view'>
+            <field name='name'>asterisk.model_name.search</field>
+            <field name='model'>asterisk.model_name</field>
+            <field name='type'>search</field>
+            <field name='arch' type='xml'>
+                <search>
+                    <field name='name'/>
+                    <field name='extension'/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

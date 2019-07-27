@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="mss_whatsapp_send_msg_wizard" model="ir.ui.view">
+            <field name="name">mss.whatsapp.message.wizard.form</field>
+            <field name="model">mss.whatsapp.message.wizard</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Whatsapp Message">
+                    <group>
+                        <!--<field name="user_id" invisible="0"/>-->
+                        <!--<field name="partner_id" invisible="0"/>-->
+                        <field name="mobile" placeholder="+918233142254" invisible="0"/>
+                    </group>
+                    <group>
+                        <field name="message" placeholder="Write your message here and send to Partner"/>
+                    </group>
+                    <footer>
+                        <button name="send_message" string="Send" type="object"/>
+                        <button name="cancel" string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_mss_whatsapp_mesage_view" model="ir.actions.act_window">
+            <field name="name">Whatsapp Message</field>
+            <field name="res_model">mss.whatsapp.message.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="mss_whatsapp_send_msg_wizard"/>
+            <field name="target">inline</field>
+        </record>
+
+
+        <menuitem id="mss_whatsapp_menu_root" name="Whatsapp"
+                  web_icon="mss_whatsapp_mass_message,static/description/whatsapp.png" sequence="2"/>
+        <menuitem id="mss_whatsapp_msg_menu" name="Whatsapp Message" parent="mss_whatsapp_menu_root"
+                  sequence="1" action="action_mss_whatsapp_mesage_view"/>
+    </data>
+</odoo>

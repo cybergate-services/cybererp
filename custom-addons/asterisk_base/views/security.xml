@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="security_menu" name="Security" sequence="20"
+        parent="asterisk_base.asterisk_settings_menu"/>
+
+    <record id="access_list_action" model="ir.actions.act_window">
+        <field name="name">IP/Net Security</field>
+        <field name="view_mode">tree</field>
+        <field name="res_model">asterisk.access_list</field>
+    </record>
+
+    <menuitem id="access_list_menu" name="IP/Net Access" parent="asterisk_base.security_menu"
+        sequence="10" action="access_list_action"/>
+
+    <record id="access_list_tree" model="ir.ui.view">
+        <field name="name">Access List Tree</field>
+        <field name="model">asterisk.access_list</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="address"/>
+                <field name="address_type"/>
+                <field name="netmask"
+                    attrs="{'invisible': [('address_type', '!=', 'net')],
+                            'required': [('address_type', '=', 'net')]}"/>
+                <field name="access_type"/>
+                <field name="server" options="{'no_create_edit': True}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="access_list_search" model="ir.ui.view">
+        <field name="name">Access List Search</field>
+        <field name="model">asterisk.access_list</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search>                
+                <field name="address"/>
+                <field name="netmask"/>
+                <field name="server"/>
+                <field name="address_type"/>
+                <field name="access_type"/>
+                <filter name="ips" string="IP Addresses" 
+                    domain="[('address_type','=','ip')]"/>
+                <filter name="nets" string="Networks" 
+                    domain="[('address_type','=','net')]"/>
+                <filter name="by_access_type" string="By Access type" 
+                    context="{'group_by': 'access_type'}"/>
+                <filter name="by_address_type" string="By Address type" 
+                    context="{'group_by': 'address_type'}"/>
+                <filter name="by_server" string="By server" 
+                    context="{'group_by': 'server'}"/>
+            </search>
+        </field>        
+    </record>
+
+
+    <!-- ####################  BANs ########################  -->
+
+    <record id="access_ban_action" model="ir.actions.act_window">
+        <field name="name">Bans</field>
+        <field name="view_mode">tree</field>
+        <field name="res_model">asterisk.access_ban</field>
+    </record>
+
+    <menuitem id="access_ban_menu" name="Banned" parent="asterisk_base.security_menu"
+        sequence="20" action="access_ban_action"/>
+
+    <record id="access_ban_tree" model="ir.ui.view">
+        <field name="name">Access Ban Tree</field>
+        <field name="model">asterisk.access_ban</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree create="false">
+                <field name="server"/>
+                <field name="address"/>
+                <field name="comment"/>
+                <field name="timeout"/>
+                <field name="packets"/>
+                <field name="bytes"/>                
+            </tree>
+        </field>
+    </record>
+
+    <record id="access_ban_search" model="ir.ui.view">
+        <field name="name">Access Ban Search</field>
+        <field name="model">asterisk.access_ban</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="address"/>
+                <field name="server"/>
+                <field name="comment"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

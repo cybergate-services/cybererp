@@ -1,0 +1,22 @@
+[general]
+displaysystemname = yes
+enabled = yes
+webenabled = no
+port = 65038
+bindaddr = 127.0.0.1
+displayconnects = yes
+timestampevents = yes
+
+[MeetMe]
+secret = zxcvhkqwjerhqkwer
+;read = system,call,log,verbose,command,agent,user
+write = system,call,log,verbose,command,agent,user
+
+[fop]
+secret = TitceojWuAnnewyovRaj
+;deny=0.0.0.0/0.0.0.0
+;permit=127.0.0.1/255.255.255.0
+read = system,call,log,verbose,command,agent,user
+write = system,call,log,verbose,command,agent,user
+
+

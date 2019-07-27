@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_asterisk_cdr_asterisk_report,access_asterisk_cdr_asterisk_report,model_asterisk_cdr,group_asterisk_base_report,1,0,0,0
+access_asterisk_cel_asterisk_report,access_asterisk_cel_asterisk_report,model_asterisk_cel,group_asterisk_base_report,1,0,0,0

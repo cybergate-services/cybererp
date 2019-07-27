@@ -1,0 +1,535 @@
+[general]
+static=yes
+writeprotect=yes
+autofallthrough=yes
+clearglobalvars=no
+priorityjumping=no
+userscontext=default
+
+#include extensions_custom.conf
+#include extensions_services.conf
+
+[globals]
+DYNAMIC_FEATURES=monkeys#automon#nway-start
+INDIAL_TIMEOUT = 30
+INDIAL_OPTS = tkhw
+OUTDIAL_TIMEOUT = 60
+OUTDIAL_OPTS = TKH
+EMERGENCY_PREFIX=911                                                                                                        
+EMERGENCY_LINE=Zap/4    
+TRUNK_1 = DAHDI/g1
+TRUNK_2 = SIP/sipnet
+MONITOR_EXEC = /etc/asterisk/scripts/2wav2ogg.sh
+LIMIT_OUTGOING=8
+CALLREC_PREFIX = /var/spool/asterisk/monitor
+; Menu vars
+WORKTIME=00:00-23:59 ; TODO: split worktime into start and end hours and automate weekend IVR
+WORKDAYS=mon-sun
+; timeouts for menus
+TIMEOUT_RESPONSE=5
+TIMEOUT_DIGIT=3
+MENU_PAUSE=2
+AFTER_ANSWER_PAUSE=1
+QUEUE_TIMEOUT=120
+
+[default]
+exten => s,1,Set(FROM_OUTSIDE=1)
+exten => s,n,Goto(menu-main,s,1)
+exten => _7XX,1,Set(FROM_OUTSIDE=1)
+exten => _7XX,2,Goto(local-users,${EXTEN},1)
+
+; Standard macro used to manage call recording from CLI using astdb.
+[call-record];
+exten => _X.,1,GotoIf($["${DB(rec_a/${CALLERID(num)})}" = "1"]?record)
+exten => _X.,n,GotoIf($["${DB(rec_b/${EXTEN})}" = "1"]?record)
+exten => _X.,n,Return
+exten => _X.,n(record),Monitor(wav|${CALLREC_PREFIX}/${STRFTIME(,,%G/%m/%d/%H_%M_%S_${CALLERID(num)}_${EXTEN}_${UNIQUEID})}|mb)
+exten => _X.,n,Return
+
+; Check if peer is in use and call waiting is active
+[check-simult]
+exten => _X.,1,Set(GROUP()=${EXTEN})
+exten => _X.,n,GotoIf($[ ${GROUP_COUNT()} > 1 ]?check-cw)
+exten => _X.,n,Return
+exten => _X.,n(check-cw),ExecIf($[ "${DB(cw_active/${EXTEN})}" = "1"]|Return); We return and go to dial if cw = 1
+exten => _X.,n,Goto(macro-stdexten,s-BUSY,1)
+
+; Check CF unconditional
+[check-cf]
+exten => _X.,1,Set(cf_number=${DB(cf_${CF_TYPE}_num/${EXTEN})})
+exten => _X.,n,GotoIf($[ "${cf_number}" != ""]?cf-set)
+exten => _X.,n,Return
+exten => _X.,n(cf-set),GotoIf($[ "${DB(cf_${CF_TYPE}_active/${EXTEN})}" = "1"]?cf-active)
+exten => _X.,n,Return
+exten => _X.,n(cf-active),GotoIf($[ "${DB(cf_announce/${MACRO_EXTEN})}" = "1"]?announce:dial)
+exten => _X.,n(announce),Answer
+exten => _X.,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => _X.,n,Playback(pereadresacija-zvonka)
+exten => _X.,n,Playback(vkljuchena)
+exten => _X.,n,Playback(ozhidajte-soedinenija)
+exten => _X.,n(dial),Goto(users,${cf_number},1)
+
+; Check if Do not disturb mode is set
+[check-dnd]
+exten => _X.,1,Set(dnd_active=${DB(dnd_active/${EXTEN})})
+exten => _X.,n,GotoIf($[ "${dnd_active}" = "1"]?dnd-set)
+exten => _X.,n,Return
+exten => _X.,n(dnd-set),Ringing
+exten => _X.,n,Wait(${INDIAL_TIMEOUT})
+exten => _X.,n,Goto(NOANSWER,1)
+exten => NOANSWER,1,Answer
+exten => NOANSWER,2,Wait(${AFTER_ANSWER_PAUSE})
+exten => NOANSWER,3,Voicemail(${ARG2},ju)
+exten => NOANSWER,104,Playback(abonent)
+exten => NOANSWER,105,Playback(ne-otvechaet)
+exten => NOANSWER,106,Hangup
+
+; Check if my meetme room feature is active. EXTEN is user's number
+[check-meetme]
+exten => _X.,1,ExecIf($[ "${DB(meetme_active/${EXTEN})}" != "1" ]|Return)
+exten => _X.,n,ExecIf($[ "${FROM_OUTSIDE}" = "1" ]|Return); We do not allow customers to get into personal conference
+exten => _X.,n,ExecIf($[ "${EXTEN}" = "${CALLERID(num)}" ]|Set|mode=A)
+exten => _X.,n,Set(pin=${DB(meetme_pin/${EXTEN})})
+exten => _X.,n,GotoIf($[ "${pin}" != "" ]?pin-with:pin-less)
+exten => _X.,n(pin-with),MeetMe(${EXTEN},DMPx${mode}w(600),${pin})
+exten => _X.,n(pin-less),MeetMe(${EXTEN},dMx${mode}w(600))
+
+; Smart things we do for mindless users.                                                                                     
+[activate-user]
+exten => s,1,Return
+exten => i,1,Return
+exten => _[a-zA-Z].,1,Return 
+exten => _X.,1,ExecIf($["${DB(cf_uncond_active/${EXTEN})}" = "1"]|Macro|cf-status,${CALLERID(num)},uncond,deactivate)
+exten => _X.,n,Return
+
+[answer-and-pause]
+exten => _.,1,Answer
+exten => _.,2,Wait(${AFTER_ANSWER_PAUSE})
+exten => _.,3,Return
+
+; Standard exten for users
+[macro-stdexten];
+exten => s,1,Set(__BLINDTRANSFER=${BLINDTRANSFER})
+exten => s,n,Set(CF_TYPE=uncond)
+exten => s,n,ExecIf($["${FROM_OUTSIDE}" != "1"]|Gosub|activate-user,${CALLERID(num)},1) ; 
+exten => s,n,Gosub(check-meetme,${MACRO_EXTEN},1)
+exten => s,n,Gosub(check-cf,${MACRO_EXTEN},1)
+exten => s,n,Gosub(check-dnd,${MACRO_EXTEN},1)
+exten => s,n,Gosub(call-record,${MACRO_EXTEN},1)
+exten => s,n,Gosub(check-simult,${MACRO_EXTEN},1)
+exten => s,n,ExecIf($[ "${FROM_OUTSIDE}" != "1"]|Set|INDIAL_OPTS=${INDIAL_OPTS}${OUTDIAL_OPTS}); combine opts for internal calls
+exten => s,n,ExecIf($[ "${FROM_OUTSIDE}" = "1"]|Playback|razgovor-mozhet-byt-zapisan)
+exten => s,n,Set(DIAL_TIMEOUT=${DB(dial_timeout/${MACRO_EXTEN})})                                            
+exten => s,n,ExecIf($[ "${DIAL_TIMEOUT}" = "" ]|Set|DIAL_TIMEOUT=${INDIAL_TIMEOUT})
+exten => s,n,Dial(${ARG1}/${ARG2},${INDIAL_TIMEOUT},${INDIAL_OPTS})
+exten => s,n,ExecIf($["${BLINDTRANSFER}" != ""]|Dial|${CUT(BLINDTRANSFER,-,1)}|${INDIAL_TIMEOUT}|${INDIAL_OPTS})
+exten => s,n,Goto(s-${DIALSTATUS},1) 
+exten => s-NOANSWER,1,Set(CF_TYPE=onunavail)
+exten => s-NOANSWER,2,Gosub(check-cf,${MACRO_EXTEN},1)
+exten => s-NOANSWER,3,Voicemail(${ARG2},ju)
+exten => s-NOANSWER,104,Answer
+exten => s-NOANSWER,105,Wait(${AFTER_ANSWER_PAUSE})
+exten => s-NOANSWER,106,Playback(abonent)
+exten => s-NOANSWER,107,Playback(ne-otvechaet)
+exten => s-NOANSWER,108,Hangup
+exten => s-BUSY,1,Set(CF_TYPE=onbusy)
+exten => s-BUSY,2,Gosub(check-cf,${MACRO_EXTEN},1)
+exten => s-BUSY,3,Voicemail(${ARG2},bj) 
+exten => s-BUSY,104,Answer
+exten => s-BUSY,105,Playtones(busy)
+exten => s-BUSY,106,Wait(5)
+exten => s-BUSY,107,Hangup
+exten => s-CHANUNAVAIL,1,Set(CF_TYPE=onunavail)
+exten => s-CHANUNAVAIL,n,Gosub(check-cf,${MACRO_EXTEN},1)
+;exten => s-CHANUNAVAIL,n,Gosub(menu-user-unavail,s-${MACRO_EXTEN},1) - personal menu for user, disabled by default
+exten => s-CHANUNAVAIL,n,Answer
+exten => s-CHANUNAVAIL,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s-CHANUNAVAIL,n(vm),Voicemail(${ARG2},ju)
+exten => s-CHANUNAVAIL,n,Return
+exten => s-CHANUNAVAIL,vm+101,Playback(abonent)
+exten => s-CHANUNAVAIL,vm+102,Playback(ne-podkljuchen)
+exten => s-CHANUNAVAIL,vm+103,Return
+exten => _s-.,1,Goto(s-NOANSWER,1)
+
+[macro-trunkdial]
+exten => s,1,Gosub(check-outgoing-limit,s,1)
+exten => s,n,Gosub(call-record,${MACRO_EXTEN},1)
+exten => s,n,Set(CALLERID(all)="Anonymous" <000>); We do not reveal our users to ISPs! 
+exten => s,n,GotoIf(${REGEX("^OOH323.*" ${ARG1})}?ooh323)
+exten => s,n,Dial(${ARG1}/${ARG3}${ARG2}|${OUTDIAL_TIMEOUT}|${OUTDIAL_OPTS})
+exten => s,n,Goto(s-${DIALSTATUS},1)
+exten => s,n(ooh323),Set(ooh323peer=${CUT(ARG1,/,2)})
+exten => s,n,Dial(OOH323/${ARG3}${ARG2}@${ooh323peer}|${OUTDIAL_TIMEOUT}|${OUTDIAL_OPTS})
+exten => s,n,Goto(s-${DIALSTATUS},1)
+exten => s-NOANSWER,1,Answer
+exten => s-NOANSWER,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s-NOANSWER,n,Playback(abonent)
+exten => s-NOANSWER,n,Playback(ne-otvechaet)
+exten => s-NOANSWER,n,Hangup
+exten => s-BUSY,1,Answer
+exten => s-BUSY,2,Playtones(busy)
+exten => s-BUSY,3,Wait(5)
+exten => s-BUSY,4,Hangup
+exten => _s-.,1,Goto(s-NOANSWER,1)
+
+; This macro is used for one touch recording 
+[macro-apprecord]
+exten => s,1,GotoIf($["${XAD}" = "0" | "${XAD}" = ""]?startrec:stoprec)
+exten => s,n(startrec),Playback(beep)
+exten => s,n,Set(XAD=1)
+exten => s,n,Set(MONITOR_EXEC=/etc/asterisk/scripts/one-touch-rec.sh)
+exten => s,n,Monitor(wav|/var/spool/asterisk/monitor/${CALLERID(num)}-${STRFTIME(${EPOCH}|GMT+0|%F_%T)}|m)
+exten => s,n,MacroExit
+exten => s,n(stoprec),StopMonitor
+exten => s,n,Set(XAD=0)
+exten => s,n,Playback(beep)
+exten => s,n,MacroExit
+
+; Emergency call feature
+[emergency-call]
+exten => _${EMERGENCY_PREFIX}X.,1,ChanIsAvail(${EMERGENCY_LINE}|js)
+exten => _${EMERGENCY_PREFIX}X.,2,Dial(${EMERGENCY_LINE}/${EXTEN:${LEN(${EMERGENCY_PREFIX})}})
+exten => _${EMERGENCY_PREFIX}X.,3,Hangup()
+exten => _${EMERGENCY_PREFIX}X.,102,SoftHangup(${EMERGENCY_LINE}-1)
+exten => _${EMERGENCY_PREFIX}X.,103,Wait(1)
+exten => _${EMERGENCY_PREFIX}X.,104,Goto(1)
+
+; Here we can limit outgoing calls so that incoming calls can still come in
+[check-outgoing-limit]
+exten => s,1,Set(GROUP=outgoing)
+exten => s,n,GotoIf($[ ${GROUP_COUNT(outgoing)} > ${LIMIT_OUTGOING} ]?limit-reached)
+exten => s,n,Return
+; Play busy tones 5 secs and hangup
+exten => s,n(limit-reached),Answer
+exten => s,n,Playtones(busy)
+exten => s,n,Wait(100)
+exten => s,n,Hangup
+
+; Users tranfer call to fax extension and we send fax on his mail.
+[fax-receive]
+exten => s,1,Goto(000,1); corporate extentions
+exten => _X.,1,NoOp
+exten => _X.,n(one),Dial(IAX2/FaxDSP1/${EXTEN},2,gj)
+exten => _X.,n,ChannelRedirect(${CHANNEL}|users|${EXTEN}|1)
+exten => _X.,one+101(two),Dial(IAX2/FaxDSP2/${EXTEN},2,gj)
+exten => _X.,n,ChannelRedirect(${CHANNEL}|users|${EXTEN}|1)
+exten => _X.,two+101(three),Dial(IAX2/FaxDSP2/${EXTEN},2,gj)
+exten => _X.,n,ChannelRedirect(${CHANNEL}|users|${EXTEN}|1)
+exten => _X.,three+101(four),Dial(IAX2/FaxDSP2/${EXTEN},2,gj)
+exten => _X.,n,ChannelRedirect(${CHANNEL}|users|${EXTEN}|1)
+exten => _X.,four+101(five),Dial(IAX2/FaxDSP2/${EXTEN},2,gj)
+exten => _X.,n,ChannelRedirect(${CHANNEL}|users|${EXTEN}|1)
+exten => _X.,five+101,Verbose(No FAX lines available!)
+exten => _X.,n,Hangup
+
+[fax-send]
+exten => _X.,1,Dial(Zap/g1/${EXTEN},60)
+ 
+[fxo-in]
+exten => s,1,Goto(menu-main,s,1)
+
+; SIP DID trunks
+[dids-in]
+; Provider does not send any number
+exten => s,1,Set(FROM_OUTSIDE=1)
+exten => s,n,ExecIf($[ "${CALLERID(num)}" = "" ]|Set|CALLERID(all)="Anonymous" <000>)
+exten => s,n,Goto(menu-main,s,1)
+; Provider calls our number
+exten => _X.,1,Set(FROM_OUTSIDE=1)
+exten => _X.,2,Set(CALLED=${EXTEN}); Remember called DID number
+exten => _X.,3,ExecIf($[ "${CALLERID(num)}" = "" ]|Set|CALLERID(all)="Anonymous" <000>)
+; Example number 2323956
+exten => 2323956,4,Goto(menu-main,s,1)
+
+
+; Secure context for pbxware.ru tech support team
+[from-techsupport]
+exten => disa,1,DISA(no-password|users)
+exten => _XXX,1,Goto(users,${EXTEN},1)
+; We allow calling only local users. No outbound calls. The line bellow must be commented in produciton.
+; Only when we debug outgoing calls we can temporary uncomment it.
+;exten => _X.,1,Goto(users,${EXTEN},1)
+
+; SIPNET incoming DIDs go directly into main menu
+[from-sipnet]
+exten => _X.,1,Goto(menu-main,s,1)
+exten => s,1,Goto(menu-main,s,1)
+
+; Special context to include from menus to allow staff calls from outside
+[pstn-secure-in]
+exten => *,1,Set(TIMEOUT(response)=15)
+exten => *,n,Set(TIMEOUT(digit)=10)
+exten => *,n,DISA(/etc/asterisk/disa_users.conf)
+
+[menu-main]
+; Main_entry
+exten => _X.,1,Set(__CALLED=${EXTEN})
+exten => _X.,2,Goto(s,1)
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Set(FROM_OUTSIDE=1)
+exten => s,n,GotoIfTime(${WORKTIME}|${WORKDAYS}|*|*?menu-work-time,s,1) ; working hours
+exten => s,n,GotoIfTime(*|${WORKDAYS}|*|*?menu-non-work-time,s,1) ; non-working hours
+exten => s,n,GotoIfTime(*|sat-sun|*|*?menu-weekend,s,1) ; week-end
+exten => s,n,Verbose(Error in main-menu, we cannot get here!)
+exten => s,n,Hangup ; We hangup to explicitely indicate error.
+
+[menu-work-time]
+include => local-users
+include => pstn-secure-in
+exten => fax,1,Goto(fax-receive,s,1)
+exten => s,1,Ringing
+exten => s,n,Set(choice_counter=0)
+exten => s,n,Wait(${MENU_PAUSE})
+exten => s,n,Gosub(call-record,401,1)
+exten => s,n,Set(choice_counter=0)
+exten => s,n,Set(TIMEOUT(response)=${TIMEOUT_RESPONSE})
+exten => s,n,Set(TIMEOUT(digit)=${TIMEOUT_DIGIT})
+exten => s,n,Background(zdravstujte)
+exten => s,n,Background(vas-privetstvuet)
+exten => s,n,Background(comlib)
+exten => s,n(options),Background(to-contact-sales)
+exten => s,n,Background(press-1)
+exten => s,n,Background(to-contact-tech-support)
+exten => s,n,Background(press-2)
+exten => s,n,Background(to-call-exten)
+exten => s,n,Background(dial-exten)
+exten => s,n,Background(or-wait-for-receptionist)
+exten => s,n,Background(thank-you-for-calling)
+exten => s,n,StartMusicOnHold 
+exten => s,n,WaitExten(${TIMEOUT_RESPONSE})
+exten => s,n,Goto(queues,reception,1)
+; Here are menu options
+exten => 0,1,Goto(queues,reception,1)
+exten => 1,1,Goto(menu-sales,s,1)
+exten => 2,1,Goto(menu-support,s,1)
+exten => 3,1,Gosub(menu-fax-receive,s,1)
+exten => 3,2,Goto(s,options)
+; special cases
+exten => i,1,Background(nevernyj-vybor);
+exten => i,n,Goto(s,options)
+exten => t,1,Background(vremja-ozhidanija-isteklo)
+exten => t,1,ExecIf($[ ${choice_counter} > 3 ]|Hangup)
+exten => t,n,Set(choice_counter=$[ ${choice_counter} + 1])
+exten => t,n,Goto(s,options)
+
+; Non working time
+[menu-non-work-time]
+include => local-users 
+exten => fax,1,Goto(fax-receive,s,1)
+exten => s,1,Ringing
+exten => s,n,Wait(${MENU_PAUSE})
+exten => s,n,Playback(demo-thanks)
+exten => s,n,Playtones(busy)
+exten => s,n,Wait(5)
+exten => s,n,Hangup
+
+; Weekend menu
+[menu-weekend]
+include => local-users
+exten => fax,1,Goto(fax-receive,s,1)
+exten => s,1,Ringing
+exten => s,n,Wait(2)
+exten => s,n,Playback(demo-thanks)
+exten => s,n,Playtones(busy)
+exten => s,n,Wait(5)
+exten => s,n,Hangup
+
+; If user does not press any key to exit or does not start fax we return to main menu
+[menu-fax-receive]
+exten => fax,1,Goto(fax-receive,s,1)
+exten => s,1,Background(press-start-to-send-fax)
+exten => s,n,WaitExten(60)
+exten => s,n,Return
+exten => _X,1,Return
+
+; Customer support IVR is any.
+[menu-support]
+exten => s,1,Ringing
+exten => s,n,Set(CALLERID(name)=Support)
+exten => s,n,Wait(${MENU_PAUSE})
+exten => s,n,Background(tech-dep)
+exten => s,n,Goto(queues,support,1)
+; If impatient caller presses any key it forces connect
+exten => _X,1,Goto(queues,support,1)
+
+; Sales dep IVR
+[menu-sales]
+exten => s,1,Ringing
+exten => s,n,Set(CALLERID(name)=Sales)
+exten => s,n,Wait(${MENU_PAUSE})
+;exten => s,n,Background(sales-dep); TODO: record this
+exten => s,n,Goto(queues,sales,1)
+; If impation caller presses any key it forces him to connect to the queue
+exten => _X,1,Goto(queues,sales,1)
+
+[menu-finances]
+exten => s,1,Ringing
+exten => s,n,Set(CALLERID(name)=Finances)
+exten => s,n,Wait(${MENU_PAUSE})
+;exten => s,n,Background(sales-dep); TODO: record this
+exten => s,n,Goto(queues,finances,1)
+; If impation caller presses any key it forces him to connect to the queue
+exten => _X,1,Goto(queues,finances,1)
+
+; Outgoing calls rules
+[numberplan-users]
+exten => _XXXXXXX,1,Macro(trunkdial|${TRUNK_1}|${EXTEN}) ; Local no E164
+exten => _[2-9]XXXXXXXXX,1,Macro(trunkdial|${TRUNK_1}|${EXTEN}); Long distance 
+exten => _XXXXXXX.,1,Macro(trunkdial|${TRUNK_1}|${EXTEN}) ; International
+exten => _0X.,1,Macro(trunkdial|${TRUNK_2}|${EXTEN:1)})
+
+[macro-queue-add]
+exten => s,1,Answer
+exten => s,n,Wait(0.5)
+exten => s,n,AddQueueMember(${ARG1}|${CUT(CHANNEL,-,1)})
+exten => s,n,Playback(agent-loginok)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+[macro-queue-remove]
+exten => s,1,Answer
+exten => s,n,Wait(0.5)
+exten => s,n,RemoveQueueMember(${ARG1}|${CUT(CHANNEL,-,1)})
+exten => s,n,Playback(agent-loggedoff)
+exten => s,n,Wait(1)
+exten => s,n,Hangup
+
+[macro-queue-add-number]
+exten => s,1,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Read(number,nomer)
+exten => s,n,AddQueueMember(${ARG1},Local/${number}@agents)
+exten => s,n,Playback(ustanovlen)
+exten => s,n,Playback(nomer)
+exten => s,n,SayDigits(${number})
+exten => s,n,Playback(auth-thankyou)
+
+[macro-queue-list-numbers]
+exten => s,1,Verbose(${QUEUE_MEMBER_LIST(${ARG1})})
+exten => s,n,AGI(queue-enum.py,${ARG1})
+exten => s,n,Answer
+exten => s,n,Wait(${AFTER_ANSWER_PAUSE})
+exten => s,n,Playback(vvedite)
+exten => s,n,Read(pos,order-number,1)
+exten => s,n,ExecIf($[ "${pos}" = ""]|Hangup)
+exten => s,n,RemoveQueueMember(${ARG1},${pos-${pos}})
+exten => s,n,Playback(nomer)
+exten => s,n,Playback(deaktivirovan)
+
+[agents]
+exten => _X.,1,Dial(SIP/${EXTEN}@${TRUNK_2})
+
+; Our queues.
+[queues]
+exten => reception,1,Goto(500,1)
+exten => sales,1,Goto(501,1)
+exten => support,1,Goto(502,1)
+exten => finances,1,Goto(503,1)
+exten => _50X,1,Gosub(call-record,${EXTEN},1)
+exten => _50X,2,Background(razgovor-mozhet-byt-zapisan)
+exten => 500,3,Queue(reception|tw|||${QUEUE_TIMEOUT})
+exten => 501,3,Queue(sales|tw|||${QUEUE_TIMEOUT})
+exten => 502,3,Queue(support|tw|||${QUEUE_TIMEOUT})
+exten => 503,3,Queue(finances|tw|||${QUEUE_TIMEOUT})
+exten => _50X,4,VoiceMail(500|u)
+exten => _50X,5,Hangup()
+exten => 510,1,Macro(queue-add|reception)
+exten => 511,1,Macro(queue-add|sales)
+exten => 512,1,Macro(queue-add|support)
+exten => 513,1,Macro(queue-add|finances)
+exten => 520,1,Macro(queue-remove|reception)
+exten => 521,1,Macro(queue-remove|sales)
+exten => 522,1,Macro(queue-remove|support)
+exten => 523,1,Macro(queue-remove|finances)
+exten => 530,1,Macro(queue-add-number|reception)
+exten => 531,1,Macro(queue-add-number|sales)
+exten => 532,1,Macro(queue-add-number|support)
+exten => 533,1,Macro(queue-add-number|finances)
+exten => 540,1,Macro(queue-list-numbers|reception)
+exten => 541,1,Macro(queue-list-numbers|sales)
+exten => 542,1,Macro(queue-list-numbers|support)
+exten => 543,1,Macro(queue-list-numbers|finances)
+
+; Verical services
+[services]
+; http://en.wikipedia.org/wiki/Vertical_service_code
+exten => *20,1,Answer()
+exten => *20,n,Echo()
+exten => *30,1,Macro(manage-activation,deactivate,meetme_active,${CALLERID(num)})
+exten => *31,1,Macro(manage-activation,activate,meetme_active,${CALLERID(num)})
+exten => *32,1,Gosub(meetme-password,s-${CALLERID(num)},1)
+exten => *35,1,Gosub(mobile-number,s,1)
+exten => *40,1,Macro(cf-set-number,${CALLERID(num)},onbusy)
+exten => *42,1,Macro(cf-set-number,${CALLERID(num)},onunavail)
+exten => *56,1,Macro(cf-set-number,${CALLERID(num)},uncond)
+exten => *62,1,Macro(manage-activation,activate,cw_active,${CALLERID(num)})
+exten => *70,1,Macro(manage-activation,deactivate,cw_active,${CALLERID(num)})
+exten => *72,1,Macro(cf-status,${CALLERID(num)},uncond,activate)
+exten => *73,1,Macro(cf-status,${CALLERID(num)},uncond,deactivate)
+exten => *78,1,Macro(dnd-status,${CALLERID(num)},activate)
+exten => *79,1,Macro(dnd-status,${CALLERID(num)},deactivate)
+exten => *80,1,Macro(dnd-status-announce,${CALLERID(num)})
+exten => _*8XXX,1,Pickup(${EXTEN:2})
+exten => *90,1,Macro(cf-status,${CALLERID(num)},onbusy,activate)
+exten => *91,1,Macro(cf-status,${CALLERID(num)},onbusy,deactivate)
+exten => *92,1,Macro(cf-status,${CALLERID(num)},onunavail,activate)
+exten => *93,1,Macro(cf-status,${CALLERID(num)},onunavail,deactivate)
+exten => *94,1,Macro(cf-announce,${CALLERID(num)},activate)
+exten => *95,1,Macro(cf-announce,${CALLERID(num)},deactivate)
+exten => *96,1,Macro(cf-status-announce,${CALLERID(num)})
+exten => *97,1,Gosub(set-voicemail-timeout,s,1)
+exten => *98,1,Set(CHANNEL(language)=ru)
+exten => *98,n,VoiceMailMain()
+exten => *99,1,Set(CHANNEL(language)=ru)
+exten => *99,n,VoiceMailMain(${CALLERID(num)})
+exten => voicemail,1,Gosub(answer-and-pause,${EXTEN},1)
+exten => voicemail,n,Set(CHANNEL(language)=en)
+exten => voicemail,n,VoiceMailMain(${CALLERID(num)}|s)
+
+
+; Here all our users are 
+[users]
+include => parkedcalls
+include => local-users
+include => services
+include => queues
+include => menus
+include => rooms
+include => emergency-call
+include => numberplan-users
+
+[menus]
+exten => 400,1,Goto(menu-main,s,1)
+exten => 401,1,Goto(menu-work-time,s,1)
+exten => 402,1,Goto(menu-non-work-time,s,1)
+exten => 403,1,Goto(menu-weekend,s,1)
+exten => 415,1,Gosub(menu-fax-receive,s,1)
+exten => 415,2,Hangup
+
+[rooms]
+exten => _42[01234],1,GotoIf($["${DB(rec_b/${EXTEN})}" != "1"]?4)
+exten => _42[01234],2,Set(REC_ENABLE=r)
+exten => _42[01234],3,Set(MEETME_RECORDINGFILE=${CALLREC_PREFIX}/${STRFTIME(,,%G/%m/%d/conf-${CONFNO}_%H_%M_%S_${CALLERID(num)}_${UNIQUEID})})
+exten => _42[01234],4,Set(MEETME_RECORDINGFORMAT=wav)
+exten => _42[01234],5,MeetMe(${EXTEN},dM${REC_ENABLE})
+exten => _42[56789],5,MeetMe(${EXTEN},DMP${REC_ENABLE},${DB(meetme_pin/${EXTEN})})
+;for web-meetme
+exten => 4800,1,Answer
+exten => 4800,n,Wait(1)
+exten => 4800,n,CBMysql()
+exten => 4800,n,Hangup
+
+[local-users]
+exten => _7[01234567]X,1,Macro(stdexten|SIP|${EXTEN})
+exten => _7[89],1,Macro(stdexten|DAHDI/g1|${EXTEN})
+exten => 799,1,Dial(IAX2/techsupport/operator)
+;exten => _7XX,hint,SIP/${EXTEN} ; THIS DOES NOT WORK! DEFINE SEPARATE HINTS FOR EACH USERS!!!!!
+
+; here come calls originated from web-meetme ( both legs )
+[web-meetme-out]
+include => local-users
+exten => incoming,1,Set(CHANNEL(language)=ru)
+exten => incoming,n,Set(CALLERID(all)="" <${CDR(dst)}>)
+exten => incoming,n,Meetme(${confnum}|dc)
+

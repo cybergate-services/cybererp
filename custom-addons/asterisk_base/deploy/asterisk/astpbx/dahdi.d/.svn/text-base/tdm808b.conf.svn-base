@@ -1,0 +1,10 @@
+group=2
+callwaiting=no
+threewaycalling=no
+signalling = fxs_ks
+usedistinctiveringdetection=no
+callprogress=yes
+usecallerid=no
+context = from-fxo
+pulsedial=no
+channel => 32-39

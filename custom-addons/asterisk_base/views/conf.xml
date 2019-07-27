@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record model="ir.actions.act_window" id="asterisk_configfile_action">
+      <field name="name">Asterisk Conf Files</field>
+      <field name="res_model">asterisk.conf</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[]</field>
+  </record>
+
+  <menuitem id="asterisk_configfile_menu" parent="asterisk_configuration_menu" sequence="50"
+      action="asterisk_configfile_action" name="Conf Files"/>
+
+  <record model="ir.ui.view" id="asterisk_configfile_list">
+      <field name="name">asterisk config files</field>
+      <field name="model">asterisk.conf</field>
+      <field name="arch" type="xml">
+          <tree>
+              <field name="name"/>
+              <field name="server"/>
+              <field name="is_updated"/>
+          </tree>
+      </field>
+  </record>
+
+  <record model="ir.ui.view" id="asterisk_configfile_form">
+      <field name="name">asterisk config file form</field>
+      <field name="model">asterisk.conf</field>
+      <field name="arch" type="xml">
+          <form>
+            <header>
+                <button name="upload_conf_button" type="object" icon="fa-upload"
+                    string="Upload File" class="oe_highlight oe_read_only"/>
+                <button name="download_conf_button" type="object" icon="fa-download"
+                    string="Download File" class="oe_read_only"/>
+            </header>
+              <sheet>
+                <div name="title" class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/> @ <field name="server" options="{'no_create': '1'}"/></h1>
+                </div>
+                <notebook>
+                  <page string="Content">
+                      <field name="content" widget="asterisk_conf" nolabel="1"/>
+                  </page>
+                  <page string="Information" attrs="{'invisible': [('write_date', '=', False)]}">
+                    <group>
+                      <group>
+                        <field name="version"/>
+                        <field name="create_date" string="Created" readonly="1"/>
+                        <field name="create_uid" string="Created By" readonly="1"/>
+                        <field name="write_date" string="Updated" readonly="1"/>
+                        <field name="write_uid" string="Updated By" readonly="1"/>
+                      </group>
+                      <group attrs="{'invisible': [('sync_date', '=', False)]}">
+                        <field name="sync_date"/>
+                        <field name="sync_uid"/>
+                      </group>
+                    </group>
+                  </page>
+                </notebook>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+  <record model="ir.ui.view" id="asterisk_configfile_search">
+    <field name="name">asterisk config file search</field>
+    <field name="model">asterisk.conf</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name"/>
+        <field name="content"/>
+        <field name="server"/>
+        <filter name="by_server" string="Server" context="{'group_by': 'server'}"/>
+        <filter name="updated" string="Updated" domain="[('is_updated','=',True)]"/>
+      </search>
+    </field>
+  </record>
+
+</odoo>

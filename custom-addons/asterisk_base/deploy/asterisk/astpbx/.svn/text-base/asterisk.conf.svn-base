@@ -1,0 +1,36 @@
+[directories]
+astetcdir => /etc/asterisk
+astmoddir => /usr/lib/asterisk/modules
+astvarlibdir => /var/lib/asterisk
+astdatadir => /var/lib/asterisk
+astagidir => /var/lib/asterisk/agi-bin
+astspooldir => /var/spool/asterisk
+astrundir => /var/run/asterisk
+astlogdir => /var/log/asterisk
+
+[options]
+verbose = 3
+debug = 0
+timestamp = yes
+console = yes
+highpriority = no
+initcrypto = yes
+nocolor = yes
+dumpcore = no
+languageprefix = yes
+internal_timing = yes
+systemname = pbx
+maxcalls = 100
+maxload = 5.0
+cache_record_files = yes
+record_cache_dir = /tmp
+transmit_silence_during_record = yes
+transcode_via_sln = yes
+runuser = asterisk
+rungroup = asterisk
+
+[files]
+astctlpermissions = 0660
+;astctlowner = pbx ; We do not try to chown the socket as we are already pbx user
+;astctlgroup = root
+astctl = asterisk.ctl

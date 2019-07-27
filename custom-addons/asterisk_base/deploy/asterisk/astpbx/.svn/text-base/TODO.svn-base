@@ -1,0 +1,35 @@
+TODO
+ - Lock/unlock the conference, allow meetme admin for owner.
+ - Line reservation
+ - IVR for fax sender if he wants to be redirected back or hangup.
+ - Implement all http://www.voip-info.org/wiki/view/Asterisk+tips+and+tricks
+ - Set ssmtp revaliases of root.
+ - number plan: remove all this country etc prefixes, use KISS.
+ - emerge cmake && compile AGX fax
+ - Documentation:
+  - Putty
+  - Voicemail
+ - MOH FTP & Document
+ - Outlook integration
+- -- Executing [s@macro-trunkdial:3] Dial("SIP/701-081b0118", "Zap/g1/2323956|60|TK") in new stack
+[2008-07-11 12:51:59] WARNING[15493]: app_dial.c:1183 dial_exec_full: Unable to create channel of type 'Zap' (cause 34 - Circuit/channel congestion)
+- mod_alsa & and speakerphones
+- Record:
+    - common files for main menu
+    - common file for work, non-work and weekend  menu
+- Create IVR so that users can learn their new extensions
+- Replace busy tones in macro-stdexten with message
+- One touch recording
+- Trance MOH
+- Upload voice files by FTP
+- Unlicensed users goto special iVR asking to register.
+- SSL FTP and ftpusers only allow asterisk
+- One touch recording
+- Software RAID: Does this cost a thing?
+- Add FUN:
+ - weather forecast
+ - wake up call
+ - monkeys
+ - idite na hui
+- Test what happens with conference leader when call from menu has arrived
+

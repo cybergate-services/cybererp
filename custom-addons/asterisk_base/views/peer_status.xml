@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+
+    <record model="ir.ui.view" id="asterisk_sip_peer_status_list">
+        <field name="name">asterisk sip peer status list</field>
+        <field name="model">asterisk.sip_peer_status</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="peer"/>
+                <field name="status"/>
+                <field name="cause"/>
+                <field name="address"/>
+                <field name="created"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="asterisk_sip_peer_status_action">
+        <field name="name">SIP Status</field>
+        <field name="res_model">asterisk.sip_peer_status</field>
+        <field name="view_mode">tree,graph,pivot,calendar</field>
+    </record>
+
+    <menuitem name="SIP Status" id="asterisk_peers_status_menu"
+              parent="asterisk_reports_menu" sequence="30"
+              action="asterisk_sip_peer_status_action"/>
+
+    <record id="sip_peer_status_search" model="ir.ui.view">
+        <field name="name">asterisk.sip_peer_status.search</field>
+        <field name="model">asterisk.sip_peer_status</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="peer"/>
+                <field name="status"/>
+                <field name="address"/>
+                <field name="create_date"/>
+                <filter name="registered" string="Registered" domain="[('status', '=', 'Registered')]"/>
+                <filter name="unregistered" string="Unregistered" domain="[('status', '=', 'Unregistered')]"/>
+                <filter name="reachable" string="Reachable" domain="[('status', '=', 'Reachable')]"/>
+                <filter name="unreachable" string="Unreachable" domain="[('status', '=', 'Unreachable')]"/>
+                <filter string="Peer" name="by_peer" domain="[]"
+                        context="{'group_by': 'peer'}"/>
+                <filter string="Status" name="by_status" domain="[]"
+                        context="{'group_by': 'status'}"/>
+                <filter string="Created" name="by_create_date" domain="[]"
+                        context="{'group_by': 'create_date'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="sip_peer_status_graph" model="ir.ui.view">
+      <field name="name">asterisk.sip_peer_status.graph</field>
+      <field name="model">asterisk.sip_peer_status</field>
+      <field name="arch" type="xml">
+        <graph>
+          <field name="create_date" interval="day"/>
+        </graph>
+      </field>
+    </record>
+
+    <record id="sip_peer_status_pivot" model="ir.ui.view">
+      <field name="name">asterisk.sip_peer_status.pivot</field>
+      <field name="model">asterisk.sip_peer_status</field>
+      <field name="arch" type="xml">
+        <pivot>
+          <field name="create_date" interval="day"/>
+        </pivot>
+      </field>
+    </record>
+
+    <record id="sip_peer_status_cal" model="ir.ui.view">
+      <field name="name">asterisk.sip_peer_status.cal</field>
+      <field name="model">asterisk.sip_peer_status</field>
+      <field name="arch" type="xml">
+        <calendar date_start="create_date" event_open_popup="false" quick_add="false"/>
+      </field>
+    </record>
+
+</data>
+
+<data noupdate="1">
+    <record id="cron_delete_expired" model="ir.cron">
+        <field name="name">Asterisk peer statuses delete expired</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_asterisk_sip_peer_status"></field>
+        <field name="code">model.delete_expired(7)</field>
+        <field name="state">code</field>
+    </record>
+
+</data>
+
+</odoo>

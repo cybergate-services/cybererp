@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/!svn/ver/1/astpbx/etc/asterisk/scripts
+END
+one-touch-rec.sh
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/!svn/ver/1/astpbx/etc/asterisk/scripts/one-touch-rec.sh
+END
+generate_users.py
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/!svn/ver/1/astpbx/etc/asterisk/scripts/generate_users.py
+END
+2wav2ogg.sh
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/!svn/ver/1/astpbx/etc/asterisk/scripts/2wav2ogg.sh
+END
+2wavmp3.sh
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/1/astpbx/etc/asterisk/scripts/2wavmp3.sh
+END
+fix_permissions.sh
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/!svn/ver/1/astpbx/etc/asterisk/scripts/fix_permissions.sh
+END
+create_mailboxes.py
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/!svn/ver/1/astpbx/etc/asterisk/scripts/create_mailboxes.py
+END

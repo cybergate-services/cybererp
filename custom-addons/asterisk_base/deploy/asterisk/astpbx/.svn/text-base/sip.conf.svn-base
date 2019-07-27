@@ -1,0 +1,95 @@
+[general]
+context=default
+allowguest=no
+allowtransfer=yes
+realm=put.your.domain.here
+bindport=5060
+bindaddr=0.0.0.0
+srvlookup=no
+tos_sip=cs3 
+tos_audio=ef
+tos_video=af41
+maxexpiry=3600
+minexpiry=60
+defaultexpiry=120
+
+checkmwi=5
+vmexten=voicemail
+
+disallow=all
+allow=alaw
+allow=ulaw
+allow=g729
+allow=gsm
+allow=h261
+allow=h263
+allow=h263p
+allow=h264
+
+language=ru
+relaxdtmf=no
+trustrpid = no
+sendrpid = yes
+useragent=AstPbx.ru
+dtmfmode = rfc2833
+videosupport=yes
+maxcallbitrate=1024
+callevents=no
+alwaysauthreject = yes
+
+rtptimeout=60
+rtpholdtimeout=300
+rtpkeepalive=30
+sipdebug = no
+; For hints
+limitonpeers=yes
+call-limit=100                                                                                                                                              
+notifyringing=yes 
+;
+recordhistory=no
+dumphistory=no
+
+t38pt_udptl = yes
+  
+registertimeout=60
+registerattempts=0
+
+directrtpsetup=no
+canreinvite=no
+
+jbenable = yes
+jbforce = yes
+jbmaxsize = 200
+jbresyncthreshold = 1000
+jbimpl = adaptive
+jblog = yes
+
+defaultexpiry=3600                                                                           
+;register => sip_id:sip_pass@sipnet.ru/sip_id
+
+[authentication]
+
+[user](!)
+type=friend
+host=dynamic
+context=users
+nat=yes
+qualify=yes
+callgroup=1
+pickupgroup=1
+dtmfmode=rfc2833
+allowsubscribe=yes
+subscribecontext = users
+notifyringing = yes
+notifyhold = yes
+
+[sipnet](!)
+type=peer
+host=sipnet.ru
+fromdomain=sipnet.ru
+disallow=all
+allow=alaw,ulaw
+dtmfmode=info
+
+#include /etc/asterisk/sip_users.conf
+#include /etc/asterisk/sip_trunks.conf

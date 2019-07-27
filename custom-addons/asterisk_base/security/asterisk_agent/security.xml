@@ -1,0 +1,30 @@
+<odoo>
+
+    <record model="res.groups" id="group_asterisk_base_agent">
+        <field name="name">Asterisk Agent</field>
+        <field name="category_id" ref="module_asterisk_base_category"/>
+    </record>
+
+    <record model="ir.rule" id="server_cdr_rule">
+        <field name="name">Server CDR rule</field>
+        <field name="model_id" ref="asterisk_base.model_asterisk_cdr"/>
+        <field name="groups" eval="[(6,0,[ref('group_asterisk_base_agent')])]"/>
+        <field name="domain_force">[('server','in', [user.asterisk_base_server.id])]</field>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record model="ir.rule" id="server_access_list_rule">
+        <field name="name">Server Access List rule</field>
+        <field name="model_id" ref="asterisk_base.model_asterisk_access_list"/>
+        <field name="groups" eval="[(6,0,[ref('group_asterisk_base_agent')])]"/>
+        <field name="domain_force">[('server','in', [user.asterisk_base_server.id])]</field>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+</odoo>

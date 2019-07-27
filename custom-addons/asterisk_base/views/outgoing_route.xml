@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='asterisk_outgoing_route_action' model='ir.actions.act_window'>
+        <field name='name'>Outgoing Routes</field>
+        <field name='res_model'>asterisk.outgoing_route</field>
+         <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="asterisk_outgoing_route_menu" parent='asterisk_routes_menu'
+        name='Outgoing' action='asterisk_outgoing_route_action' sequence='450'
+        groups="group_asterisk_base_admin"/>
+
+    <record id='asterisk_outgoing_route_list' model='ir.ui.view'>
+        <field name='name'>asterisk.outgoing_route.list</field>
+        <field name='model'>asterisk.outgoing_route</field>
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+            <tree>
+                <field name='pattern'/>
+                <field name='name'/>
+                <field name="server"/>
+                <field name='groups'/>                
+                <field name='route_type'/>
+                <field name='destination'/>
+                <field name="prefix" invisible="1"/>
+                <field name="trim_digits" invisible="1"/>
+                <field name="route_type" invisible="1"/>
+                <button name="fake_button" type="object" icon="fa fa-cut"
+                    title="Trim" aria-label="Trim"
+                    attrs="{'invisible': ['|',('trim_digits','=',False), ('trim_digits','=', 0)]}"/>
+                <button name="fake_button" type="object" icon="fa fa-plus"
+                    title="Prefix" aria-label="Prefix"
+                    attrs="{'invisible': [('prefix','=',False)]}"/>
+                <button name="fake_button" type="object" icon="fa fa-close"
+                    title="Close" aria-label="Close"
+                    attrs="{'invisible': [('route_type','!=','block')]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id='asterisk_outgoing_route_form' model='ir.ui.view'>
+        <field name='name'>asterisk.outgoing_route.form</field>
+        <field name='model'>asterisk.outgoing_route</field>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+          <form>
+              <sheet>
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/> @ <field name="server" options="{'no_create': '1'}"/></h1>
+                </div>
+                <group>
+                  <group>                    
+                    <field name='route_type'/>
+                    <field name='groups' widget="many2many_tags"
+                        context="{'default_server': server}"
+                        invisible="context.get('hide_groups') == True"
+                        domain="[('server', '=', server)]"/>
+                    <field name='pattern'/>
+                    <field name='trunk'
+                        domain="[('server', '=', server), ('peer_type', '=', 'trunk')]"
+                        context="{'default_server': server, 
+                                  'default_peer_type': 'trunk',
+                                  'default_type': 'friend',
+                                  'default_context': 'odoo-outgoing',
+                                  'form_view_ref': 'asterisk_base.asterisk_sip_peer_trunk_form'}"
+                        attrs="{'invisible': [('route_type', '!=', 'trunk')],
+                                'required': [('route_type', '=', 'trunk')]}"/>
+                    <field name='dial_timeout'
+                        attrs="{'invisible': [('route_type', '=', 'block')]}"/>
+                    <field name='dial_options'                        
+                        attrs="{'invisible': [('route_type', '=', 'block')]}"/>
+                    <field name='dst_server' options="{'no_create': '1'}"
+                        domain="[('id', '!=', server)]"
+                        attrs="{'invisible': [('route_type', '!=', 'server')],
+                                'required': [('route_type', '=', 'server')]}"/>
+                  </group>
+                  <group>
+                    <field name="prefix"
+                        attrs="{'invisible': [('route_type', '=', 'block')]}"/>
+                    <field name='trim_digits'
+                        attrs="{'invisible': [('route_type', '=', 'block')]}"/>
+                    <field name="record_calls"/>
+                    <field name='note'/>
+                  </group>
+                </group>
+                <group>
+                    <field name="dialplan" widget="asterisk_conf"/>
+                </group>
+              </sheet>
+          </form>
+        </field>
+    </record>
+
+    <record id='asterisk_outgoing_route_search' model='ir.ui.view'>
+        <field name='name'>asterisk.outgoing_route.search</field>
+        <field name='model'>asterisk.outgoing_route</field>
+        <field name='type'>search</field>
+        <field name='arch' type='xml'>
+            <search>
+                <field name='name'/>
+                <field name='groups'/>
+                <field name='pattern'/>
+                <field name="trunk"/>
+                <field name="server"/>
+                <filter string="Trunks" name='trunk'
+                        domain="[('route_type','=','trunk'), ('server', '=', server)]"/>
+                <filter string="Servers" name='server'
+                        domain="[('route_type','=','server')]"/>
+                <filter string="Blocked" name='block' 
+                        domain="[('route_type','=','block')]"/>
+                <filter name="by_server" string="By Server" context="{'group_by': 'server'}"/>
+                <filter name="by_type" string="By Type" context="{'group_by': 'route_type'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>

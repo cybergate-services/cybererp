@@ -1,0 +1,42 @@
+// example phpagi.conf
+
+[phpagi]
+
+#enable debuging
+debug=true
+
+#use internal error handler
+error_handler=true
+
+#mail errors to
+admin=tech@pbxware.ru
+
+#host name of this server
+hostname=int.pbxware.ru
+
+# temporary directory for storing temporary output
+tempdir=/var/spool/asterisk/tmp/
+
+
+[festival]
+#path to text2wave binary
+text2wave=/usr/bin/text2wave
+
+
+[asmanager]
+# server to connect to
+server=localhost
+
+# default manager port
+port=65038
+
+#username for login
+username=MeetMe
+
+#password for login
+secret=zxcvhkqwjerhqkwer
+
+[cepstral]
+#alternate text to speech engine
+swift=/opt/swift/bin/swift
+voice=David

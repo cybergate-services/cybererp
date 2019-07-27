@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="asterisk_base_settings_form" model="ir.ui.view">
+    <field name="name">Asterisk Base Configuration</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//div[hasclass('settings')]" position="inside">
+        <div class="app_settings_block" data-string="Asterisk Configuration"
+             string="Asterisk Configuration"
+             data-key="asterisk_base" groups="asterisk_base.group_asterisk_base_admin">
+
+          <h2>Agents</h2>
+          <div class="mt16 o_settings_container">
+            <label string="Agents registration" for="agents_settings"/>
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+              <div class="col-md-6 col-xs-12">
+                <label for="device_registration_token" string="Device registration token"
+                    class="o_light_label"/>
+                <button name="generate_asterisk_device_registration_token_button"
+                      string="Generate new token" icon="fa-gears"
+                      class="btn btn-primary" type="object"/>
+              </div>
+              <div class="col-xs-12 col-md-6">
+                <field name="device_registration_token" class="col-md-12 col-xs-12" required="1"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt16 o_settings_container" id="agents_settings">
+            <label string="Agents settings" for="agents_settings"/>
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+                <div class="col-md-6 col-xs-12">
+                  <label for="agents_hostname" string="Connect hostname"
+                    class="col-xs-6 col-md-6 o_light_label"/>
+                  <field name="agents_hostname" class="oe_inline" required="1"/>
+                  <div class="text-muted">
+                    Public hostname reachable for Agents.
+                  </div>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                  <label for="agents_port" string="Agents port" class="col-xs-6 col-md-6 o_light_label"/>
+                  <field name="agents_port" class="oe_inline" required="1"/>
+                  <div class="text-muted">
+                      Public Odoo's JSON-RPC port reachable by Agents.
+                  </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+              <div class="col-md-6 col-xs-12">
+                <label for="agents_security" string="Agents connect scheme" class="col-xs-6 col-md-6 o_light_label"/>
+                <field name="agents_security" class="oe_inline" required="1"/>
+                <div class="text-muted">
+                    Always use HTTPS for connections over public Internet.
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12">
+                <label for="download_agent_installation_package"
+                       string="Download Asterisk Agent"
+                       class="o_light_label"/>
+                <a role="button" class="btn btn-primary fa fa-download"
+                        href="/asterisk_base/download/agent">
+                  Download
+                </a>
+                <div class="text-muted">
+                  Copy this archive to your Asterisk server and run
+                  <pre>pip3 install -r requirements.txt</pre>
+                  Adjust your settings in start_agent.sh and run it.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h2>Servers</h2>
+          <div class="row mt16 o_settings_container">
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+                <div class="col-md-6 col-xs-12">
+                  <label for="interconnection_protocol" string="Servers interconnection protocol"
+                    class="col-xs-6 col-md-6 o_light_label"/>
+                  <field name="interconnection_protocol" class="oe_inline" required="1"/>
+                </div>
+            </div>
+          </div>
+
+        </div>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="asterisk_base_config_settings_action" model="ir.actions.act_window">
+      <field name="name">Asterisk Settings</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">res.config.settings</field>
+      <field name="view_id" ref="asterisk_base_settings_form"/>
+      <field name="view_mode">form</field>
+      <field name="target">inline</field>
+      <field name="context">{'module' : 'asterisk_base'}</field>
+  </record>
+
+  <menuitem id="asterisk_settings_config_menu"
+    name="Settings"
+    parent="asterisk_settings_menu"
+    action="asterisk_base_config_settings_action"
+    groups="asterisk_base.group_asterisk_base_admin"
+    sequence="1"/>
+
+</odoo>

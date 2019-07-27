@@ -1,0 +1,18 @@
+version: '3.2'
+services:
+
+  nginx:
+    ports:
+      - 8080:80
+      - 8043:443
+      - 44444:44444
+    extra_hosts:
+      - asterisk:${BRIDGE_IP}
+
+  odoo:
+    command: ["odoo", "-u", "asterisk_base"]
+
+  asterisk:
+    network_mode: host
+    extra_hosts:
+      - odoo:${ODOO_IP}

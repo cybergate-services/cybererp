@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+<t t-extend='OrderSelectorWidget'>
+        <t t-jquery='.deleteorder-button' t-operation='after'>
+        <div title="Pay Later">
+        	<span class="icon order-button square paylater PayLaterButton">
+				<i class="oe_link_icon oe-link fa fa-history oe-white oe_icon_customfloat" />
+			</span>	
+		</div>	
+        </t>
+    </t>
+   
+    <t t-name="PayLaterScreenWidget">
+        <div class="paylater clientlist-screen screen">
+            <div class="screen-content paylater-screen-content">
+                <section class="top-content">   
+	                <span class='button back'>
+	                        <i class='fa fa-angle-double-left'></i>
+	                        Cancel
+	                </span> 
+	                <span>                                                  
+	            		<t t-if='widget.pos.get_client()'>
+	            			<div class='client-name'><t t-esc="widget.pos.get_client().name" /></div>  
+	            		</t>
+	            	</span>              		                              
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow collapsed'>
+                        	<p class="dltitle">Pending Invoice </p>
+                            <div class='subwindow-container border section-max-height'>
+                                <div class='subwindow-container-fix  touch-scrollable scrollable-y'>                                
+                                 	<table id="pending_invoice_otable"></table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+    
+    <t t-name="PInvoiceLineScreenWidget">
+        <table class='dl-olist' id="pendinginvoice_oltable">
+			 <thead>
+	            <tr>
+	                <th>S.no</th>
+	                <th>Product</th>      
+	                <th class='text-right' >Qty</th>
+	                <th class='text-right' >UnitPrice</th>
+	                <th class='text-right' >Amount</th>
+	            </tr>
+	          </thead>
+	          <tbody>
+		          <t t-foreach="lines" t-as="line">
+			          <tr>
+			          	<td><t t-esc='line.sno or ""' /></td> 
+			            <td><t t-esc='line.product or ""' /></td>
+			            <td class='text-right' ><t t-esc='line.qty or ""' /></td>
+			            <td class='text-right' ><t t-esc='line.price_unit or ""' /></td>     
+			            <td class='text-right' ><t t-esc='line.amount or ""' /></td>          
+			          </tr>
+		          </t>
+	          </tbody>
+		 </table> 
+    </t>
+    
+    <t t-extend='PaymentScreen-Paymentlines'>
+		<t t-jquery='.paymentlines-empty' t-operation='replace'>
+			<div class='paymentlines-empty'>
+                <div class='total'>
+	                <t t-if="widget.pos.get_order().get_pending()">
+	                	<t t-esc="widget.format_currency(widget.pos.get_order().get_pending_amt())"/>
+	                </t>
+	                <t t-else="">
+	                	 <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+	                </t>
+                </div>
+                <div class='message'>
+                    Please select a payment method. 
+                </div>
+            </div>
+		</t>
+	</t>
+</templates>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="inv_report" inherit_id="account.report_invoice_document">
+			<xpath expr="//div[@class='clearfix']" position="replace">
+				<div id="total" class="row">
+				<div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                <table class="table table-condensed" style="min-width: 250px;max-width: 400px;">
+                        <tr class="border-black">
+                        	<td></td>
+                            <td><strong>Subtotal</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <t t-foreach="o.amount_by_group" t-as="amount_by_group">
+                           <tr style="border-bottom:1px solid #dddddd;">
+                                            <t t-if="len(o.tax_line_ids) == 1 and o.amount_untaxed == amount_by_group[2]">
+                                                <td>
+                                                    <span t-esc="amount_by_group[0]"/>
+                                                    
+                                                </td>
+                                                <td>
+                                                <span>&amp;nbsp;<span>on</span>
+                                                       </span> 
+                                                    <t t-esc="amount_by_group[4]"/>
+                                                </td>
+                                                
+                                                <td class="text-right">
+                                                    <span t-esc="amount_by_group[3]"/>
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td><span t-esc="amount_by_group[0]"/></td>
+                                                <td class="text-right">
+                                                    <span t-esc="amount_by_group[3]" />
+                                                </td>
+                                            </t>
+                                        </tr>
+                        </t>
+                        <tr class="border-black">
+                        	<td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right">
+                                 <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                        <tr class="border-black">
+                        <t t-set="statement" t-value="o._get_payment_modes()" />
+						<t t-if="statement">
+							<t t-if="o._get_current_pending_invoice()">
+								<tr t-foreach="statement" t-as="payment">
+									<t t-if="(not(payment['journal'].is_pay_later))">
+										<td></td>
+										<td><t t-if="(not(payment['journal'].is_pay_later))"><h5><span t-esc="payment['journal'].name"></span></h5></t></td>
+										<td class="text-right"><h5><span t-esc="payment['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'></span></h5></td>
+									</t>
+								</tr>
+							</t>
+							<t t-else="">								
+									<tr t-foreach="statement" t-as="payment">
+										<td></td>
+										<td><h5><span t-esc="payment['journal'].name"></span></h5></td>
+										<td class="text-right"><h5><span t-esc="payment['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'></span></h5></td>
+									</tr>
+								
+							</t>
+						</t>
+						</tr>
+                    </table>
+                            </div>
+                            </div>
+			</xpath> 
+		</template>
+	</data>
+</odoo>

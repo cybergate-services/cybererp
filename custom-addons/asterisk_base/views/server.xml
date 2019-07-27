@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record model="ir.actions.act_window" id="asterisk_server_action">
+      <field name="name">Asterisk Servers</field>
+      <field name="res_model">asterisk.server</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="asterisk_server_menu" parent="asterisk_configuration_menu" sequence="100"
+      action="asterisk_server_action" name="Servers"/>
+
+  <record model="ir.ui.view" id="asterisk_server_list">
+      <field name="name">asterisk servers</field>
+      <field name="model">asterisk.server</field>
+      <field name="arch" type="xml">
+          <tree>
+              <field name="state" invisible="1"/>
+              <field name="name"/>
+              <field name="uid"/>
+              <field name="is_interconnected"/>
+              <field name="ip_security_enabled"/>
+              <field name="last_ping_human"/>
+              <button name="apply_changes_button" type="object" icon="fa-cogs"
+                  string="Apply changes"/>
+              <button type="object" icon="fa-refresh"
+                title="Reload" aria-label="Reload" name="reload_button"/>
+              <button name="ping_button" type="object" icon="fa-chain"
+                title="Ping" aria-label="Ping"
+                attrs="{'invisible': [('state', '=', 'offline')]}"/>
+              <button name="ping_button" type="object" icon="fa-chain-broken"
+                title="Ping" aria-label="Ping"
+                attrs="{'invisible': [('state', '=', 'online')]}"/>                            
+          </tree>
+      </field>
+  </record>
+
+  <record id="server_cli_action" model="ir.actions.client">
+      <field name="name">server cli action</field>
+      <field name="tag">server_cli</field>
+  </record>
+
+  <record model="ir.ui.view" id="asterisk_server_form">
+      <field name="name">asterisk server form</field>
+      <field name="model">asterisk.server</field>
+      <field name="arch" type="xml">
+          <form>
+              <header>
+                  <field name="state" invisible="1"/>
+                  <button name="apply_changes_button" type="object" icon="fa-cogs"
+                      string="Apply changes" class="oe_highlight oe_read_only"/>
+                  <button name="ping_button" type="object" string="Ping" icon="fa-chain"
+                    attrs="{'invisible': [('state', '=', 'offline')]}"/>
+                  <button name="ping_button" type="object" string="Ping" icon="fa-chain-broken"
+                    attrs="{'invisible': [('state', '=', 'online')]}"/>
+                  <button name="upload_all_conf" type="object" icon="fa-upload"
+                      string="Upload Conf Files" class="oe_read_only"/>
+                  <button name="download_all_conf" type="object" icon="fa-download"
+                      class="oe_read_only" string="Download Conf Files"/>
+                  <button type="object" class="oe_read_only" string="Reload"
+                          icon="fa-refresh" name="reload_button"/>
+                  <field name="state" widget="statusbar" class="oe_read_only"/>                    
+              </header>              
+              <sheet>
+              <div class="oe_title" name="title">
+                <label for="name" class="oe_edit_only"/>
+                <h1><field name="name"/></h1>
+              </div>
+              <notebook>
+                <page string="Settings">
+                  <group>
+                    <group>
+                      <field name="id" invisible="1"/>
+                      <field name="uid"/>
+                      <field name="hostname" 
+                          attrs="{'required': [('is_interconnected', '=', True)]}"/>
+                      <field name="is_interconnected"/>
+                      <field name="ip_security_enabled"/>
+                      <field name="ip_ban_seconds"
+                        attrs="{'invisible': [('ip_security_enabled', '=', False)],
+                                'required': [('ip_security_enabled', '!=', False)]}"/>
+                      <field name="filter_ports"
+                        attrs="{'invisible': [('ip_security_enabled', '=', False)],
+                                'required': [('ip_security_enabled', '!=', False)]}"/>
+                    </group>
+                    <group>
+                      <field name="login" attrs="{'invisible': [('login', '=', False)]}"/>
+                      <field name="login_username"
+                        attrs="{'invisible': [('login', '!=', False)],
+                                'required': [('login','=',False)]}"/>
+                      <field name="login_password"
+                        attrs="{'invisible': [('login', '!=', False)],
+                                'required': [('login','=',False)]}"/>
+                      <field name="cli_url"/>
+                      <field name='note'/>
+                      <field name="language"/>
+                    </group>
+                  </group>              
+                </page>              
+                <page string="Status" attrs="{'invisible': [('write_date', '=', False)]}">
+                  <group>
+                    <group>
+                      <field name="create_date" string="Created" readonly="1"/>
+                      <field name="create_uid" string="Created by" readonly="1"/>
+                      <field name="write_date" string="Updated" readonly="1"/>
+                      <field name="write_uid" string="Updated by" readonly="1"/>
+                    </group>
+                    <group>
+                      <field name="last_ping"/>
+                      <field name="sync_date"/>
+                      <field name="sync_uid"/>
+                    </group>
+                  </group>
+                </page>
+                <page string="Configuration files" attrs="{'invisible': [('write_date', '=', False)]}">
+                  <group>
+                    <field name="conf_files" nolabel="1"
+                        context="{'default_server': active_id}"/>
+                  </group>
+                </page>
+                  <page string="Console" 
+                      attrs="{'invisible': ['|', ('id', '=', False), ('cli_url', '=', False)]}">
+                    <field name="cli_area" widget="server_cli"/>
+                  </page>
+              </notebook>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+</odoo>

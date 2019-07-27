@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="tgl_view_res_partner_filter_inherit">
+            <field name="name">tgl.view.res.partner.filter.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="attributes" >
+                    <attribute name="filter_domain">['|','|','|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self),('phone','ilike',self),('mobile','ilike',self)]</attribute>
+                    <attribute name="string">Ref | Name | Phone | Email</attribute>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

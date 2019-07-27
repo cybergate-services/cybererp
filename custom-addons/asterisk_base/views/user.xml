@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="asterisk_user_action" model="ir.actions.act_window">
+        <field name="name">User</field>
+        <field name="res_model">asterisk.user</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem id="asterisk_user_menu" parent="asterisk_configuration_menu" 
+            sequence="200" name="Users" action="asterisk_user_action"/>
+
+
+    <record id="asterisk_user_list" model="ir.ui.view">
+        <field name="name">asterisk.user.list</field>
+        <field name="model">asterisk.user</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <button name="call_user" icon="fa-phone" type="object"
+                    title="Call" aria-label="Call"/>
+                <field name="extension"/>
+                <field name="user"/>
+                <field name="server"/>                
+                <field name="partner"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="asterisk_user_form" model="ir.ui.view">
+        <field name="name">asterisk.user.form</field>
+        <field name="model">asterisk.user</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                    <div name="title" class="oe_title">
+                        <label for="user" class="oe_edit_only"/>
+                        <h1><field name="user" options="{'no_create': '1'}"/>  @ <field name="server" options="{'no_create': '1'}"/></h1>
+                    </div>                
+                    <group>
+                        <group string="Main">
+                            <field name="extension" widget="originate_call"/>
+                            <field name="id" invisible="1"/>
+                            <field name="peer"
+                                domain="[('server', '=', server), ('peer_type', '=', 'user')]"
+                                context="{'default_server': server, 
+                                          'default_peer_type': 'user',
+                                          'default_type': 'friend',
+                                          'default_context': 'odoo-outgoing',
+                                          'default_host': 'dynamic',
+                                          'form_view_ref': 'asterisk_base.asterisk_sip_peer_user_form'}"                                
+                                attrs="{'invisible': [('server','=',False)],
+                                        'readonly': [('id', '!=', False)]}"/>
+                            <field name="route_group" required="1"
+                                context="{'default_server': server}"
+                                domain="[('server', '=', server)]"/>
+                            <field name="voicemail_enabled"/>
+                            <field name="voicemail_password" 
+                                attrs="{'invisible':[('voicemail_enabled','=',False)],
+                                        'required': [('voicemail_enabled','=',True)]}"
+                                class="oe_edit_only"/>
+                        </group>
+                        <group string="Contacts">
+                            <field name="partner"/>
+                            <field name="phone" widget="originate_call"/>
+                            <field name="mobile" widget="originate_call"/>
+                            <field name="voicemail"/>
+                            <field name="alert_info"/>                           
+                        </group>
+                    </group>
+                    <notebook string="Call Rules">
+                        <page string="Ring">
+                            <group>
+                                <group>
+                                    <field name="ring_timeout"/>
+                                    <field name="ring_timeout_estimation"                                         
+                                        class="oe_read_only" readonly="1"/>
+                                    <field name="forward_on_timeout"/>
+                                    <field name="timeout_number" 
+                                        attrs="{'invisible': [('forward_on_timeout','=',False)],
+                                                'required': [('forward_on_timeout','=',True)]}"/>
+                                </group>
+                                <group>
+                                    <div>
+                                        After ringing specified seconds caller gets either to
+                                        voicemail (if forward is not selected) or another number 
+                                        (if forward is enabled).<br/>                                    
+                                        Specify number to forward on ring timeout.
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Busy">
+                            <group>
+                                <field name="forward_on_busy"/>
+                                <field name="on_busy_number"
+                                    attrs="{'invisible': [('forward_on_busy','=',False)],
+                                            'required': [('forward_on_busy','=', True)]}"/>
+                            </group>
+                        </page>
+                        <page string="Unavailable">
+                            <group>
+                                <field name="forward_on_unavailable"/>
+                                <field name="on_unavailable_number"
+                                    attrs="{'invisible': [('forward_on_unavailable','=',False)],
+                                            'required': [('forward_on_unavailable','=',True)]}"/>
+                            </group>
+                        </page>
+                        <page string="Uncoditional">
+                            <group>
+                                <field name="forward_unconditional"/>
+                                <field name="unconditional_number"
+                                    attrs="{'invisible': [('forward_unconditional','=',False)],
+                                            'required': [('forward_unconditional','=',True)]}"/>
+                            </group>
+                        </page>
+                        <page string="Dialplan" class="oe_read_only">
+                            <group>
+                                <field name="dialplan" widget="asterisk_conf" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="asterisk_user_search" model="ir.ui.view">
+        <field name="name">asterisk.user.search</field>
+        <field name="model">asterisk.user</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user"/>
+                <field name="server"/>
+                <field name="partner"/>
+                <field name="phone"/>                
+                <field name="mobile"/>
+                <field name="voicemail"/>
+                <filter name="by_server" string="By Server" context="{'group_by': 'server'}"/>    
+            </search>
+        </field>
+    </record>
+
+</odoo>

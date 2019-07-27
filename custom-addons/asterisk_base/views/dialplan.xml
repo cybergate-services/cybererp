@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id='asterisk_dialplan_action' model='ir.actions.act_window'>
+            <field name='name'>Dialplan</field>
+            <field name='res_model'>asterisk.dialplan</field>
+             <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="asterisk_dialplan_menu" parent='asterisk_configuration_menu'
+            name='Dialplans' action='asterisk_dialplan_action' sequence='200'
+            groups="group_asterisk_base_admin"/>
+
+        <record id='asterisk_dialplan_list' model='ir.ui.view'>
+            <field name='name'>asterisk.dialplan.list</field>
+            <field name='model'>asterisk.dialplan</field>
+            <field name='type'>tree</field>
+            <field name='arch' type='xml'>
+                <tree>
+                    <field name='extension'/>
+                    <field name='context'/>
+                    <field name='server'/>                    
+                </tree>
+            </field>
+        </record>
+
+        <record id='asterisk_dialplan_form' model='ir.ui.view'>
+            <field name='name'>asterisk.dialplan.form</field>
+            <field name='model'>asterisk.dialplan</field>
+            <field name='type'>form</field>
+            <field name='arch' type='xml'>
+              <form>
+                  <sheet>
+                    <div name="title" class="oe_title">
+                        <label for="context" class="oe_edit_only"/>
+                        <h1><field name="context"/> @ <field name="server" options="{'no_create': '1'}"/></h1>
+                    </div>                    
+                    <group>
+                      <group>
+                        <field name="extension"/>
+                        <field name="is_custom"/>
+                      </group>
+                      <group>
+                        <field name='note'/>
+                      </group>
+                    </group>
+                    <group string="Dialplan">
+                        <field name="lines"                            
+                            attrs="{'invisible': [('is_custom', '=', True)]}">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="app"/>
+                                <field name="app_data"/>
+                                <field name="label"/>
+                            </tree>
+                        </field>
+                        <field name="dialplan_code"
+                            attrs="{'readonly': [('is_custom', '=', False)]}"
+                            widget="asterisk_conf"/>
+                    </group>
+                  </sheet>
+              </form>
+            </field>
+        </record>
+
+        <record id='asterisk_dialplan_search' model='ir.ui.view'>
+            <field name='name'>asterisk.dialplan.search</field>
+            <field name='model'>asterisk.dialplan</field>
+            <field name='type'>search</field>
+            <field name='arch' type='xml'>
+                <search>                    
+                    <field name='context'/>
+                    <field name='extension'/>
+                    <field name='server'/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

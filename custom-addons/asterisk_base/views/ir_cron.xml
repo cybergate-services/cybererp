@@ -1,0 +1,14 @@
+<odoo>
+  <data noupdate="1">
+    <record id="ping_servers" model="ir.cron">
+            <field name="name">Asterisk ping servers</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_asterisk_server"/>
+            <field name="code">model.ping_all()</field>            
+            <field name="state">code</field>
+    </record>
+  </data>
+</odoo>

@@ -1,0 +1,12 @@
+[general]
+enabled = yes
+webenabled = yes
+port = {{ default .Env.AMI_LISTEN_PORT "5038" }}
+bindaddr = {{ default .Env.AMI_LISTEN_IP "127.0.0.1" }}
+debug=off
+
+[{{ default .Env.MANAGER_LOGIN "odoo" }}]
+secret={{ default .Env.MANAGER_PASSWORD "odoo" }}
+displayconnects = yes
+read=all
+write=all

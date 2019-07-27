@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+
+    <record model="ir.ui.view" id="asterisk_sip_peer_registry_list">
+        <field name="name">asterisk sip peer registry list</field>
+        <field name="model">asterisk.sip_peer_registry</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="server"/>
+                <field name="username"/>
+                <field name="status"/>
+                <field name="host"/>
+                <field name="port"/>
+                <field name="registration_time"/>
+                <field name="refresh"/>
+                <field name="domain_port"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="asterisk_sip_peer_registry_action">
+        <field name="name">SIP Registry</field>
+        <field name="res_model">asterisk.sip_peer_registry</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem name="SIP Registry" id="asterisk_peers_registry_menu"
+              parent="asterisk_reports_menu" sequence="40"
+              action="asterisk_sip_peer_registry_action"/>
+
+    <record id="sip_peer_registry_search" model="ir.ui.view">
+        <field name="name">asterisk.sip_peer_registry.search</field>
+        <field name="model">asterisk.sip_peer_registry</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="username"/>
+                <field name="server"/>
+                <field name="host"/>
+                <field name="domain"/>
+            </search>
+        </field>
+    </record>
+
+</data>
+
+<data noupdate="1">
+    <record id="asterisk_peers_refresh_registry" model="ir.cron">
+        <field name="name">Asterisk peer refresh registry</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_asterisk_sip_peer_registry"></field>
+        <field name="code">model.refresh_registry()</field>
+        <field name="state">code</field>
+    </record>
+</data>
+
+</odoo>

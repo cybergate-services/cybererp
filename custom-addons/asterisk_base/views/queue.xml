@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id='asterisk_queue_action' model='ir.actions.act_window'>
+            <field name='name'>Queue</field>
+            <field name='res_model'>asterisk.queue</field>
+             <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="asterisk_queue_menu" parent='asterisk_configuration_menu'
+            name='Queues' action='asterisk_queue_action' sequence='90'
+            groups="group_asterisk_base_admin"/>
+
+        <record id='asterisk_queue_list' model='ir.ui.view'>
+            <field name='name'>asterisk.queue.list</field>
+            <field name='model'>asterisk.queue</field>
+            <field name='type'>tree</field>
+            <field name='arch' type='xml'>
+                <tree>
+                    <field name='extension'/>
+                    <field name='name'/>
+                    <field name="server"/>
+                    <field name="members"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='asterisk_queue_form' model='ir.ui.view'>
+            <field name='name'>asterisk.queue.form</field>
+            <field name='model'>asterisk.queue</field>
+            <field name='type'>form</field>
+            <field name='arch' type='xml'>
+              <form>
+                  <sheet>
+                    <div name="title" class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/> @ <field name="server" options="{'no_create': '1'}"/></h1>
+                    </div>                    
+                    <group>
+                      <group>
+                        <field name='extension'/>
+                        <field name='strategy'/>
+                      </group>
+                      <group>
+                        <field name='members' widget="many2many_tags"/>
+                      </group>
+                    </group>
+                  </sheet>
+              </form>
+            </field>
+        </record>
+
+        <record id='asterisk_queue_search' model='ir.ui.view'>
+            <field name='name'>asterisk.queue.search</field>
+            <field name='model'>asterisk.queue</field>
+            <field name='type'>search</field>
+            <field name='arch' type='xml'>
+                <search>
+                    <field name='name'/>
+                    <field name='extension'/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

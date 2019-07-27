@@ -1,0 +1,67 @@
+Odoo Proprietary License v1.0
+
+This software and associated files (the "Software") may only be used (executed,
+modified, executed after modifications) if you have purchased a valid license
+from the authors, typically via Odoo Apps, or if you have received a written
+agreement from the authors of the Software (see the COPYRIGHT file).
+
+You may develop Odoo modules that use the Software as a library (typically
+by depending on it, importing it and using its resources), but without copying
+any source code or material from the Software. You may distribute those
+modules under the license of your choice, provided that this license is
+compatible with the terms of the Odoo Proprietary License (For example:
+LGPL, MIT, or proprietary licenses similar to this one).
+
+It is forbidden to publish, distribute, sublicense, or sell copies of the Software
+or modified copies of the Software.
+
+The above copyright notice and this permission notice must be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+
+Asterisk Base Project Submission Agreement v1.0
+*****************************************************************************************************************************
+IMPORTANT - PLEASE READ CAREFULLY:
+
+This document ("Agreement") constitutes a legal agreement. By signing this Agreement below, You, 
+either an individual or the organization indicated below ("You"), agree to be legally bound. 
+You may want to consult an attorney before signing. 
+You acknowledge that you are entering into this Agreement in consideration of the opportunity to 
+contribute to and participate in this project, which opportunity is of value to You. 
+By signing this agreement you represent and warrant that you are at least 18 years of age. 
+*****************************************************************************************************************************
+
+"Submission" means any work of authorship, software code, documentation, creation, images or sound, 
+provided by You to the Asterisk Base project submission system, in human or machine readable form, 
+at any time (both prior and subsequent to Your execution of this Agreement).
+
+You hereby grant the Asterisk base project owner a perpetual, worldwide, royalty-free, irrevocable,
+non-exclusive, and transferable license to use, reproduce, prepare derivative works of, 
+publicly display, publicly perform, distribute the Submissions, and to sublicense such rights to others.
+The rights granted may be exercised in any form or format, and author may distribute and 
+sublicense to others on any licensing terms, including without limitation:
+(a) open source licenses like the GNU General Public License (GPL), or the Berkeley Software Distribution license (BSD); or 
+(b) binary, proprietary, or commercial licenses. 
+
+You hereby represent that you are the sole and original author of all Submissions and that,
+to the best of your knowledge, the Submissions do not infringe upon the rights of any third party.
+If you are providing the Submission on behalf of an organization of which you are not an employee 
+or if you are providing on behalf of an organization of which you are an employee,
+the person signing this Agreement represents that he or she is expressly authorized to execute this Agreement
+ on that organization's behalf. Except for the expressed representations set forth above, 
+ the Submission and all licenses granted above are made on an "AS IS" BASIS, 
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, 
+ WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS OF MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. 
+ 
+ You acknowledge that the decision to include the Submission in any code base is entirely the decision of the author,
+ and this Agreement does not guarantee that the Submissions will be included in any code base. 
+ 
+ You agree that your submission act is treated as your agreement to this license.

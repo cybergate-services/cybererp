@@ -1,0 +1,1 @@
+root ALL=(ALL) NOEXEC: /usr/sbin/asterisk *

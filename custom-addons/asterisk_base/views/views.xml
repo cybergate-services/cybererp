@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <menuitem id="asterisk_menu" name="Asterisk" sequence="10"/>
+
+  <menuitem id="asterisk_apps_menu" parent="asterisk_menu" sequence="50"
+            name="Applications"/>
+
+  <menuitem id="asterisk_configuration_menu" parent="asterisk_menu" sequence="100"
+            name="Configuration"/>
+
+      <menuitem id="asterisk_routes_menu" parent="asterisk_configuration_menu" 
+                sequence="100" name="Routes"/>
+
+  <menuitem id="asterisk_reports_menu" parent="asterisk_menu" sequence="200"
+            name="Reports" groups="group_asterisk_base_report"/>
+
+  <menuitem id="asterisk_settings_menu" parent="asterisk_menu" sequence="300"
+            name="Settings" groups="group_asterisk_base_admin"/>
+
+</odoo>

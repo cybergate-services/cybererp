@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>       
+        <template id="pos_pay_later" inherit_id="point_of_sale.assets">
+          <xpath expr="." position="inside">
+               <script type="text/javascript" src="/skit_pay_later/static/src/js/pay_later.js"></script>
+               <script type="text/javascript" src="/skit_pay_later/static/src/js/bootstrap.js"></script>
+    			<script type="text/javascript" src="/skit_pay_later/static/src/js/bootstrap-table.min.js"></script>
+   				<script type="text/javascript" src="/skit_pay_later/static/src/js/bootstrap-table.js"></script>
+    			<script type="text/javascript" src="/skit_pay_later/static/src/js/bootstrap.min.js"></script>
+   			    <script type="text/javascript" src="/skit_pay_later/static/src/js/ga.js"></script>
+   			    <script type="text/javascript" src="/skit_pay_later/static/src/js/bootstrap-table-locale-all.js"></script>
+   			    <script type="text/javascript" src="/skit_pay_later/static/src/js/bootstrap-table-locale-all.min.js"></script>
+               <link rel="stylesheet" href="/skit_pay_later/static/src/css/pos_customerlog.css"/>
+               <link rel="stylesheet" href="/skit_pay_later/static/src/css/bootstrap.css"/>
+    		   <link rel="stylesheet" href="/skit_pay_later/static/src/css/bootstrap-table.css"/>
+    		   <link rel="stylesheet" href="/skit_pay_later/static/src/css/bootstrap-table.min.css"/>
+         </xpath>
+        </template>
+    </data>
+</odoo>

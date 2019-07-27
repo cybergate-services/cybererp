@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp><data>
+
+    <record model="ir.ui.view" id="asterisk_sip_peer_user_list">
+        <field name="name">asterisk sip peer users</field>
+        <field name="model">asterisk.sip_peer</field>
+        <field name="inherit_id" ref="asterisk_sip_peer_list"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+          <data>
+            <field name="server" position="after">
+              <field name="extension_list"/>
+              <field name="user_list"/>
+              <field name="route_group"/>
+              <field name="status"/>
+              <field name="ipaddr"/>
+              <field name="regseconds_human"/>
+              <field name="useragent"/>
+            </field>
+          </data>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="asterisk_sip_peer_user_form">
+        <field name="name">asterisk sip peer user form</field>
+        <field name="model">asterisk.sip_peer</field>
+        <field name="inherit_id" ref="asterisk_sip_peer_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+          <data>
+            <field name="peer_type" position="after">
+              <notebook>
+                <page string="Basic Settings">
+                  <group>
+                    <group string="Main">
+                        <field name="user" widget="many2many_tags"
+                          attrs="{'invisible': [('user','=',[])]}"/>
+                        <field name="extension"
+                          attrs="{'invisible': [('user', '!=', [])]}"/>
+                        <field name="user_extension"
+                          attrs="{'invisible': [('user', '=', [])]}"/>
+                        <field name="route_group"
+                          attrs="{'invisible': [('user', '!=', [])]}"
+                          required="1"
+                          context="{'default_server': server}"
+                          domain="[('server', '=', server)]"/>
+                        <field name="user_route_group"
+                          attrs="{'invisible': [('user', '=', [])]}"
+                          context="{'default_server': server}"
+                          domain="[('server', '=', server)]"/>                          
+                        <field name="secret" required="1"/>
+                        <field name="callerid"/>
+                        <field name="host" required="1"/>
+                        <field name="context" required="True"/>
+                        <field name="deny"/>
+                        <field name="permit"/>
+                        <field name="language"/>
+                        <field name="callgroup"/>
+                        <field name="pickupgroup"/>
+                        <field name="parkinglot"/>
+                    </group>
+                    <group string="Media">
+                      <field name="dtmfmode"/>
+                      <field name="disallow"/>
+                      <field name="allow"/>
+                      <field name="nat"/>
+                      <field name="qualify"/>
+                      <field name="qualifyfreq"/>
+                      <field name="directmedia"/>
+                      <field name="videosupport"/>
+                      <field name="maxcallbitrate"/>
+                      <field name="rtpkeepalive"/>
+                    </group>
+                  </group>
+                  <group  string="Status" class="oe_read_only">
+                    <group>
+                      <field name="status"/>
+                      <field name="regseconds_human"/>
+                      <field name="ipaddr"/>
+                      <field name="regport"/>
+                    </group>
+                    <group>
+                      <field name="useragent"/>
+                      <!-- <field name="fullcontact"/> -->
+                      <field name="regexpire"/>
+                      <field name="session_expire"/>
+                    </group>
+                  </group>
+                </page>
+                <page string="Advanced Settings">
+                  <group>
+                    <group>
+                      <field name="accountcode"/>
+                      <field name="setvar"/>
+                      <field name="callcounter"/>
+                      <field name="busylevel"/>
+                      <field name="amaflags"/>
+                      <field name="canreinvite"/>
+                      <field name="rtptimeout"/>
+                      <field name="rtpholdtimeout"/>
+                      <field name="transport"/>
+                      <field name="insecure"/>
+                      <field name="contactpermit"/>
+                      <field name="contactdeny"/>
+                      <field name="contactacl"/>
+                      <field name="progressinband"/>
+                      <field name="promiscredir"/>
+                      <field name="allowoverlap"/>
+                      <field name="allowsubscribe"/>
+                      <field name="rfc2833compensate"/>
+                      <field name="t38pt_usertpsource"/>
+                      <field name="regexten"/>
+                    </group>
+                    <group>
+                      <field name="defaultip"/>
+                      <field name="sendrpid"/>
+                      <field name="timert1"/>
+                      <field name="timerb"/>
+                      <field name="usereqphone"/>
+                      <field name="textsupport"/>
+                      <field name="faxdetect"/>
+                      <field name="buggymwi"/>
+                      <field name="callingpres"/>
+                      <field name="mohinterpret"/>
+                      <field name="mohsuggest"/>
+                      <field name="subscribemwi"/>
+                      <field name="vmexten"/>
+                      <field name="autoframing"/>
+                      <field name="g726nonstandard"/>
+                      <field name="ignoresdpversion"/>
+                      <field name="allowtransfer"/>
+                      <field name="supportpath"/>
+                    </group>
+                  </group>
+                </page>
+              </notebook>
+            </field>
+          </data>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="asterisk_sip_peer_user_search">
+      <field name="name">asterisk sip peer user search</field>
+      <field name="model">asterisk.sip_peer</field>
+      <field name="inherit_id" ref="sip_peer_search"/>
+      <field name="mode">primary</field>
+      <field name="arch" type="xml">
+        <data>
+          <field name="name" position="after">
+            <field name="extension_list"/>
+          </field>
+        </data>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="asterisk_sip_peer_user_action">
+        <field name="name">Users</field>
+        <field name="res_model">asterisk.sip_peer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+          (0, 0, {'view_mode': 'tree', 'view_id': ref('asterisk_sip_peer_user_list')}),
+          (0, 0, {'view_mode': 'form', 'view_id': ref('asterisk_sip_peer_user_form')})]"/>
+        <field name="domain">[('peer_type', '=', 'user')]</field>
+        <field name="context">{
+            'default_peer_type': 'user',
+            'default_type': 'friend',
+            'default_context': 'odoo-outgoing',
+            'default_host': 'dynamic',
+            }
+        </field>
+    </record>
+
+    <menuitem name="Users" parent="asterisk_sip_peers_menu" sequence="10"
+              action="asterisk_sip_peer_user_action" id="asterisk_sip_peer_user_menu"/>
+
+
+</data></openerp>

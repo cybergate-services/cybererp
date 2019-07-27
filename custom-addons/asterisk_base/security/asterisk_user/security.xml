@@ -1,0 +1,9 @@
+<odoo>
+
+    <record model="res.groups" id="group_asterisk_base_user">
+        <field name="name">Asterisk User</field>
+        <field name="category_id" ref="module_asterisk_base_category"/>
+        <field name="implied_ids" eval="[(4, ref('group_asterisk_base_report'))]"/>     
+    </record>
+
+</odoo>

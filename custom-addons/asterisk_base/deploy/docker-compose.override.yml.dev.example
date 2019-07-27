@@ -1,0 +1,32 @@
+version: '3.2'
+services:
+
+  nginx:
+    ports:
+      - 80:80
+      - 443:443
+      - 44444:44444 # JSON-RPC for Agents
+
+  asterisk:
+    volumes:
+      - ./asterisk/services/agent.py:/services/agent.py
+      - ./asterisk/services/console_helper.py:/services/console_helper.py
+    networks:
+      default:
+        ipv4_address: ${ASTERISK_IP}
+    ports:
+      - "5060:5060/udp" # SIP signalling for testing
+      - "8010:8010" # Console helper      
+      - "10000-10099:10000-10099/udp" # RTP range, set also in /etc/asterisk/rtp.conf
+
+
+  odoo:
+    volumes:
+      - ../:/mnt/addons/asterisk_base
+    ports:
+      - 8069:8069
+      - 8072:8072
+    #command: ["/bin/sleep", "20000"]
+    #command: ["odoo", "-d", "asterisk_base", "-u", "asterisk_base"]
+
+

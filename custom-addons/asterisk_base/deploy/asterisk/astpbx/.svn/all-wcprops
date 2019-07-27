@@ -1,0 +1,257 @@
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/18/astpbx/etc/asterisk
+END
+say.conf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1/astpbx/etc/asterisk/say.conf
+END
+extensions.conf
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/19/astpbx/etc/asterisk/extensions.conf
+END
+codecs.conf
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1/astpbx/etc/asterisk/codecs.conf
+END
+disa_users.conf
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1/astpbx/etc/asterisk/disa_users.conf
+END
+iax_users.conf
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/!svn/ver/1/astpbx/etc/asterisk/iax_users.conf
+END
+cdr_manager.conf
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/1/astpbx/etc/asterisk/cdr_manager.conf
+END
+extensions_services.conf
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/!svn/ver/1/astpbx/etc/asterisk/extensions_services.conf
+END
+chan_dahdi.conf
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/14/astpbx/etc/asterisk/chan_dahdi.conf
+END
+indications.conf
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/1/astpbx/etc/asterisk/indications.conf
+END
+rtp.conf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1/astpbx/etc/asterisk/rtp.conf
+END
+cdr.conf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1/astpbx/etc/asterisk/cdr.conf
+END
+voicemail.conf
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/15/astpbx/etc/asterisk/voicemail.conf
+END
+manager.conf
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/19/astpbx/etc/asterisk/manager.conf
+END
+sip_users.conf
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/!svn/ver/3/astpbx/etc/asterisk/sip_users.conf
+END
+privacy.conf
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1/astpbx/etc/asterisk/privacy.conf
+END
+features.conf
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/1/astpbx/etc/asterisk/features.conf
+END
+iax.conf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1/astpbx/etc/asterisk/iax.conf
+END
+sip_notify.conf
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1/astpbx/etc/asterisk/sip_notify.conf
+END
+musiconhold.conf
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/1/astpbx/etc/asterisk/musiconhold.conf
+END
+asterisk.conf
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/1/astpbx/etc/asterisk/asterisk.conf
+END
+extconfig.conf
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/!svn/ver/1/astpbx/etc/asterisk/extconfig.conf
+END
+iax_trunks.conf
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1/astpbx/etc/asterisk/iax_trunks.conf
+END
+extensions_additional.conf
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/!svn/ver/18/astpbx/etc/asterisk/extensions_additional.conf
+END
+iaxprov.conf
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1/astpbx/etc/asterisk/iaxprov.conf
+END
+extensions_custom.conf
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/!svn/ver/15/astpbx/etc/asterisk/extensions_custom.conf
+END
+dnsmgr.conf
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1/astpbx/etc/asterisk/dnsmgr.conf
+END
+sip.conf
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/15/astpbx/etc/asterisk/sip.conf
+END
+sip_trunks.conf
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/1/astpbx/etc/asterisk/sip_trunks.conf
+END
+queues.conf
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/3/astpbx/etc/asterisk/queues.conf
+END
+phpagi.conf
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/15/astpbx/etc/asterisk/phpagi.conf
+END
+modules.conf
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/21/astpbx/etc/asterisk/modules.conf
+END
+meetme.conf
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1/astpbx/etc/asterisk/meetme.conf
+END
+ooh323.conf
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/15/astpbx/etc/asterisk/ooh323.conf
+END
+muted.conf
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1/astpbx/etc/asterisk/muted.conf
+END
+http.conf
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/1/astpbx/etc/asterisk/http.conf
+END
+logger.conf
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/15/astpbx/etc/asterisk/logger.conf
+END
+sla.conf
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/!svn/ver/1/astpbx/etc/asterisk/sla.conf
+END
+asterisk.adsi
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/1/astpbx/etc/asterisk/asterisk.adsi
+END
+TODO
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/!svn/ver/15/astpbx/etc/asterisk/TODO
+END
+agents.conf
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/1/astpbx/etc/asterisk/agents.conf
+END
+followme.conf
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/1/astpbx/etc/asterisk/followme.conf
+END
+udptl.conf
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/!svn/ver/1/astpbx/etc/asterisk/udptl.conf
+END
