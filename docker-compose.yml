@@ -7,16 +7,16 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1002
-      - PGID=1002
-      - TZ=Asia/Colombo
-      - URL=cybergateservices.net
-      - SUBDOMAINS=cybodo,
-      - VALIDATION=http
-      - EMAIL=cybererp@cybergateservices.net #optional
-      - DHLEVEL=2048 #optional
-      - ONLY_SUBDOMAINS=true #optional
-      - STAGING=false #optional
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - URL=${URL}
+      - SUBDOMAINS=${SUBDOMAINS},
+      - VALIDATION=${VALIDATION}
+      - EMAIL=${EMAIL}
+      - DHLEVEL=${DHLEVEL}
+      - ONLY_SUBDOMAINS=${ONLY_SUBDOMAINS}
+      - STAGING=${STAGING}
     networks:
       cybererp-network:
         aliases:
@@ -32,10 +32,10 @@ services:
     container_name: postgresql
     hostname: postgresql
     environment:
-       - POSTGRES_DB=postgres
-       - POSTGRES_PASSWORD=Cybergate
-       - POSTGRES_USER=odoo
-       - PGDATA=/var/lib/postgresql/data/pgdata
+       - POSTGRES_DB=${POSTGRES_DB}
+       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+       - POSTGRES_USER=${POSTGRES_USER}
+       - PGDATA=${PGDATA}
     networks:
       cybererp-network:
         aliases:
@@ -49,8 +49,8 @@ services:
     hostname: odoo
     environment:
       - HOST=postgresql
-      - USER=odoo
-      - PASSWORD=Cybergate
+      - USER=${ODOO_USER}
+      - PASSWORD=${ODOO_PASSWORD}
     networks:
       cybererp-network:
         aliases:
