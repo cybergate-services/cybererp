@@ -88,7 +88,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     depends_on:
-    - redis
+      - redis
     restart: always
   redis:
     image: redis:latest
@@ -96,7 +96,7 @@ services:
     hostname: 
     ports: redis
       - 6379:6379  
-  restart: always
+    restart: always
 volumes:
   postgresql_data:
   odoo_data: 
