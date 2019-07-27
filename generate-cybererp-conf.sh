@@ -37,42 +37,33 @@ while [ -z "${CYBERERP_TZ}" ]; do
   fi
 done
 
-
-DBNAME=openemail
-DBUSER=openemail
-
-# Please use long, random alphanumeric strings (A-Za-z0-9)
-
-DBPASS=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
-DBROOT=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
-
-
+POSTGRES_DB=postgres 
+POSTGRES_USER=odoo
+PGDATA='/var/lib/postgresql/data/pgdata'
+ADDONS_PATH='/mnt/extra-addons'
+DATA_DIR='/var/lib/odoo'
+POSTGRES_PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+ODOO_PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+ADMIN_PASSWORD=${ODOO_PASSWORD}
 
 cat << EOF > openemail.conf
-# ------------------------------
-# openemail web ui configuration
-# ------------------------------
-# example.org is _not_ a valid hostname, use a fqdn here.
-# Default admin user is "admin"
-# Default password is "moohoo"
+# --------------------------------------
+# CyberERP docker-compose configuration
+# --------------------------------------
+CYBERERP_HOSTNAME=${OPENEMAIL_HOSTNAME}
 
-OPENEMAIL_HOSTNAME=${OPENEMAIL_HOSTNAME}
+# ----------------------------------
+# POSTGRESQL database configuration
+# ----------------------------------
+POSTGRES_DB=${POSTGRES_DB}
+POSTGRES_USER=${POSTGRES_USER}
+PGDATA=${PGDATA}
 
-# ------------------------------
-# SQL database configuration
-# ------------------------------
-
-DBNAME=openemail
-DBUSER=openemail
-
-# Please use long, random alphanumeric strings (A-Za-z0-9)
-
-DBPASS=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
-DBROOT=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
-
-# ------------------------------
-# HTTP/S Bindings
-# ------------------------------
+# -------------------
+# ODOO Configuration
+# -------------------
+ODOO_PASSWORD=${ODOO_PASSWORD}
+ADDONS_PATH=${ADDONS_PATH}
 
 # You should use HTTPS, but in case of SSL offloaded reverse proxies:
 
