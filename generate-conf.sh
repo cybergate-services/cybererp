@@ -49,6 +49,7 @@ PGDATA='/var/lib/postgresql/data/pgdata'
 ADDONS_PATH='/mnt/extra-addons'
 DATA_DIR='/var/lib/odoo'
 POSTGRES_PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+ODOO_USER=odoo
 ODOO_PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 ADMIN_PASSWORD=${ODOO_PASSWORD}
 PUID=1002
@@ -79,6 +80,7 @@ PGDATA=${PGDATA}
 # ODOO Environment
 # -------------------
 ODOO_PASSWORD=${ODOO_PASSWORD}
+ODOO_USER=${ODOO_USER}
 ADDONS_PATH=${ADDONS_PATH}
 
 #-------------------------
