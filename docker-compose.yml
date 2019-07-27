@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.2'
 services:
   letsencrypt:
     image: linuxserver/letsencrypt
@@ -63,6 +63,40 @@ services:
       - postgresql
       - letsencrypt
     restart: always
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    hostname: prometheus
+    ports:
+      - 9090:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - cadvisor
+    restart: always
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    hostname: cadvisor 
+    ports:
+      - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+    - redis
+    restart: always
+  redis:
+    image: redis:latest
+    container_name: redis
+    hostname: 
+    ports: redis
+      - 6379:6379  
+  restart: always
 volumes:
   postgresql_data:
   odoo_data: 
