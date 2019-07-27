@@ -13,8 +13,9 @@ if [ -f cybererp.conf ]; then
 fi
 
 if [ -f ./.env ]; then
- rm -f 
- ./.env
+  rm -f  ./.env
+else
+  exit 1
 fi
 
 echo "Press enter to confirm the detected value '[value]' where applicable or enter a custom value."
