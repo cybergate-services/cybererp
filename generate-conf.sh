@@ -71,6 +71,7 @@ CYBERERP_HOSTNAME=${CYBERERP_HOSTNAME}
 # ----------------------------------
 POSTGRES_DB=${POSTGRES_DB}
 POSTGRES_USER=${POSTGRES_USER}
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 PGDATA=${PGDATA}
 
 # -------------------
@@ -107,4 +108,4 @@ db_template = template1
 dbfilter = .*
 EOF
 
-ln ./cyeberp.conf ./.env
+ln ./cybererp.conf ./.env
