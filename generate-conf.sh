@@ -115,8 +115,7 @@ addons_path = ${ADDONS_PATH}
 data_dir = ${DATA_DIR}
 admin_passwd = ${ADMIN_PASSWORD}
 db_name = ${POSTGRES_DB}
-db_template = template1
-dbfilter = .*
+db_user = ${POSTGRES_USER}
 EOF
 
 ln ./cybererp.conf ./.env
