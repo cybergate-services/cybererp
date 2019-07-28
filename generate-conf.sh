@@ -43,7 +43,7 @@ while [ -z "${CYBERERP_TZ}" ]; do
   fi
 done
 
-POSTGRES_DB=odoo
+POSTGRES_DB=postgres
 POSTGRES_USER=odoo
 PGDATA='/var/lib/postgresql/data/pgdata'
 ADDONS_PATH='/mnt/extra-addons'
@@ -57,7 +57,7 @@ ADMIN_PASSWORD=${PASSWORD}
 PUID=1002
 PGID=1002
 URL=cybergateservices.net
-SUBDOMAINS=cybodo,
+SUBDOMAINS=cybodo,pgadmin,cadvisor,prometheus
 VALIDATION=http
 EMAIL=erpadmin@cybergateservices.net 
 DHLEVEL=2048 
