@@ -1,4 +1,4 @@
-version: '3.2'
+version: '2.1'
 services:
   letsencrypt:
     image: linuxserver/letsencrypt
@@ -28,7 +28,7 @@ services:
       - 80:80 #optional
     restart: always
   postgresql:
-    image: postgres:10
+    image: postgres:11
     container_name: postgresql
     hostname: postgresql
     environment:
