@@ -65,6 +65,8 @@ services:
     restart: always
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgadmin
+    hostname: pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
@@ -76,7 +78,7 @@ services:
       cybererp-network:
         aliases:
          - pgadmin
-      restart: always
+    restart: always
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
