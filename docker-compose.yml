@@ -63,11 +63,11 @@ services:
       - postgresql
       - letsencrypt
     restart: always
- pgadmin:
+  pgadmin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
       - "16543:8081"
     depends_on:
