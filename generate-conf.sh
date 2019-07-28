@@ -43,7 +43,7 @@ while [ -z "${CYBERERP_TZ}" ]; do
   fi
 done
 
-POSTGRES_DB=postgres 
+POSTGRES_DB=False
 POSTGRES_USER=odoo
 PGDATA='/var/lib/postgresql/data/pgdata'
 ADDONS_PATH='/mnt/extra-addons'
