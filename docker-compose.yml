@@ -14,7 +14,7 @@ services:
     networks:
       cybererp-network:
         aliases:
-          - letsencrypt
+          - heimdall
   letsencrypt:
     image: linuxserver/letsencrypt
     container_name: letsencrypt
