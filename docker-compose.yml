@@ -106,7 +106,7 @@ services:
     image: google/cadvisor:latest
     container_name: cadvisor
     hostname: cadvisor 
-    ports:config/nginx/
+    ports:
       - 8080:8080
     volumes:
       - /:/rootfs:ro
