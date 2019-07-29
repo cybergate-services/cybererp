@@ -114,6 +114,8 @@ data_dir = ${DATA_DIR}
 admin_passwd = ${ADMIN_PASSWORD}
 db_name = ${POSTGRES_DB}
 db_user = ${POSTGRES_USER}
+db_template = template1
+dbfilter = .*
 EOF
 
 ln ./cybererp.conf ./.env
