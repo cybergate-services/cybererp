@@ -1,5 +1,20 @@
 version: '2.1'
 services:
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    hostname: heimdall
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./config/heimdall:/config
+    restart: unless-stopped
+    networks:
+      cybererp-network:
+        aliases:
+          - letsencrypt
   letsencrypt:
     image: linuxserver/letsencrypt
     container_name: letsencrypt
