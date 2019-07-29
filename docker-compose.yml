@@ -92,7 +92,7 @@ services:
     ports:
       - 9090:9090
     command:
-      - --config.file=/etc/prometheus/prometheus.yml
+      - --config.file=/etc/prometheus/prometheus.ymlconfig/nginx/
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     depends_on:
@@ -106,7 +106,7 @@ services:
     image: google/cadvisor:latest
     container_name: cadvisor
     hostname: cadvisor 
-    ports:
+    ports:config/nginx/
       - 8080:8080
     volumes:
       - /:/rootfs:ro
