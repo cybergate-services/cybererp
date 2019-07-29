@@ -47,7 +47,7 @@ services:
     image: odoo:12.0
     container_name: odoo
     hostname: odoo
-    command: --database odoo -i base
+    # command: --database odoo -i base
     environment:
       - HOST=postgresql
       - USER=${ODOO_USER}
