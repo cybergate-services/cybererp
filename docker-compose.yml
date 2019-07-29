@@ -146,6 +146,18 @@ services:
         aliases:
          - redis
     restart: always
+   portainer:
+     image: portainer/portainer
+     container_name: portainer
+     hostname: portainer
+     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./conf/portainer:/data
+     restart: always
+     networks:
+       cybererp-network:
+         aliases:
+          - portainer
 volumes:
   postgresql_data:
   odoo_data: 
