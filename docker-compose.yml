@@ -23,11 +23,11 @@ services:
           - letsencrypt
     volumes:
       - ./config/letsencrypt:/config
-      - ./conf/proxy/cadvisor.conf:/config/nginx/proxy-confs/cadvisor.subdomain.conf
-      - ./conf/proxy/odoo.conf:/config/nginx/proxy-confs/odoo.subdomain.conf
-      - ./conf/proxy/pgadmin.conf:/config/nginx/proxy-confs/pgadmin.subdomain.conf
-      - ./conf/proxy/prometheus.conf:/config/nginx/proxy-confs/prometheus.subdomain.conf
-      - ./conf/htpasswd:/config/nginx/.htpasswd
+      - ./conf/proxy/cadvisor.conf:/config/nginx/proxy-confs/cadvisor.subdomain.conf:ro
+      - ./conf/proxy/odoo.conf:/config/nginx/proxy-confs/odoo.subdomain.conf:ro
+      - ./conf/proxy/pgadmin.conf:/config/nginx/proxy-confs/pgadmin.subdomain.conf:ro
+      - ./conf/proxy/prometheus.conf:/config/nginx/proxy-confs/prometheus.subdomain.conf:ro
+      - ./conf/htpasswd:/config/nginx/.htpasswd:ro
     ports:
       - 443:443
       - 80:80 #optional
