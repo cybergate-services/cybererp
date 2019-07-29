@@ -10,7 +10,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ./config/heimdall:/config
-    restart: unless-stopped
+    restart: always
     networks:
       cybererp-network:
         aliases:
