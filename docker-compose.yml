@@ -26,6 +26,7 @@ services:
       - ./conf/proxy/odoo.conf:/config/nginx/proxy-confs/odoo.subdomain.conf
       - ./conf/proxy/pgadmin.conf:/config/nginx/proxy-confs/pgadmin.subdomain.conf
       - ./conf/proxy/prometheus.conf:/config/nginx/proxy-confs/prometheus.subdomain.conf
+      - ./conf/proxy/heimdall.conf:/config/nginx/proxy-confs/heimdall.subdomain.conf
       - ./conf/htpasswd:/config/nginx/.htpasswd:rw
     ports:
       - 443:443
