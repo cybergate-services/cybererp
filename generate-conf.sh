@@ -47,8 +47,10 @@ PGDATA='/var/lib/postgresql/data/pgdata'
 ADDONS_PATH='/mnt/extra-addons'
 DATA_DIR='/var/lib/odoo'
 PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+
 htpasswd -b -c ./conf/htpasswd admin ${PASSWORD}
 PGADMIN_PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+
 ODOO_USER=odoo
 POSTGRES_PASSWORD=${PASSWORD}
 ODOO_PASSWORD=${PASSWORD}
