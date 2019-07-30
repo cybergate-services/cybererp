@@ -14,8 +14,6 @@ fi
 
 if [ -f ./.env ]; then
   rm -f  ./.env
-else
-  exit 1
 fi
 
 echo "Press enter to confirm the detected value '[value]' where applicable or enter a custom value."
@@ -43,12 +41,16 @@ while [ -z "${CYBERERP_TZ}" ]; do
   fi
 done
 
-POSTGRES_DB=postgres 
+POSTGRES_DB=postgres
 POSTGRES_USER=odoo
 PGDATA='/var/lib/postgresql/data/pgdata'
 ADDONS_PATH='/mnt/extra-addons'
 DATA_DIR='/var/lib/odoo'
 PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+
+htpasswd -b -c ./conf/htpasswd admin ${PASSWORD}
+PGADMIN_PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+
 ODOO_USER=odoo
 POSTGRES_PASSWORD=${PASSWORD}
 ODOO_PASSWORD=${PASSWORD}
@@ -56,7 +58,7 @@ ADMIN_PASSWORD=${PASSWORD}
 PUID=1002
 PGID=1002
 URL=cybergateservices.net
-SUBDOMAINS=cybodo,
+SUBDOMAINS=bis,cybodo,pgadmin,cadvisor,prometheus
 VALIDATION=http
 EMAIL=erpadmin@cybergateservices.net 
 DHLEVEL=2048 
@@ -76,6 +78,12 @@ POSTGRES_DB=${POSTGRES_DB}
 POSTGRES_USER=${POSTGRES_USER}
 POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 PGDATA=${PGDATA}
+
+# --------------------
+# PGADMIN Environment
+# --------------------
+PGADMIN_PASSWORD=${PGADMIN_PASSWORD}
+PGADMIN_EMAIL=${EMAIL}
 
 # -------------------
 # ODOO Environment
@@ -108,6 +116,7 @@ addons_path = ${ADDONS_PATH}
 data_dir = ${DATA_DIR}
 admin_passwd = ${ADMIN_PASSWORD}
 db_name = ${POSTGRES_DB}
+db_user = ${POSTGRES_USER}
 db_template = template1
 dbfilter = .*
 EOF
