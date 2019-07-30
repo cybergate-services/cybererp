@@ -26,6 +26,16 @@ while [ -z "${CYBERERP_HOSTNAME}" ]; do
   fi
 done
 
+echo "Enter mail account to be used as Odoo and pgAdmin Administrator account"
+while [ -z "${ADMIN_EMAIL}" ]; do
+  read -p "Admintrator's Email: " -e ADMIN_EMAIL
+  ATS=${ADMIN_EMAIL//[^@]};
+  if [ ${#ATS} -ne 1 ] && [ ! -z ${ADMIN_EMAIL} ]; then
+    echo "${ADMIN_EMAIL} is not a valid email"
+    ADMIN_EMAIL=
+  fi
+done
+
 if [ -a /etc/timezone ]; then
   DETECTED_TZ=$(cat /etc/timezone)
 elif [ -a /etc/localtime ]; then
