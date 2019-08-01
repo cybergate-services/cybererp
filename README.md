@@ -17,6 +17,8 @@ You have been relieved from complexity of installing Odoo manually and connectin
     - [Preparing Docker Hosts](#preparing-docker-hosts)
     - [Adding DNS Entries](#adding-dns-entries)
     - [Installing CyberERP](installing-cybererp)
+-[Initial Odoo Configuration](initial-odoo-configuration)
+    
 
 Our solution  consists of the following containers and you  visit the following links to understand what role each container will play in our Odoo deployment. 
 
@@ -128,7 +130,7 @@ In this section we have given you instruction to setup. Execute the following co
     prometheus    /bin/prometheus --config.f ...   Up      0.0.0.0:9090->9090/tcp                  
     redis         docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp
     ```
-    # Intial Odoo Configuration
+    # Initial Odoo Configuration
     
     In this section we will cary out the intial confiuration of our odoo conatiner. 
     
