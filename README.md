@@ -1,9 +1,13 @@
-# What is Odoo?
+# CyberERP: containerized Odoo
+
 ![](images/odoo-intro.jpg)
+Odoo is the most popular all-in-one business software in the world. It offers a range of business applications including CRM, website, e-Commerce, billing, accounting, manufacturing, warehouse, project management, inventory and much more, all are seamlessly integrated.
 
-# CyberERP
+CyberERP is an effort to deploy an enterprise ready  containerized  Open Source Odoo ERP system with several other required and optional containers. This system can be extended to provide highly available Odoo ERP system and it  contains Open Source Odoo ERP software together with several other community provided addon modules. 
 
-CyberERP is a containerized  Odoo ERP system with several other required and optional containers. This system is capable of providing highly available Odoo ERP system and it  contains Open Source Odoo ERP software together with several community provided modules. It consists of the following containers and visit the following links to understand what role each container play in our deployemnt.
+You have been relieved from complexity of installing Odoo manually and connecting with a postgresql database which is running in a different container.  In addition to these we have also integrated several other complex applications which are running in containers.  You will only take a few minutes to deploy an extremely complex system thanks to Docker technologies which would otherwise taken to deploy several days. 
+
+Our solution  consists of the following containers and you  visit the following links to understand what role each container will play in our Odoo deployment. 
 
 1. [linuxserver/letsencrypt](https://hub.docker.com/r/linuxserver/letsencrypt)
 2. [linuxserver/heimdall](https://hub.docker.com/r/linuxserver/heimdall)
