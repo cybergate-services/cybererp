@@ -7,7 +7,7 @@ CyberERP is a containerized  Odoo ERP system with several other required and opt
 3. [odoo](https://hub.docker.com/_/odoo)
 4. [postgres](https://hub.docker.com/_/postgres)
 5. [dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)
-6. [google/cadviso](https://hub.docker.com/r/google/cadvisor)
+6. [google/cadvisor](https://hub.docker.com/r/google/cadvisor)
 7. [prom/prometheus](https://hub.docker.com/r/prom/prometheus)
 8. [redis](https://hub.docker.com/_/redis)
 9. [portainer/portainer](https://hub.docker.com/r/portainer/portainer)
