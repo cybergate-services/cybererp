@@ -84,8 +84,8 @@ In this section we have given you instruction to setup. Execute the following co
     ```bash
     docker-compose ps
     ```
-    You will get an output like below.    ```
-   
+    You will get an output like below.   
+    ```
        Name                  Command               State                    Ports                  
     -----------------------------------------------------------------------------------------------
     cadvisor      /usr/bin/cadvisor -logtostderr   Up      0.0.0.0:8080->8080/tcp                  
@@ -99,7 +99,7 @@ In this section we have given you instruction to setup. Execute the following co
     postgresql    docker-entrypoint.sh postgres    Up      5432/tcp                                
     prometheus    /bin/prometheus --config.f ...   Up      0.0.0.0:9090->9090/tcp                  
     redis         docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp
-    
+    ```
     # Intial Odoo Configuration
     
     
