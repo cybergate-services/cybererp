@@ -13,7 +13,6 @@ CyberERP is a containerized  Odoo ERP system with several other required and opt
 9. [portainer/portainer](https://hub.docker.com/r/portainer/portainer)
 10. [tiredofit/db-backup](https://hub.docker.com/r/tiredofit/db-backup)
 11. [linuxserver/duplicati](https://hub.docker.com/r/linuxserver/duplicati)
-12. [linuxserver/openvpn-as](https://hub.docker.com/r/linuxserver/openvpn-as)
 
 # Deployment
 
