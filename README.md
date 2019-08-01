@@ -7,6 +7,21 @@ CyberERP is an effort to deploy an enterprise ready  containerized  Open Source 
 
 You have been relieved from complexity of installing Odoo manually and connecting with a postgresql database which is running in a different container.  In addition to these we have also integrated several other complex applications which are running in containers.  You will only take a few minutes to deploy an extremely complex system thanks to Docker technologies which would otherwise taken to deploy several days. 
 
+# Authors
+
+- [Chinthaka Deshapriya](https://www.linkedin.com/in/chinthakadeshapriya/)
+
+# Table of Content 
+- [CyberERP: The Containerized Odoo](#CyberERP:-The-Containerized-Odoo)
+- [Deployment](#Deployment)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+    - [Data Volumes](#data-volumes)
+    - [Environment Variables](#environmentvariables)
+- [Maintenance](#maintenance)
+    - [Shell Access](#shell-access)
+
 Our solution  consists of the following containers and you  visit the following links to understand what role each container will play in our Odoo deployment. 
 
 1. [linuxserver/letsencrypt](https://hub.docker.com/r/linuxserver/letsencrypt)
