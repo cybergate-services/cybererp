@@ -44,7 +44,7 @@ Our setup requires DNS A records for all of our applications which are running i
 Create A records for all the subdomains which are listed in the table below. Please ask your DNS administrator to create those records if you do not have administrative access for your corporate DNS servers. 
 
 Container | subdoamin | Web Interface
-------------------------------
+----------|-----------|---------------
 heimdal | bis.cybergatelabs.com | Application dash board
 odoo | odoo.cybergatelabs.com | Odoo Web UI
 padamin | pagadmin.cybergatelabs.com | pgAdmin Web UI
@@ -117,7 +117,7 @@ In this section we have given you instruction to setup. Execute the following co
     ```
     # Intial Odoo Configuration
     
-    In this section we will cary out the intial confiuration 
+    In this section we will cary out the intial confiuration of our odoo conatiner. 
     
     
     
