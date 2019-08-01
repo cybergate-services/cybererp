@@ -1,0 +1,29 @@
+.pos .screen .dltitle{
+    font-size: 1.5em;
+    width: 100%;
+    font-weight:bold;
+    text-align:center;
+}
+
+.pending_invoice_id{
+	display:none;
+}
+.pendingpay{
+	background-color: #49A6C8;
+    border: #49A6C8;
+    color: #fff !important;
+    padding: 0 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.pending_porder_id{
+	display:none;
+}
+.pos .PayLaterButton:hover {
+     color: rgb(94, 185, 55);
+}
