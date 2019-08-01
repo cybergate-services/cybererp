@@ -52,7 +52,7 @@ git clone https://github.com/cybergate-services/cybererp.git
 ```
 3. Create the storage directory
 
-This directory is used to host the persistent data volumes of our containers. It also used to host the data backup from containers. This guide uses ```/opt/backup```  directory for this purpose. You may mount a volume from your enterprise SAN or NAS which will provide more robust and resilient storage environment  for your Odoo deployment.
+   This directory is used to host the persistent data volumes of our containers. It also used to host the data backup from      containers. This guide uses ```/opt/backup```  directory for this purpose. You may mount a volume from your enterprise SAN    or NAS which will provide more robust and resilient storage environment  for your Odoo deployment.
 ```bash
 mkdir /opt/storage
 ```
