@@ -17,7 +17,7 @@ You have been relieved from complexity of installing Odoo manually and connectin
     - [Preparing Docker Hosts](#preparing-docker-hosts)
     - [Adding DNS Entries](#adding-dns-entries)
     - [Installing CyberERP](installing-cybererp)
--[Initial Odoo Configuration](initial-odoo-configuration)
+- [Initial Odoo Configuration](initial-odoo-configuration)
     
 
 Our solution  consists of the following containers and you  visit the following links to understand what role each container will play in our Odoo deployment. 
