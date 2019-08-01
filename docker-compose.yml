@@ -68,7 +68,6 @@ services:
     image: odoo:12.0
     container_name: odoo
     hostname: odoo
-    # command: --database odoo -i base
     environment:
       - HOST=postgresql
       - USER=${ODOO_USER}
@@ -92,7 +91,7 @@ services:
     links:
      - postgresql
     volumes:
-      - ./backups/pgsql:/backups
+      - /opt/storage/backups/pgsql:/backups
     environment:
       - DB_TYPE=pgsql
       - DB_HOST=postgresql
