@@ -1,4 +1,4 @@
-# CyberERP: containerized Odoo
+# CyberERP: Containerized Odoo
 
 ![](images/odoo-intro.jpg)
 Odoo is the most popular all-in-one business software in the world. It offers a range of business applications including CRM, website, e-Commerce, billing, accounting, manufacturing, warehouse, project management, inventory and much more, all are seamlessly integrated.
