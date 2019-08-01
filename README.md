@@ -42,21 +42,41 @@ sudo apt install git apache2-utils
 In this section we have given you instruction to setup. Execute the following commands in the same order as I have listed. 
 
 1. Login to your docker host and become ```root``` and change your direcory to ```/opt```
-```bash
-sudo su -
-cd /opt
-```
+   ```bash
+   sudo su -
+   cd /opt
+   ```
 2. Clone the ```CyberERP``` repository.
-```bash
-git clone https://github.com/cybergate-services/cybererp.git
-```
+   ```bash
+   git clone https://github.com/cybergate-services/cybererp.git
+   ```
 3. Create the storage directory
 
    This directory is used to host the persistent data volumes of our containers. It also used to host the data backup from      containers. This guide uses ```/opt/backup```  directory for this purpose. You may mount a volume from your enterprise SAN    or NAS which will provide more robust and resilient storage environment  for your Odoo deployment.
-```bash
-mkdir /opt/storage
-```
-
-
-
-
+   ```bash
+   mkdir /opt/storage
+   ```
+ 4. Generate enviorenemnet variables
+   
+    We wiil need this step to create ```cybererp.conf``` which will contain neccessary enviorenment variables that are 
+    required by the ```docker-compose.yml``` file.
+    ```bash
+    cd /opt/cybererp
+    ./generate-conf.sh 
+    ```
+    Below is a sample output from an above operation.
+    
+    ```bash
+    Press enter to confirm the detected value '[value]' where applicable or enter a custom value.
+    Hostname (FQDN): bis.cybergate.lk
+    Enter mail account to be used as Odoo and pgAdmin Administrator account
+    Admintrator's Email: bisadmin@cybergate.lk
+    Timezone: Asia/Colombo
+    Adding password for user admin
+    
+ 5. Deploy and start the containers.
+ 
+    ```bash
+    docker-compose up -d
+    ```
+    
