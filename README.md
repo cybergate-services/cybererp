@@ -36,13 +36,14 @@ sudo apt install git apache2-utils
 In this section we have given you instruction to setup. Execute the following commands in the same order as I have listed. 
 
 1. Login to your docker host and become ```root``` and change your direcory to ```/opt```
-   ```bash
-   sudo su -
-   cd /opt
+```bash
+sudo su -
+cd /opt
+```
 2. Clone the ```CyberERP``` repository.
-   ```bash
-   git clone https://github.com/cybergate-services/cybererp.git
-  ```
+```bash
+git clone https://github.com/cybergate-services/cybererp.git
+```
 
 
 
