@@ -1,3 +1,6 @@
+# What is Odoo?
+![](images/odoo-intro.jpg)
+
 # CyberERP
 
 CyberERP is a containerized  Odoo ERP system with several other required and optional containers. This system is capable of providing highly available Odoo ERP system and it  contains Open Source Odoo ERP software together with several community provided modules. It consists of the following containers and visit the following links to understand what role each container play in our deployemnt.
