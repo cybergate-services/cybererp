@@ -79,4 +79,27 @@ In this section we have given you instruction to setup. Execute the following co
     ```bash
     docker-compose up -d
     ```
+ 6. Check the running status of the containers
+ 
+    ```bash
+    docker-compose ps
+    ```
+    You will get an output like below.    ```
+   
+       Name                  Command               State                    Ports                  
+    -----------------------------------------------------------------------------------------------
+    cadvisor      /usr/bin/cadvisor -logtostderr   Up      0.0.0.0:8080->8080/tcp                  
+    db-backup     /init                            Up      10050/tcp, 1025/tcp, 8025/tcp           
+    duplicati     /init                            Up      0.0.0.0:8200->8200/tcp                  
+    heimdall      /init                            Up      443/tcp, 80/tcp                         
+    letsencrypt   /init                            Up      0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp
+    odoo          /entrypoint.sh odoo              Up      8069/tcp, 8071/tcp                      
+    pgadmin       /entrypoint.sh                   Up      443/tcp, 80/tcp                         
+    portainer     /portainer                       Up      9000/tcp                                
+    postgresql    docker-entrypoint.sh postgres    Up      5432/tcp                                
+    prometheus    /bin/prometheus --config.f ...   Up      0.0.0.0:9090->9090/tcp                  
+    redis         docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp
+    
+    # Intial Odoo Configuration
+    
     
