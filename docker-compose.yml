@@ -184,6 +184,21 @@ services:
       cybererp-network:
         aliases:
          - portainer
+  duplicati:
+    image: linuxserver/duplicati
+    container_name: duplicati
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - CLI_ARGS= #optional
+    volumes:
+      - ./config/dupicati:/config
+      - /path/to/backups:/backups
+      - /path/to/source:/source
+    ports:
+      - 8200:8200
+    restart: unless-stopped       
 volumes:
   postgresql_data:
   odoo_data: 
