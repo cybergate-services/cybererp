@@ -11,16 +11,12 @@ You have been relieved from complexity of installing Odoo manually and connectin
 
 - [Chinthaka Deshapriya](https://www.linkedin.com/in/chinthakadeshapriya/)
 
-# Table of Content 
+# Table of Contents 
 - [CyberERP-The Containerized Odoo ERP](#cybererp-the-containerized-odoo-erp)
 - [Deployment](#Deployment)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Configuration](#configuration)
-    - [Data Volumes](#data-volumes)
-    - [Environment Variables](#environmentvariables)
-- [Maintenance](#maintenance)
-    - [Shell Access](#shell-access)
+    - [Preparing Docker Hosts](#preparing-docker-hosts)
+    - [Adding DNS Entries](#adding-dns-entries)
+    - [Installing CyberERP](installing-cybererp)
 
 Our solution  consists of the following containers and you  visit the following links to understand what role each container will play in our Odoo deployment. 
 
@@ -40,7 +36,9 @@ Our solution  consists of the following containers and you  visit the following 
 
 This guide assuemes that you have already install your docker daemon and docker-compose tools in your docker host. We have tested this solution both on Debian 9(Stretch) and Ubuntu 18.04 LTS (Bionic). If you haven't prepare your Docker host yet, you may use the following links to get your task done.
 
-## Preparing Debian/Ubuntu Systems as Docker Hosts
+## Preparing Docker Hosts
+
+Use information in this section for preparing a Debian/Ubuntu System as  your Docker Host.
 
 * [To Install Docker CE in Ubuntu](https://docs.docker.com/v17.09/engine/installation/linux/docker-ce/ubuntu/)
 * [To Install Docker CE on Debian](https://docs.docker.com/v17.09/engine/installation/linux/docker-ce/debian/)
@@ -52,7 +50,7 @@ Install the following addtional tools
 ```bash
 sudo apt install git apache2-utils
 ```
-# Adding DNS Entries
+## Adding DNS Entries
 
 Our setup requires DNS A records for all of our applications which are running in containers and accessing their interfaces over HTTPS. Letsencrypt container requires DNS A records to be created and available for all the subdomains for the following application interfaces. The example domain which we are using in this guide is ```cybergatelabs.com```.
 
@@ -67,7 +65,7 @@ Container | subdoamin | Web Interface
 `prometheus` |` prometheus.cybergatelabs.com` | Prometheus Web UI for container performance monitoring 
 `portainer` | `portainer.cybergatelabs.com` | Portainer Web UI for container mangement
 
-# Deploying CyberERP
+## Installing CyberERP
 
 In this section we have given you instruction to setup. Execute the following commands in the same order as I have listed. 
 
