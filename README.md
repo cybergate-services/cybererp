@@ -37,6 +37,21 @@ Install the following addtional tools
 ```bash
 sudo apt install git apache2-utils
 ```
+# Adding DNS Entries
+
+Our setup requires DNS A records for all of our applications which are running in containers and accessing their interfaces over HTTPS. Letsencrypt container requires DNS A records to be created and available for all the subdomains for the following application interfaces. The example domain which we are using in this guide is ```cybergatelabs.com```.
+
+Create A records for all the subdomains which are listed in the table below. Please ask your DNS administrator to create those records if you do not have administrative access for your corporate DNS servers. 
+
+Container | subdoamin | Web Interface
+------------------------------
+heimdal | bis.cybergatelabs.com | Application dash board
+odoo | odoo.cybergatelabs.com | Odoo Web UI
+padamin | pagadmin.cybergatelabs.com | pgAdmin Web UI
+cadvisor | cadvisor.cybergatelabs.com | cAdvisor Web UI for container performance monitoring 
+prometheus | prometheus.cybergatelabs.com | Prometheus Web UI for container performance monitoring 
+portainer | portainer.cybergatelabs.com | Portainer Web UI for container mangement
+
 # Deploying CyberERP
 
 In this section we have given you instruction to setup. Execute the following commands in the same order as I have listed. 
@@ -101,5 +116,9 @@ In this section we have given you instruction to setup. Execute the following co
     redis         docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp
     ```
     # Intial Odoo Configuration
+    
+    In this section we will cary out the intial confiuration 
+    
+    
     
     
