@@ -41,8 +41,8 @@ In this section we have given you instruction to setup. Execute the following co
    cd /opt
 2. Clone the ```CyberERP``` repository.
    ```bash
-   git clone 
-  
+   git clone https://github.com/cybergate-services/cybererp.git
+  ```
 
 
 
