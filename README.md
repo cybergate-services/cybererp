@@ -12,7 +12,7 @@ You have been relieved from complexity of installing Odoo manually and connectin
 - [Chinthaka Deshapriya](https://www.linkedin.com/in/chinthakadeshapriya/)
 
 # Table of Content 
-- [CyberERP: The Containerized Odoo](#CyberERP:-The-Containerized-Odoo)
+- [CyberERP: The Containerized Odoo](#cybererp:-the-containerized-odoo)
 - [Deployment](#Deployment)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
