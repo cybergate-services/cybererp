@@ -8,3 +8,8 @@ This guide assuemes that you have already install your docker daemon and docker-
 * [To Install Compose on Linux systems](https://docs.docker.com/compose/install/)
 
 NOTE: Installing docker-compose in Linux is same any distribution of Linux.
+
+Install the following addtional tools
+```bash
+sudo apt install git apache2-utils
+```
