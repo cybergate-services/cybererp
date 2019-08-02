@@ -18,8 +18,8 @@ You have been relieved from complexity of installing Odoo manually and connectin
     - [Adding DNS Entries](#adding-dns-entries)
     - [Installing CyberERP](installing-cybererp)
 - [Initial Odoo Configuration](initial-odoo-configuration)
+- [Cybergate Odoo Support](cybergate-odoo-support)
     
-
 Our solution  consists of the following containers and you  visit the following links to understand what role each container will play in our Odoo deployment. 
 
 1. [linuxserver/letsencrypt](https://hub.docker.com/r/linuxserver/letsencrypt)
@@ -94,7 +94,7 @@ In this section we have given you instruction to setup. Execute the following co
     cd /opt/cybererp
     ./generate-conf.sh 
     ```
-    Below is a sample output from an above operation.
+    Below is a sample output from the above operation.
     
     ```bash
     Press enter to confirm the detected value '[value]' where applicable or enter a custom value.
@@ -130,20 +130,46 @@ In this section we have given you instruction to setup. Execute the following co
     prometheus    /bin/prometheus --config.f ...   Up      0.0.0.0:9090->9090/tcp                  
     redis         docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp
     ```
-    # Initial Odoo Configuration
+ # Initial Odoo Configuration
     
-    In this section we will cary out the intial confiuration of our odoo conatiner. 
+ In this section we will cary out the intial confiuration of our odoo conatiner. 
     
-    1. Find out your `Odoo Master Password` generated during `cybererp.conf` creation step above. We assume that your current        directory is `/opt/cybererp`
+ 1. Find out your `Odoo Master Password` generated during `cybererp.conf` creation step above. We assume that your current       directory is `/opt/cybererp`
+   
+    ```bash
+    grep admin /opt/cybererp/conf/odoo/odoo.conf
+    ```
+ 2. Point your browser to `https://odoo.cybergatelabs.com`. Make sure to replace `cybergatelabs.com` with 
+   `yourdomain.com`.
+   
+   You should get a web form like below.
+   ![](images/odoo-init.png)
+   
+ 3. Input the follwing data into the above form
+ 
+    * Master Password: As retrieved in the step 1 above
+    * Database: `odoo`
+    * Email: `bisadmin@yourdomain.com` any other email that you prefer
+    * Password: Enter a strong password for Odoo admin account here
+    * Phone number: Enter your phone number 
+    * Country: Select your country
+    * Press `Create Database` button 
     
-       ```bash
-       grep admin /opt/cybererp/conf/odoo/odoo.conf
-       ```
-    2. Point your browser to `https://odoo.cybergatelabs.com`. Make sure to replace `cybergatelabs.com` with 
-       `yourdomain.com`.
-       
-       You should get a web form like below.
-       ![](images/odoo-init.png)
+    Please wait few seconds until the database initialzation would be completed.
+    
+ 4. Point your browser to 'https://odoo.yourdomain.com.
+ 
+ 5. Continue to configure your all-in-one ERP from here. You may refer to the Odoo offical documentaion below to learn more. 
+ 
+    * [Setting Up Odoo 12.0](https://www.odoo.com/documentation/12.0/setup.html)
+    * [Odoo User Documentation](https://www.odoo.com/documentation/user/12.0/index.html)
+    
+ # Cybergate Odoo Support
+ 
+   I you need suport for an Containerized Odoo deployment in your production enviorenment: 
+   Contact: support@cybergate.lk
+ 
+ 
        
     
     
