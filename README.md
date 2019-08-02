@@ -58,7 +58,7 @@ Our setup requires DNS A records for all of our applications which are running i
 
 Create A records for all the subdomains which are listed in the table below. Please ask your DNS administrator to create those records if you do not have administrative access for your corporate DNS servers. 
 
-Container | subdoamin | Web Interface
+Container | Subdoamin | Web Interface
 ----------|-----------|---------------
 `heimdal` | `bis.cybergatelabs.com` | Application dash board
 `odoo` | `odoo.cybergatelabs.com` | Odoo Web UI
@@ -98,9 +98,9 @@ In this section we have given you instruction to setup. Execute the following co
     
     ```bash
     Press enter to confirm the detected value '[value]' where applicable or enter a custom value.
-    Hostname (FQDN): bis.cybergate.lk
+    Hostname (FQDN): bis.cybergatelabs.com
     Enter mail account to be used as Odoo and pgAdmin Administrator account
-    Admintrator's Email: bisadmin@cybergate.lk
+    Admintrator's Email: bisadmin@cybergatelabs.com
     Timezone: Asia/Colombo
     Adding password for user admin
     
@@ -133,6 +133,21 @@ In this section we have given you instruction to setup. Execute the following co
     # Initial Odoo Configuration
     
     In this section we will cary out the intial confiuration of our odoo conatiner. 
+    
+    1. Find out your `Odoo Master Password` generated during `cybererp.conf` creation step above. We assume that your current        directory is `/opt/cybererp`
+    
+       ```bash
+       grep admin /opt/cybererp/conf/odoo/odoo.conf
+       ```
+    2. Point your browser to `https://odoo.cybergatelabs.com`. Make sure to replace `cybergatelabs.com` with 
+       `yourdomain.com`.
+       
+       You should get a web form like below.
+       ![](images/odoo-init.png)
+       
+    
+    
+       
     
     
     
