@@ -167,7 +167,7 @@ In this section we have given you instruction to setup. Execute the following co
     
  # Cybergate Odoo Support
  
-   I you need suport for an Containerized Odoo deployment in your production enviorenment: 
+   If you need suport for an Containerized Odoo deployment in your production enviorenment: 
    Contact: support@cybergate.lk
  
  
