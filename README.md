@@ -142,9 +142,9 @@ In this section we have given you instruction to setup. Execute the following co
  2. Point your browser to `https://odoo.cybergatelabs.com`. Make sure to replace `cybergatelabs.com` with 
    `yourdomain.com`.
    
-   You should get a web form like below.
+    You should get a web form like below.
    
- ![](images/odoo-init.png)
+    ![](images/odoo-init.png)
    
  3. Input the follwing data into the above form
  
