@@ -43,6 +43,7 @@ services:
       - ./conf/proxy/prometheus.conf:/config/nginx/proxy-confs/prometheus.subdomain.conf
       - ./conf/proxy/heimdall.conf:/config/nginx/proxy-confs/heimdall.subdomain.conf
       - ./conf/proxy/portainer.conf:/config/nginx/proxy-confs/portainer.subdomain.conf
+      - ./conf/proxy/duplicati.conf:/config/nginx/proxy-confs/duplicati.subdomain.conf
       - ./conf/htpasswd:/config/nginx/.htpasswd:rw
     ports:
       - 443:443
