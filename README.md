@@ -62,7 +62,7 @@ Container | Subdoamin | Web Interface
 ----------|-----------|---------------
 `heimdal` | `bis.cybergatelabs.com` | Application dash board
 `odoo` | `odoo.cybergatelabs.com` | Odoo Web UI
-`padamin` | `pgadmin.cybergatelabs.com` | pgAdmin Web UI
+`pgdamin` | `pgadmin.cybergatelabs.com` | pgAdmin Web UI
 `cadvisor` | `cadvisor.cybergatelabs.com` | cAdvisor Web UI for container performance monitoring 
 `prometheus` |` prometheus.cybergatelabs.com` | Prometheus Web UI for container performance monitoring 
 `portainer` | `portainer.cybergatelabs.com` | Portainer Web UI for container mangement
