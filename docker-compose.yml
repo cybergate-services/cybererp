@@ -1,20 +1,5 @@
 version: '2.1'
 services:
-  heimdall:
-    image: linuxserver/heimdall
-    container_name: heimdall
-    hostname: heimdall
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ./config/heimdall:/config
-    restart: always
-    networks:
-      cybererp-network:
-        aliases:
-          - heimdall
   letsencrypt:
     image: linuxserver/letsencrypt
     container_name: letsencrypt
@@ -37,12 +22,8 @@ services:
         aliases:
           - letsencrypt
     volumes:
-      - ./conf/proxy/cadvisor.conf:/config/nginx/proxy-confs/cadvisor.subdomain.conf
       - ./conf/proxy/odoo.conf:/config/nginx/proxy-confs/odoo.subdomain.conf
       - ./conf/proxy/pgadmin.conf:/config/nginx/proxy-confs/pgadmin.subdomain.conf
-      - ./conf/proxy/prometheus.conf:/config/nginx/proxy-confs/prometheus.subdomain.conf
-      - ./conf/proxy/heimdall.conf:/config/nginx/proxy-confs/heimdall.subdomain.conf
-      - ./conf/proxy/portainer.conf:/config/nginx/proxy-confs/portainer.subdomain.conf
       - ./conf/proxy/duplicati.conf:/config/nginx/proxy-confs/duplicati.subdomain.conf
       - ./conf/htpasswd:/config/nginx/.htpasswd:rw
     ports:
@@ -126,64 +107,6 @@ services:
         aliases:
          - pgadmin
     restart: always
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    hostname: prometheus
-    ports:
-      - 9090:9090
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    depends_on:
-      - cadvisor
-    networks:
-      cybererp-network:
-        aliases:
-         - prometheus
-    restart: always
-  cadvisor:
-    image: google/cadvisor:latest
-    container_name: cadvisor
-    hostname: cadvisor 
-    ports:
-      - 8080:8080
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    depends_on:
-      - redis
-    networks:
-      cybererp-network:
-        aliases:
-         - cadvisor
-    restart: always
-  redis:
-    image: redis:latest
-    container_name: redis
-    hostname: redis
-    ports: 
-      - 6379:6379
-    networks:
-      cybererp-network:
-        aliases:
-         - redis
-    restart: always
-  portainer:
-    image: portainer/portainer
-    container_name: portainer
-    hostname: portainer
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./conf/portainer:/data
-    restart: always
-    networks:
-      cybererp-network:
-        aliases:
-         - portainer
   duplicati:
     image: linuxserver/duplicati
     container_name: duplicati
