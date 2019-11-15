@@ -45,7 +45,8 @@ services:
           - letsencrypt
     environment:
       - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
-      - POSTGRES_DB=postgres
+      - POSTGRESQL_DATABASE=postgres
+      - POSTGRESQL_USER=postgres
     restart: always
     
   odoo:
