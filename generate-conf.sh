@@ -26,6 +26,16 @@ while [ -z "${CYBERERP_HOSTNAME}" ]; do
   fi
 done
 
+echo "Enter SMTP host that will be used to send mails from Odoo"
+while [ -z "${SMTP_HOST}" ]; do
+  read -p "SMTP Host: " -e SMTP_HOST
+  DOTS=${CYBERERP_HOSTNAME//[^.]};
+  if [ ${#DOTS} -lt 2 ] && [ ! -z ${SMTP_HOST} ]; then
+    echo "${SMTP_HOST} is not a FQDN"
+    CYBERERP_HOSTNAME=
+  fi
+done
+
 echo "Enter mail account to be used as Odoo and pgAdmin Administrator account"
 while [ -z "${ODOO_EMAIL}" ]; do
   read -p "Admintrator's Email: " -e ODOO_EMAIL
