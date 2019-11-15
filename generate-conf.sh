@@ -50,12 +50,13 @@ echo "Enter SMTP User Password that will be used to send mails from Odoo"
 while [ -z "${SMTP_PASSWORD}" ]; do
   read -p "SMTP Password: " -e SMTP_PASSWORD
   count=`echo ${#SMTP_PASSWORD}`
-  echo $count
-  if [[ $count -ne 8 ]];then
+  # echo $count
+  if [[ $count -lt 8 ]];then
      echo "Password length should be at least 8 charactors"
      exit 1;
   fi
-  echo $SMTP_PASSWORD | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]"
+  echo ${SMTP_PASSWORD} | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]"
+  echo ${SMTP_PASSWORD}
   if [[ $? -ne 0 ]];then
     echo "Password must contain upparcase ,lowecase,number and special charactor"
     SMTP_PASSWORD=
