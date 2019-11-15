@@ -50,6 +50,7 @@ echo "Enter SMTP User Password that will be used to send mails from Odoo"
 while [ -z "${SMTP_PASSWORD}" ]; do
   read -p "SMTP Password: " -e SMTP_PASSWORD
   count=`echo ${#SMTP_PASSWORD}`
+  echo $count
   if [[ $count -ne 8 ]];then
      echo "Password length should be at least 8 charactors"
      exit 1;
