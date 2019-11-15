@@ -29,7 +29,7 @@ done
 echo "Enter SMTP host that will be used to send mails from Odoo"
 while [ -z "${SMTP_HOST}" ]; do
   read -p "SMTP Host: " -e SMTP_HOST
-  DOTS=${CYBERERP_HOSTNAME//[^.]};
+  DOTS=${SMTP_HOST//[^.]};
   if [ ${#DOTS} -lt 2 ] && [ ! -z ${SMTP_HOST} ]; then
     echo "${SMTP_HOST} is not a FQDN"
     CYBERERP_HOSTNAME=
@@ -66,7 +66,6 @@ while [ -z "${SMTP_PASSWORD}" ]; do
      exit 1;
   fi
   echo ${SMTP_PASSWORD} | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]"
-  echo ${SMTP_PASSWORD}
   if [[ $? -ne 0 ]];then
     echo "Password must contain upparcase ,lowecase,number and special charactor"
     SMTP_PASSWORD=
