@@ -1,20 +1,6 @@
 version: '2.1'
 services:
-  heimdall:
-    image: linuxserver/heimdall
-    container_name: heimdall
-    hostname: heimdall
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ./config/heimdall:/config
-    restart: always
-    networks:
-      cybererp-network:
-        aliases:
-          - heimdall
+  
   letsencrypt:
     image: linuxserver/letsencrypt
     container_name: letsencrypt
@@ -37,11 +23,8 @@ services:
         aliases:
           - letsencrypt
     volumes:
-      - ./conf/proxy/cadvisor.conf:/config/nginx/proxy-confs/cadvisor.subdomain.conf
       - ./conf/proxy/odoo.conf:/config/nginx/proxy-confs/odoo.subdomain.conf
       - ./conf/proxy/pgadmin.conf:/config/nginx/proxy-confs/pgadmin.subdomain.conf
-      - ./conf/proxy/prometheus.conf:/config/nginx/proxy-confs/prometheus.subdomain.conf
-      - ./conf/proxy/heimdall.conf:/config/nginx/proxy-confs/heimdall.subdomain.conf
       - ./conf/proxy/portainer.conf:/config/nginx/proxy-confs/portainer.subdomain.conf
       - ./conf/proxy/duplicati.conf:/config/nginx/proxy-confs/duplicati.subdomain.conf
       - ./conf/htpasswd:/config/nginx/.htpasswd:rw
@@ -49,74 +32,57 @@ services:
       - 443:443
       - 80:80 #optional
     restart: always
+  
   postgresql:
-    image: postgres:10
+    image: 'bitnami/postgresql:11'
     container_name: postgresql
     hostname: postgresql
-    environment:
-       - POSTGRES_DB=${POSTGRES_DB}
-       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-       - POSTGRES_USER=${POSTGRES_USER}
-       - PGDATA=${PGDATA}
+    volumes:
+      - './postgresql_data:/bitnami/postgresql'
     networks:
       cybererp-network:
         aliases:
-          - postgresql
-    volumes:
-      - postgresql_data:/var/lib/postgresql/data/pgdata
-    restart: always
+          - letsencrypt
+    environment:
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+    restart: postgresql
+    
   odoo:
-    image: odoo:12.0
+    image: 'bitnami/odoo:12'
     container_name: odoo
     hostname: odoo
+    ports:
+      - '80:8069'
+      - '443:8071'
+    volumes:
+      - './odoo_data:/bitnami'
     environment:
-      - HOST=postgresql
-      - USER=${ODOO_USER}
-      - PASSWORD=${ODOO_PASSWORD}
+      - ODOO_EMAIL=${ODOO_EMAIL}
+      - ODOO_PASSWORD=${ODOO_PASSWORD}
+      - POSTGRESQL_USER=postgres
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_HOST=postgresql
+      - POSTGRESQL_PORT_NUMBER=5432
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=465
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SMTP_PROTOCOL=ssl
     networks:
       cybererp-network:
         aliases:
-          - odoo
-    volumes:
-      - odoo_data:/var/lib/odoo
-      - ./conf/odoo:/etc/odoo
-      - ./addons:/mnt/extra-addons
+         - odoo
     depends_on:
       - postgresql
-      - letsencrypt
-    restart: always
-  db-backup:
-    container_name: db-backup
-    hostname: db-backup
-    image: tiredofit/db-backup
-    links:
-     - postgresql
-    volumes:
-      - /opt/storage/backups/pgsql:/backups
-    environment:
-      - DB_TYPE=pgsql
-      - DB_HOST=postgresql
-      - DB_NAME=${ODOO_DB}
-      - DB_USER=${POSTGRES_USER}
-      - DB_PASS=${POSTGRES_PASSWORD}
-      - DB_DUMP_FREQ=1440
-      - DB_DUMP_BEGIN=0000
-      - DB_CLEANUP_TIME=8640
-      - MD5=TRUE
-      - COMPRESSION=XZ
-      - SPLIT_DB=FALSE
-    restart: always
-    networks:
-      cybererp-network:
-        aliases:
-          - db-backup
+    restart: always  
+  
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
     hostname: pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+      - PGADMIN_DEFAULT_EMAIL=${ODOO_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${ODOO_PASSWORD}
     # ports:
     #  - "10080:80"
     depends_on:
@@ -126,53 +92,8 @@ services:
         aliases:
          - pgadmin
     restart: always
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    hostname: prometheus
-    ports:
-      - 9090:9090
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    depends_on:
-      - cadvisor
-    networks:
-      cybererp-network:
-        aliases:
-         - prometheus
-    restart: always
-  cadvisor:
-    image: google/cadvisor:latest
-    container_name: cadvisor
-    hostname: cadvisor 
-    ports:
-      - 8080:8080
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    depends_on:
-      - redis
-    networks:
-      cybererp-network:
-        aliases:
-         - cadvisor
-    restart: always
-  redis:
-    image: redis:latest
-    container_name: redis
-    hostname: redis
-    ports: 
-      - 6379:6379
-    networks:
-      cybererp-network:
-        aliases:
-         - redis
-    restart: always
-  portainer:
+ 
+ portainer:
     image: portainer/portainer
     container_name: portainer
     hostname: portainer
@@ -184,6 +105,7 @@ services:
       cybererp-network:
         aliases:
          - portainer
+  
   duplicati:
     image: linuxserver/duplicati
     container_name: duplicati
