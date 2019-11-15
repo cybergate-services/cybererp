@@ -1,4 +1,4 @@
-version: '2.1'
+version: '2'
 services:
  
   letsencrypt:
@@ -38,7 +38,7 @@ services:
     container_name: postgresql
     hostname: postgresql
     volumes:
-      - './postgresql_data:/bitnami/postgresql'
+      - 'postgresql_data:/bitnami/postgresql'
     networks:
       cybererp-network:
         aliases:
@@ -54,7 +54,7 @@ services:
     container_name: odoo
     hostname: odoo
     volumes:  
-      - './odoo_data:/bitnami'
+      - 'odoo_data:/bitnami'
       - './custom-addons:/opt/bitnami/odoo/odoo/addons'
     environment:
       - ODOO_EMAIL=${ODOO_EMAIL}
@@ -128,7 +128,9 @@ services:
          - duplicati
 volumes:
   postgresql_data:
+    driver: local
   odoo_data: 
+    driver: local
 networks:
   cybererp-network:
     driver: bridge
