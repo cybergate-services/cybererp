@@ -45,7 +45,7 @@ services:
           - letsencrypt
     environment:
       - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
-    restart: postgresql
+    restart: always
     
   odoo:
     image: 'bitnami/odoo:12'
