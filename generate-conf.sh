@@ -27,14 +27,41 @@ while [ -z "${CYBERERP_HOSTNAME}" ]; do
 done
 
 echo "Enter mail account to be used as Odoo and pgAdmin Administrator account"
-while [ -z "${ADMIN_EMAIL}" ]; do
-  read -p "Admintrator's Email: " -e ADMIN_EMAIL
-  ATS=${ADMIN_EMAIL//[^@]};
-  if [ ${#ATS} -ne 1 ] && [ ! -z ${ADMIN_EMAIL} ]; then
-    echo "${ADMIN_EMAIL} is not a valid email"
-    ADMIN_EMAIL=
+while [ -z "${ODOO_EMAIL}" ]; do
+  read -p "Admintrator's Email: " -e ODOO_EMAIL
+  ATS=${ODOO_EMAIL//[^@]};
+  if [ ${#ATS} -ne 1 ] && [ ! -z ${ODOO_EMAIL} ]; then
+    echo "${ODOO_EMAIL} is not a valid email"
+    ODOO_EMAIL=
   fi
 done
+
+echo "Enter SMTP user that will be used to send mails from Odoo"
+while [ -z "${SMTP_USER}" ]; do
+  read -p "SMTP User: " -e SMTP_USER
+  ATS=${SMTP_USER//[^@]};
+  if [ ${#ATS} -ne 1 ] && [ ! -z ${SMTP_USER} ]; then
+    echo "${SMTP_USER} is not a valid email address"
+    SMTP_USER=
+  fi
+done
+
+echo "Enter SMTP User Password that will be used to send mails from Odoo"
+while [ -z "${SMTP_PASSWORD}" ]; do
+  read -p "SMTP Password: " -e SMTP_PASSWORD
+  count=`echo ${#SMTP_PASSWORD}`
+  if [[ $count -ne 8 ]];then
+     echo "Password length should be at least 8 charactors"
+     exit 1;
+  fi
+  echo $SMTP_PASSWORD | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]"
+  if [[ $? -ne 0 ]];then
+    echo "Password must contain upparcase ,lowecase,number and special charactor"
+    SMTP_PASSWORD=
+    exit 2;
+  fi
+done
+
 
 if [ -a /etc/timezone ]; then
   DETECTED_TZ=$(cat /etc/timezone)
@@ -51,26 +78,19 @@ while [ -z "${CYBERERP_TZ}" ]; do
   fi
 done
 
-POSTGRES_DB=postgres
-POSTGRES_USER=odoo
-PGDATA='/var/lib/postgresql/data/pgdata'
-ADDONS_PATH='/mnt/extra-addons'
-DATA_DIR='/var/lib/odoo'
 PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 
 htpasswd -b -c ./conf/htpasswd admin ${PASSWORD}
-PGADMIN_PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 
-ODOO_USER=odoo
-POSTGRES_PASSWORD=${PASSWORD}
+POSTGRESQL_PASSWORD=${PASSWORD}
 ODOO_PASSWORD=${PASSWORD}
 ADMIN_PASSWORD=${PASSWORD}
 PUID=1002
 PGID=1002
 URL=$(echo ${CYBERERP_HOSTNAME} | cut -n -f 1  -d . --complement)
-SUBDOMAINS=bis,odoo,pgadmin,cadvisor,prometheus,portainer,duplicati
+SUBDOMAINS=odoo,pgadmin,portainer,duplicati
 VALIDATION=http
-EMAIL=${ADMIN_EMAIL}
+EMAIL=${ODOO_EMAIL}
 DHLEVEL=2048 
 ONLY_SUBDOMAINS=true 
 STAGING=false
@@ -84,25 +104,28 @@ CYBERERP_HOSTNAME=${CYBERERP_HOSTNAME}
 # ----------------------------------
 # POSTGRESQL Database Environment
 # ----------------------------------
-POSTGRES_DB=${POSTGRES_DB}
-POSTGRES_USER=${POSTGRES_USER}
-POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-PGDATA=${PGDATA}
+POSTGRESQL_PASSWORD=${PASSWORD}
 
 # --------------------
 # PGADMIN Environment
 # --------------------
-PGADMIN_PASSWORD=${PGADMIN_PASSWORD}
+PGADMIN_PASSWORD=${PASSWORD}
 PGADMIN_EMAIL=${EMAIL}
 
 # -------------------
 # ODOO Environment
 # -------------------
+ODOO_EMAIL=${ODOO_EMAIL}
 ODOO_PASSWORD=${ODOO_PASSWORD}
-ODOO_DB=odoo
-ODOO_USER=${ODOO_USER}
-ADDONS_PATH=${ADDONS_PATH}
-
+POSTGRESQL_USER=postgres
+POSTGRESQL_PASSWORD=${PASSWORD}
+POSTGRESQL_HOST=postgresql
+POSTGRESQL_PORT_NUMBER=5432
+SMTP_HOST=${SMTP_HOST}
+SMTP_PORT=465
+SMTP_USER=${SMTP_USER}
+SMTP_PASSWORD=${SMTP_PASSWORD}
+SMTP_PROTOCOL=ssl
 #-------------------------
 # LETSENCRYPT Environment
 #-------------------------
@@ -116,20 +139,6 @@ DHLEVEL=${DHLEVEL}
 ONLY_SUBDOMAINS=${ONLY_SUBDOMAINS}
 STAGING=${STAGING}
 TZ=${CYBERERP_TZ}
-EOF
-
-cat << EOF > ./conf/odoo/odoo.conf
-# -------------------
-# ODOO configuration
-# -------------------
-[options]
-addons_path = ${ADDONS_PATH}
-data_dir = ${DATA_DIR}
-admin_passwd = ${ADMIN_PASSWORD}
-db_name = ${POSTGRES_DB}
-db_user = ${POSTGRES_USER}
-db_template = template1
-dbfilter = .*
 EOF
 
 ln ./cybererp.conf ./.env
