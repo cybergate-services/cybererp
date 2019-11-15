@@ -91,7 +91,7 @@ services:
          - pgadmin
     restart: always
  
- portainer:
+  portainer:
     image: portainer/portainer
     container_name: portainer
     hostname: portainer
