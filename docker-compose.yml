@@ -51,11 +51,9 @@ services:
     image: 'bitnami/odoo:12'
     container_name: odoo
     hostname: odoo
-    ports:
-      - '80:8069'
-      - '443:8071'
-    volumes:
+    volumes:  
       - './odoo_data:/bitnami'
+      - './custom-addons:/opt/bitnami/odoo/odoo/addons'
     environment:
       - ODOO_EMAIL=${ODOO_EMAIL}
       - ODOO_PASSWORD=${ODOO_PASSWORD}
@@ -117,8 +115,8 @@ services:
       - CLI_ARGS= #optional
     volumes:
       - ./config/dupicati:/config
-      - ./backups/duplicati:/backups
-      - /opt/storage:/source
+      - /opt/backup/duplicati:/backups
+      - ./:/source
     ports:
       - 8200:8200
     restart: always
