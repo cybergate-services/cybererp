@@ -38,7 +38,7 @@ services:
     container_name: postgresql
     hostname: postgresql
     volumes:
-      - 'postgresql_data:/bitnami/postgresql'
+      - './postgresql_data:/bitnami/postgresql'
     networks:
       cybererp-network:
         aliases:
@@ -55,7 +55,7 @@ services:
     hostname: odoo
     volumes:  
       - './odoo_data:/bitnami'
-      # - './custom-addons:/opt/bitnami/odoo/odoo/addons'
+      - './custom-addons/:/bitnami/odoo/addons/'
     environment:
       - ODOO_EMAIL=${ODOO_EMAIL}
       - ODOO_PASSWORD=${ODOO_PASSWORD}
