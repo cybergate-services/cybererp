@@ -54,7 +54,7 @@ services:
     container_name: odoo
     hostname: odoo
     volumes:  
-      - 'odoo_data:/bitnami'
+      - './odoo_data:/bitnami'
       # - './custom-addons:/opt/bitnami/odoo/odoo/addons'
     environment:
       - ODOO_EMAIL=${ODOO_EMAIL}
