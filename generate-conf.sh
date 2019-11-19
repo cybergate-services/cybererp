@@ -87,9 +87,16 @@ while [ -z "${CYBERERP_TZ}" ]; do
   fi
 done
 
-PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+PASSWORD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28
 
-htpasswd -b -c ./conf/htpasswd admin ${PASSWORD}
+HTPASSWD=$(which htpasswd) 
+if [ -z "${HTPASSWD}" ]; then
+  echo "htpasswd command is not found and installing it now..."
+  apt install -y apache2-utils
+  htpasswd -b -c ./conf/htpasswd admin ${PASSWORD}
+else 
+  htpasswd -b -c ./conf/htpasswd admin ${PASSWORD}
+fi
 
 POSTGRESQL_PASSWORD=${PASSWORD}
 ODOO_PASSWORD=${PASSWORD}
