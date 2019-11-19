@@ -57,10 +57,10 @@ Create A records for all the subdomains which are listed in the table below. Ple
 
 Container | Subdoamin | Web Interface
 ----------|-----------|---------------
-`duplicati` | `duplicati.cybergatelabs.com` | Data backup container
-`odoo` | `odoo.cybergatelabs.com` | Odoo Web UI
-`pgdamin` | `pgadmin.cybergatelabs.com` | pgAdmin Web UI
-`portainer` | `portainer.cybergatelabs.com` | Portainer Web UI for container mangement
+`odoo` | `odoo.cybergatelabs.com` |  Odoo Web UI
+`duplicati` | `odoo-backup.cybergatelabs.com` | Data backup container
+`pgdamin` | `odoo-pgadmin.cybergatelabs.com` | pgAdmin Web UI
+`portainer` | `odoo-portainer.cybergatelabs.com` | Portainer Web UI for container mangement
 
 ## Installing CyberERP
 
