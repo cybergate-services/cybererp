@@ -24,12 +24,9 @@ Our solution  consists of the following containers and you  visit the following 
 
 1. [linuxserver/letsencrypt](https://hub.docker.com/r/linuxserver/letsencrypt)
 2. [linuxserver/heimdall](https://hub.docker.com/r/linuxserver/heimdall)
-3. [odoo](https://hub.docker.com/_/odoo)
-4. [postgres](https://hub.docker.com/_/postgres)
+3. [odoo](https://github.com/bitnami/bitnami-docker-odoo)
+4. [postgres](https://github.com/bitnami/bitnami-docker-postgresql)
 5. [dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)
-6. [google/cadvisor](https://hub.docker.com/r/google/cadvisor)
-7. [prom/prometheus](https://hub.docker.com/r/prom/prometheus)
-8. [redis](https://hub.docker.com/_/redis)
 9. [portainer/portainer](https://hub.docker.com/r/portainer/portainer)
 10. [tiredofit/db-backup](https://hub.docker.com/r/tiredofit/db-backup)
 11. [linuxserver/duplicati](https://hub.docker.com/r/linuxserver/duplicati)
@@ -60,11 +57,9 @@ Create A records for all the subdomains which are listed in the table below. Ple
 
 Container | Subdoamin | Web Interface
 ----------|-----------|---------------
-`heimdal` | `bis.cybergatelabs.com` | Application dash board
+`duplicati` | `duplicati.cybergatelabs.com` | Data backup container
 `odoo` | `odoo.cybergatelabs.com` | Odoo Web UI
 `pgdamin` | `pgadmin.cybergatelabs.com` | pgAdmin Web UI
-`cadvisor` | `cadvisor.cybergatelabs.com` | cAdvisor Web UI for container performance monitoring 
-`prometheus` |` prometheus.cybergatelabs.com` | Prometheus Web UI for container performance monitoring 
 `portainer` | `portainer.cybergatelabs.com` | Portainer Web UI for container mangement
 
 ## Installing CyberERP
@@ -118,17 +113,13 @@ In this section we have given you instruction to setup. Execute the following co
     ```
        Name                  Command               State                    Ports                  
     -----------------------------------------------------------------------------------------------
-    cadvisor      /usr/bin/cadvisor -logtostderr   Up      0.0.0.0:8080->8080/tcp                  
     db-backup     /init                            Up      10050/tcp, 1025/tcp, 8025/tcp           
     duplicati     /init                            Up      0.0.0.0:8200->8200/tcp                  
-    heimdall      /init                            Up      443/tcp, 80/tcp                         
     letsencrypt   /init                            Up      0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp
     odoo          /entrypoint.sh odoo              Up      8069/tcp, 8071/tcp                      
     pgadmin       /entrypoint.sh                   Up      443/tcp, 80/tcp                         
     portainer     /portainer                       Up      9000/tcp                                
     postgresql    docker-entrypoint.sh postgres    Up      5432/tcp                                
-    prometheus    /bin/prometheus --config.f ...   Up      0.0.0.0:9090->9090/tcp                  
-    redis         docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp
     ```
  # Initial Odoo Configuration
     
