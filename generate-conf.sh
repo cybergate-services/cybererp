@@ -153,3 +153,5 @@ TZ=${CYBERERP_TZ}
 EOF
 
 ln ./cybererp.conf ./.env
+mkdir ./postgresql_data
+chmod 1777 ./postgresql_data
