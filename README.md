@@ -90,15 +90,21 @@ In this section we have given you instruction to setup. Execute the following co
     ./generate-conf.sh 
     ```
     Below is a sample output from the above operation.
-    
-    ```bash
+    ```
     Press enter to confirm the detected value '[value]' where applicable or enter a custom value.
-    Hostname (FQDN): bis.cybergatelabs.com
+    Hostname (FQDN): odoo.cybergatelabs.com
+    Enter SMTP host that will be used to send mails from Odoo
+    SMTP Host: hasuna.cybergatelabs.com
     Enter mail account to be used as Odoo and pgAdmin Administrator account
-    Admintrator's Email: bisadmin@cybergatelabs.com
+    Admintrator's Email: odoo@cybergatelabs.com
+    Enter SMTP user that will be used to send mails from Odoo
+    SMTP User: odoo@cybergatelabs.com
+    Enter SMTP User Password that will be used to send mails from Odoo
+    SMTP Password: ********
+    ********
     Timezone: Asia/Colombo
     Adding password for user admin
-    
+    ```    
  5. Deploy and start the containers.
  
     ```bash
@@ -113,22 +119,22 @@ In this section we have given you instruction to setup. Execute the following co
     ```
        Name                  Command               State                    Ports                  
     -----------------------------------------------------------------------------------------------
-    db-backup     /init                            Up      10050/tcp, 1025/tcp, 8025/tcp           
     duplicati     /init                            Up      0.0.0.0:8200->8200/tcp                  
     letsencrypt   /init                            Up      0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp
     odoo          /entrypoint.sh odoo              Up      8069/tcp, 8071/tcp                      
     pgadmin       /entrypoint.sh                   Up      443/tcp, 80/tcp                         
     portainer     /portainer                       Up      9000/tcp                                
-    postgresql    docker-entrypoint.sh postgres    Up      5432/tcp                                
+    postgresl    docker-entrypoint.sh postgres     Up      5432/tcp                                
     ```
  # Initial Odoo Configuration
     
  In this section we will cary out the intial confiuration of our odoo conatiner. 
     
- 1. Find out your `Odoo Master Password` generated during `cybererp.conf` creation step above. We assume that your current       directory is `/opt/cybererp`
+ 1. Find out your `Odoo  Password` generated during `cybererp.conf` creation step above. We assume that your current         
+    directory is `/opt/cybererp`
    
     ```bash
-    grep admin /opt/cybererp/conf/odoo/odoo.conf
+    grep -i odoo_password cybererp.conf
     ```
  2. Point your browser to `https://odoo.cybergatelabs.com`. Make sure to replace `cybergatelabs.com` with 
    `yourdomain.com`.
