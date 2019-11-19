@@ -63,6 +63,7 @@ while [ -z "${SMTP_PASSWORD}" ]; do
   # echo $count
   if [[ $count -lt 8 ]];then
      echo "Password length should be at least 8 charactors"
+     SMTP_PASSWORD=
      exit 1;
   fi
   echo ${SMTP_PASSWORD} | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]"
@@ -72,7 +73,6 @@ while [ -z "${SMTP_PASSWORD}" ]; do
     exit 2;
   fi
 done
-
 
 if [ -a /etc/timezone ]; then
   DETECTED_TZ=$(cat /etc/timezone)
