@@ -64,13 +64,11 @@ while [ -z "${SMTP_PASSWORD}" ]; do
   if [[ $count -lt 8 ]];then
      echo "Password length should be at least 8 charactors"
      SMTP_PASSWORD=
-     exit 1;
   fi
   echo ${SMTP_PASSWORD} | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]"
   if [[ $? -ne 0 ]];then
     echo "Password must contain upparcase ,lowecase,number and special charactor"
     SMTP_PASSWORD=
-    exit 2;
   fi
 done
 
