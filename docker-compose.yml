@@ -13,7 +13,7 @@ services:
       - TZ=${TZ}
       - URL=${URL}
       - SUBDOMAINS=${SUBDOMAINS},
-      - EXTRA_DOMAIN=${EXTRA_DOMAIN}
+      - EXTRA_DOMAINS=${EXTRA_DOMAINS}
       - VALIDATION=${VALIDATION}
       - EMAIL=${EMAIL}
       - DHLEVEL=${DHLEVEL}
