@@ -2,7 +2,7 @@ version: '2'
 services:
  
   letsencrypt:
-    image: linuxserver/letsencrypt
+    image: cybergatelabs/letsencrypt
     container_name: letsencrypt
     hostname: letsencrypt
     cap_add:
@@ -13,11 +13,13 @@ services:
       - TZ=${TZ}
       - URL=${URL}
       - SUBDOMAINS=${SUBDOMAINS},
+      - EXTRA_DOMAIN=${EXTRA_DOMAIN}
       - VALIDATION=${VALIDATION}
       - EMAIL=${EMAIL}
       - DHLEVEL=${DHLEVEL}
       - ONLY_SUBDOMAINS=${ONLY_SUBDOMAINS}
       - STAGING=${STAGING}
+      
     networks:
       cybererp-network:
         aliases:
