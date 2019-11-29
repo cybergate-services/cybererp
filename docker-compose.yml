@@ -79,21 +79,18 @@ services:
     restart: always  
   
   pgadmin:
-    image: dpage/pgadmin4
+    image: adminer
     container_name: pgadmin
     hostname: pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${ODOO_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${ODOO_PASSWORD}
-    # ports:
-    #  - "10080:80"
-    depends_on:
-      - postgresql
+    restart: always
+    #ports:
+    #  - 8080:8080
+    # depends_on:
+    #  - postgresql
     networks:
       cybererp-network:
         aliases:
          - pgadmin
-    restart: always
  
   portainer:
     image: portainer/portainer
