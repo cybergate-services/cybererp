@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
  
   letsencrypt:
@@ -132,7 +132,7 @@ volumes:
     driver: local
 networks:
   cybererp-network:
-    driver: default
+    driver: bridge
     config:
       - subnet: 172.26.0.0/16
         
