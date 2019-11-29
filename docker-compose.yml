@@ -133,6 +133,11 @@ volumes:
 networks:
   cybererp-network:
     driver: bridge
-    config:
-      - subnet: 172.26.0.0/16
+    driver_opts:
+      com.docker.network.bridge.name: br-openemail
+    enable_ipv6: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.22.1.0/24
         
