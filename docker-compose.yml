@@ -90,7 +90,7 @@ services:
     networks:
       cybererp-network:
         aliases:
-         - pgadmin
+          - pgadmin
  
   portainer:
     image: portainer/portainer
