@@ -136,3 +136,6 @@ volumes:
 networks:
   cybererp-network:
     driver: bridge
+    config:
+      - subnet: 172.26.0.0/16
+        
