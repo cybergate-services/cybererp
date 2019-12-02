@@ -135,10 +135,10 @@ networks:
   cybererp-network:
     driver: bridge
     driver_opts:
-      com.docker.network.bridge.name: br-openemail
+      com.docker.network.bridge.name: br-cybererp
     enable_ipv6: false
     ipam:
       driver: default
       config:
-        - subnet: 172.22.1.0/24
+        - subnet: 172.26.1.0/24
         
