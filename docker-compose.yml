@@ -25,6 +25,7 @@ services:
         aliases:
           - letsencrypt
     volumes:
+      - ./conf/letsencrypt/config:/config
       - ./conf/proxy/odoo.conf:/config/nginx/proxy-confs/odoo.subdomain.conf
       - ./conf/proxy/pgadmin.conf:/config/nginx/proxy-confs/pgadmin.subdomain.conf
       - ./conf/proxy/portainer.conf:/config/nginx/proxy-confs/portainer.subdomain.conf
