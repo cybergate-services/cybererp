@@ -31,6 +31,7 @@ services:
       - ./conf/proxy/portainer.conf:/config/nginx/proxy-confs/portainer.subdomain.conf:rw
       - ./conf/proxy/duplicati.conf:/config/nginx/proxy-confs/duplicati.subdomain.conf:rw
       - ./conf/htpasswd:/config/nginx/.htpasswd:rw
+      - ./data/letsencrypt/config:/config
     ports:
       - 443:443
       - 80:80 #optional
