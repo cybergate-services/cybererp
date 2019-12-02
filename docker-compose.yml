@@ -26,10 +26,10 @@ services:
           - letsencrypt
     volumes:
       - ./data/letsencrypt/config:/config
-      - ./conf/proxy/odoo.conf:/config/nginx/proxy-confs/odoo.subdomain.conf
-      - ./conf/proxy/pgadmin.conf:/config/nginx/proxy-confs/pgadmin.subdomain.conf
-      - ./conf/proxy/portainer.conf:/config/nginx/proxy-confs/portainer.subdomain.conf
-      - ./conf/proxy/duplicati.conf:/config/nginx/proxy-confs/duplicati.subdomain.conf
+      - ./conf/proxy/odoo.conf:/config/nginx/proxy-confs/odoo.subdomain.conf:ro
+      - ./conf/proxy/pgadmin.conf:/config/nginx/proxy-confs/pgadmin.subdomain.conf:ro
+      - ./conf/proxy/portainer.conf:/config/nginx/proxy-confs/portainer.subdomain.conf:ro
+      - ./conf/proxy/duplicati.conf:/config/nginx/proxy-confs/duplicati.subdomain.conf:ro
       - ./conf/htpasswd:/config/nginx/.htpasswd:rw
     ports:
       - 443:443
