@@ -55,39 +55,39 @@ CMPS_PRJ=$(echo $COMPOSE_PROJECT_NAME | tr -cd "[A-Za-z-_]")
 
 function backup() {
   DATE=$(date +"%Y-%m-%d-%H-%M-%S")
-  mkdir -p "${BACKUP_LOCATION}/openemail-${DATE}"
-  chmod 755 "${BACKUP_LOCATION}/openemail-${DATE}"
-  cp "${SCRIPT_DIR}/../openemail.conf" "${BACKUP_LOCATION}/openemail-${DATE}"
+  mkdir -p "${BACKUP_LOCATION}/cybererp-${DATE}"
+  chmod 755 "${BACKUP_LOCATION}/cybererp-${DATE}"
+  cp "${SCRIPT_DIR}/../cybererp.conf" "${BACKUP_LOCATION}/cybererp-${DATE}"
   while (( "$#" )); do
     case "$1" in
     vmail|all)
       docker run --rm \
-        -v ${BACKUP_LOCATION}/openemail-${DATE}:/backup \
+        -v ${BACKUP_LOCATION}/cybererp-${DATE}:/backup \
         -v $(docker volume ls -qf name=${CMPS_PRJ}_vmail-vol-1):/vmail:ro \
         debian:stretch-slim /bin/tar --warning='no-file-ignored' --use-compress-program="gzip --rsyncable --best" -Pcvpf /backup/backup_vmail.tar.gz /vmail
       ;;&
     crypt|all)
       docker run --rm \
-        -v ${BACKUP_LOCATION}/openemail-${DATE}:/backup \
+        -v ${BACKUP_LOCATION}/cybererp-${DATE}:/backup \
         -v $(docker volume ls -qf name=${CMPS_PRJ}_crypt-vol-1):/crypt:ro \
         debian:stretch-slim /bin/tar --warning='no-file-ignored' --use-compress-program="gzip --rsyncable --best" -Pcvpf /backup/backup_crypt.tar.gz /crypt
       ;;&
     redis|all)
-      docker exec $(docker ps -qf name=redis-openemail) redis-cli save
+      docker exec $(docker ps -qf name=redis-cybererp) redis-cli save
       docker run --rm \
-        -v ${BACKUP_LOCATION}/openemail-${DATE}:/backup \
+        -v ${BACKUP_LOCATION}/cybererp-${DATE}:/backup \
         -v $(docker volume ls -qf name=${CMPS_PRJ}_redis-vol-1):/redis:ro \
         debian:stretch-slim /bin/tar --warning='no-file-ignored' --use-compress-program="gzip --rsyncable --best" -Pcvpf /backup/backup_redis.tar.gz /redis
       ;;&
     rspamd|all)
       docker run --rm \
-        -v ${BACKUP_LOCATION}/openemail-${DATE}:/backup \
+        -v ${BACKUP_LOCATION}/cybererp-${DATE}:/backup \
         -v $(docker volume ls -qf name=${CMPS_PRJ}_rspamd-vol-1):/rspamd:ro \
         debian:stretch-slim /bin/tar --warning='no-file-ignored' --use-compress-program="gzip --rsyncable --best" -Pcvpf /backup/backup_rspamd.tar.gz /rspamd
       ;;&
     postfix|all)
       docker run --rm \
-        -v ${BACKUP_LOCATION}/openemail-${DATE}:/backup \
+        -v ${BACKUP_LOCATION}/cybererp-${DATE}:/backup \
         -v $(docker volume ls -qf name=${CMPS_PRJ}_postfix-vol-1):/postfix:ro \
         debian:stretch-slim /bin/tar --warning='no-file-ignored' --use-compress-program="gzip --rsyncable --best" -Pcvpf /backup/backup_postfix.tar.gz /postfix
       ;;&
@@ -97,7 +97,7 @@ function backup() {
         --network $(docker network ls -qf name=${CMPS_PRJ}_) \
         -v $(docker volume ls -qf name=${CMPS_PRJ}_mysql-vol-1):/var/lib/mysql/:ro \
         --entrypoint= \
-        -v ${BACKUP_LOCATION}/openemail-${DATE}:/backup \
+        -v ${BACKUP_LOCATION}/cybererp-${DATE}:/backup \
         ${SQLIMAGE} /bin/sh -c "mysqldump -hmysql -uroot -p${DBROOT} --all-databases | gzip > /backup/backup_mysql.gz"
       ;;
     esac
@@ -189,11 +189,11 @@ if [[ ${1} == "backup" ]]; then
 elif [[ ${1} == "restore" ]]; then
   i=1
   declare -A FOLDER_SELECTION
-  if [[ $(find ${BACKUP_LOCATION}/openemail-* -maxdepth 1 -type d 2> /dev/null| wc -l) -lt 1 ]]; then
+  if [[ $(find ${BACKUP_LOCATION}/cybererp-* -maxdepth 1 -type d 2> /dev/null| wc -l) -lt 1 ]]; then
     echo "Selected backup location has no subfolders"
     exit 1
   fi
-  for folder in $(ls -d ${BACKUP_LOCATION}/openemail-*/); do
+  for folder in $(ls -d ${BACKUP_LOCATION}/cybererp-*/); do
     echo "[ ${i} ] - ${folder}"
     FOLDER_SELECTION[${i}]="${folder}"
     ((i++))
