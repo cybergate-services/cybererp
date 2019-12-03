@@ -50,7 +50,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 COMPOSE_FILE=${SCRIPT_DIR}/../docker-compose.yml
 echo "Using ${BACKUP_LOCATION} as backup/restore location."
 echo
-source ${SCRIPT_DIR}/../openemail.conf
+source ${SCRIPT_DIR}/../cybererp.conf
 CMPS_PRJ=$(echo $COMPOSE_PROJECT_NAME | tr -cd "[A-Za-z-_]")
 
 function backup() {
