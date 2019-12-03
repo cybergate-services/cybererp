@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [[ ! -z ${OPENEMAIL_BACKUP_LOCATION} ]]; then
-  BACKUP_LOCATION="${OPENEMAIL_BACKUP_LOCATION}"
+if [[ ! -z ${CYBERERP_BACKUP_LOCATION} ]]; then
+  BACKUP_LOCATION="${CYBERERP_BACKUP_LOCATION}"
 fi
 
 if [[ ! ${1} =~ (backup|restore) ]]; then
