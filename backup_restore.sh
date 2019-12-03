@@ -9,8 +9,8 @@ if [[ ! ${1} =~ (backup|restore) ]]; then
   exit 1
 fi
 
-if [[ ${1} == "backup" && ! ${2} =~ (crypt|vmail|redis|rspamd|postfix|mysql|all) ]]; then
-  echo "Second parameter needs to be 'vmail', 'crypt', 'redis', 'rspamd', 'postfix', 'mysql' or 'all'"
+if [[ ${1} == "backup" && ! ${2} =~ (odoo|portainer|pgadmin|duplicati|all) ]]; then
+  echo "Second parameter needs to be 'odoo', 'portainer', 'pgadmin', 'duplicati' or 'all'"
   exit 1
 fi
 
