@@ -12,4 +12,4 @@ rsync -avp /opt/cybererp/postgresql_data /opt/backup/$DATE
 rsync -avp /opt/cybererp/odoo_data /opt/backup/$DATE
 
 
-find $rbackuploc/* -mtime +10 -exec rm {} \;
+#find $rbackuploc/* -mtime +10 -exec rm {} \;
