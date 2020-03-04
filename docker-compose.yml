@@ -54,7 +54,7 @@ services:
     restart: always
     
   odoo:
-    image: 'bitnami/odoo:12'
+    image: 'bitnami/odoo:13'
     container_name: odoo
     hostname: odoo
     volumes:  
